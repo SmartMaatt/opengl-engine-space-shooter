@@ -3,7 +3,7 @@
 
 int main()
 {
-	std::cout << "Starting..." << std::endl;
+	std::cout << "Launching PwAG Space Shooter Game..." << std::endl;
 
 	if (glfwInit() == GLFW_TRUE)
 	{

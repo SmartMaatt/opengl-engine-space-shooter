@@ -8,5 +8,5 @@ namespace Config
 	constexpr uint32_t g_defaultWidth = 1600;
 	constexpr uint32_t g_defaultHeight = 900;
 
-	constexpr const char* g_defaultWindowTitle = "PwAG Project!";
+	constexpr const char* g_defaultWindowTitle = "PwAG Space Shooter Game!";
 }

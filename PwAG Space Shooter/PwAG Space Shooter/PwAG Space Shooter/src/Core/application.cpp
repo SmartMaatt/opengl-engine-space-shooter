@@ -3,8 +3,8 @@
 #include "../State machine/gameState.h"
 #include "../State machine/menuState.h"
 
-Application::Application()
-	: tmpDefaultFont(std::move(Font("res/Fonts/Segan.ttf", 18))),
+Application::Application() :
+	tmpDefaultFont(std::move(Font("res/Fonts/Segan.ttf", 18))),
 	fpsLabel(0, 880, "FPS:", tmpDefaultFont), fpsValueText(65, 880, "0", tmpDefaultFont),
 	inputTimeLabel(0, 860, "Input:", tmpDefaultFont), inputValueText(65, 860, "0", tmpDefaultFont),
 	updateTimeLabel(0, 840, "Update:", tmpDefaultFont), updateValueText(65, 840, "0", tmpDefaultFont),
@@ -31,6 +31,7 @@ Application::~Application()
 
 void Application::run()
 {
+	// FreeType plugin font shaders
 	Shader textVert = Shader::createShaderFromFile("Shaders/text.vert", Shader::Type::eVertex);
 	Shader textFrag = Shader::createShaderFromFile("Shaders/text.frag", Shader::Type::eFragment);
 
@@ -38,15 +39,16 @@ void Application::run()
 	textShader.attachShader(textFrag);
 	textShader.linkShaderProgram();
 
+	// Timers initialization
 	timer.startTimer("deltaTime");
 	timer.startTimer("fps");
 	timer.startTimer("previousMeasure");
 
-	// tutaj na razie od razu gra, nim siê zrobi menu g³ówne
-	// by przejœæ do innego stanu np. z menu 
+	// Reference to state machine and window object
 	this->gameReference->m_stateMachine.addNewState(StateReference(new GameState(this->gameReference)));
 	this->gameReference->window = this->window.getGLFWWindow();
 
+	// Program loop
 	while (mainLoopCondition)
 	{
 		this->gameReference->m_stateMachine.changingState();
@@ -58,7 +60,6 @@ void Application::run()
 			updateFPSThisFrame = true;
 		}
 
-		//temporary MVC replacement?
 		processInput();
 		update();
 		render();
@@ -67,7 +68,6 @@ void Application::run()
 		{
 			updateFPSText();
 		}
-
 	}
 }
 
@@ -80,29 +80,30 @@ void Application::processInput()
 	{
 		switch (eventManager.getLatestEventType())
 		{
-		case EventType::eWindowClosed:
-			this->mainLoopCondition = false;
-			break;
-		case EventType::eKeyPressed:
-			if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyQ)])
-			{
-				this->wireframeMode = true;
-			}
+			case EventType::eWindowClosed:
+				this->mainLoopCondition = false;
+				break;
 
-			if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyE)])
-			{
-				this->wireframeMode = false;
-			}
+			case EventType::eKeyPressed:
+				if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyQ)])
+				{
+					this->wireframeMode = true;
+				}
+
+				if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyE)])
+				{
+					this->wireframeMode = false;
+				}
+				break;
 		}
 	}
 
-	// na razie przesy³¹m 'render' bo dzia³a lepiej
-	if (this->loopedRender) {
+	if (this->loopedRender) 
+	{
 		this->gameReference->m_stateMachine.getCurrentState()->processInput(deltaTime, this->keyboard, this->mouse);
 	}
 
 	timer.stopTimer("input");
-
 	this->loopedInput = true;
 }
 
@@ -110,12 +111,12 @@ void Application::update()
 {
 	timer.startTimer("update");
 
-	if (this->loopedUpdate) {
+	if (this->loopedUpdate) 
+	{
 		this->gameReference->m_stateMachine.getCurrentState()->update(deltaTime);
 	}
 
 	timer.stopTimer("update");
-
 	this->loopedUpdate = true;
 }
 
@@ -133,14 +134,18 @@ void Application::render()
 
 		window.clearToColor(0, 0, 0);
 
-		if (this->wireframeMode) {
-			this->wireframeModeOn(); // wireframe mode on
+		// Wireframe mode on
+		if (this->wireframeMode) 
+		{
+			this->wireframeModeOn(); 
 		}
-		else {
+		else 
+		{
 			this->wireframeModeOff();
 		}
 
-		if (this->loopedRender) {
+		if (this->loopedRender) 
+		{
 			this->gameReference->m_stateMachine.getCurrentState()->render(renderDeltaTime, this->wireframeMode);
 		}
 
@@ -161,10 +166,8 @@ void Application::render()
 		renderValueText.render(textShader);
 #endif
 
-		window.swapBuffers();
-
+		window.swapBuffers();	// Render buffer swapping
 		timer.stopTimer("render");
-
 		this->loopedRender = true;
 	}
 }
@@ -198,11 +201,13 @@ void Application::updateFPSText()
 #endif
 }
 
-void Application::wireframeModeOn() {
+void Application::wireframeModeOn() 
+{
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
-void Application::wireframeModeOff() {
+void Application::wireframeModeOff() 
+{
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 

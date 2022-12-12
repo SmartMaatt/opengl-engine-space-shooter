@@ -26,6 +26,7 @@ public:
 
 	void run();
 
+	// Main loop
 	void processInput();
 	void update();
 	void render();
@@ -39,6 +40,7 @@ private:
 	void calculateDeltaTime();
 	void calculateRenderDeltaTime();
 
+	// References
 	Window window;
 
 	EventManager eventManager;
@@ -50,6 +52,7 @@ private:
 
 	GameReference gameReference = std::make_shared<GameAssets>(); //state machine here
 
+	// Time related
 	double deltaTime = 0.0f;
 	double renderDeltaTime = 0.0f;
 
@@ -63,6 +66,7 @@ private:
 	double fpsMeasureCooldownLeft = 0.0f;
 	bool updateFPSThisFrame = false;
 
+	// Info labels
 	Text fpsLabel;
 	Text fpsValueText;
 
@@ -75,14 +79,10 @@ private:
 	Text renderTimeLabel;
 	Text renderValueText;
 
+	// States
 	bool mainLoopCondition = true;
-
 	bool wireframeMode = false;
-
-	// czy dana metoda chocia¿ raz do koñca przelecia³a (bez sprawdzenia wywala wyj¹tek, bo s³owniki np. name['render'] start/stop trzymaj¹ce czas s¹ puste przed koñcem pierwszej pêtli)
-	// jak bêdzie czas to do poprawy aby co ka¿dy loop nie sprawdza³o flagi
 	bool loopedInput = false;
 	bool loopedRender = false;
 	bool loopedUpdate = false;
 };
-

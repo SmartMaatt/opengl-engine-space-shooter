@@ -94,6 +94,11 @@ void Application::processInput()
 				{
 					this->wireframeMode = false;
 				}
+
+				if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyEscape)])
+				{
+					this->mainLoopCondition = false;
+				}
 				break;
 		}
 	}

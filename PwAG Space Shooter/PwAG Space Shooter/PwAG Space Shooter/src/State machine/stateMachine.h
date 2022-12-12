@@ -26,4 +26,3 @@ private:
 	bool isAdded = false;
 	bool isRemoved = false;
 };
-

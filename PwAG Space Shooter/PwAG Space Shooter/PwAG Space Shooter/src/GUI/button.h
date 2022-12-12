@@ -24,9 +24,9 @@ public:
 	void setAction(std::function<void(void)> action);
 
 private:
-	glm::vec2 position {};
-	glm::vec2 size {};
-	glm::vec3 color {};
+	glm::vec2 position{};
+	glm::vec2 size{};
+	glm::vec3 color{};
 
 	bool enabled = true;
 
@@ -37,4 +37,3 @@ private:
 		[]()
 	{};
 };
-

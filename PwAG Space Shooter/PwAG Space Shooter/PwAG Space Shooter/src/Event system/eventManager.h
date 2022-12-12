@@ -11,10 +11,12 @@ public:
 	{
 		glfwPollEvents();
 	}
+
 	bool isEventQueueEmpty()
 	{
 		return eventQueue.empty();
 	}
+
 	void clearEventQueue()
 	{
 		while (!eventQueue.empty())
@@ -22,9 +24,10 @@ public:
 			eventQueue.pop();
 		}
 	}
+
 	EventType getLatestEventType()
 	{
-		//wait till there is an event to return
+		// Wait till there is an event to return
 		while (eventQueue.empty());
 
 		auto tmp = eventQueue.front();
@@ -43,6 +46,7 @@ public:
 
 	void registerKeyboard(Keyboard& keyboard);
 	void registerMouse(Mouse& mouse);
+
 private:
 	std::queue<EventType> eventQueue;
 	Keyboard* keyboard{};

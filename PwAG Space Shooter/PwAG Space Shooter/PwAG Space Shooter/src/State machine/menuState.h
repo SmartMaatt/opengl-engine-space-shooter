@@ -12,6 +12,7 @@ private:
 	Button newGameButton;
 	Button exitGameButton;
 	Camera camera;
+
 public:
 	MenuState(GameReference gameReference);
 	~MenuState();

@@ -52,20 +52,20 @@ const std::string& Button::getText() const
 
 void Button::update(const Mouse& mouse)
 {
-	if(enabled && 
-	   mouse.posX > this->position.x
-	   &&
-	   mouse.posX < this->position.x + this->size.x
+	if (enabled &&
+		mouse.posX > this->position.x
+		&&
+		mouse.posX < this->position.x + this->size.x
 
-	   &&
+		&&
 
-	   mouse.posY > this->position.y
-	   &&
-	   mouse.posY < this->position.y + this->size.y 
-	   )
+		mouse.posY > this->position.y
+		&&
+		mouse.posY < this->position.y + this->size.y
+		)
 	{
 		this->text.color = this->color * 1.5f;
-		if(mouse.buttonState[static_cast<int>(Mouse::Button::eLeft)])
+		if (mouse.buttonState[static_cast<int>(Mouse::Button::eLeft)])
 		{
 			action();
 		}

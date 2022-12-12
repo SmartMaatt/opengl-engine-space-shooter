@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
-#include "../../Event system/keyboard.h"
-#include "../../Event system/mouse.h"
+#include "../Event system/keyboard.h"
+#include "../Event system/mouse.h"
 
 class ProgramState
 {

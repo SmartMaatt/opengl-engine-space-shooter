@@ -6,13 +6,10 @@ struct Mouse
 	enum class Button
 	{
 		eNone = -1,
-		
 		eLeft = 0,
 		eMiddle,
 		eRight,
-
-		// this value just indicates how many buttons are available
-		eLast
+		eLast			// Number of buttons available
 	};
 
 	bool buttonState[static_cast<uint32_t>(Button::eLast)]{};

@@ -8,7 +8,7 @@
 class GameState : public ProgramState
 {
 private:
-	Maze* maze;
+	Maze* spaceLevel;
 	GameReference gameReference;
 
 	int lastMousePosX;
@@ -25,4 +25,3 @@ public:
 	void update(float deltaTime) override;
 	void render(float deltaTime, bool wireframe) override;
 };
-

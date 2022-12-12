@@ -3,8 +3,8 @@
 
 struct GameAssets
 {
-	GLFWwindow* window;
-	StateMachine m_stateMachine; //state machine
+	GLFWwindow* window;				// Window object
+	StateMachine m_stateMachine;	// State machine
 };
 
 typedef	std::shared_ptr<GameAssets> GameReference;

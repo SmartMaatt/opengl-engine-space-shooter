@@ -45,7 +45,7 @@ void Application::run()
 	timer.startTimer("previousMeasure");
 
 	// Reference to state machine and window object
-	this->gameReference->m_stateMachine.addNewState(StateReference(new GameState(this->gameReference)));
+	this->gameReference->m_stateMachine.addNewState(StateReference(new MenuState(this->gameReference)));
 	this->gameReference->window = this->window.getGLFWWindow();
 
 	// Program loop

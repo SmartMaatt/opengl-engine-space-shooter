@@ -36,7 +36,7 @@ void StateMachine::changingState()
 			this->nr_states--;
 		}
 		this->m_states.push(std::move(this->m_newState));
-		this->m_states.top()->initialization(); 
+		this->m_states.top()->initialization();
 		this->isAdded = false;
 		this->nr_states++;
 	}
@@ -50,5 +50,5 @@ void StateMachine::deleteState()
 
 int StateMachine::getNrOfStates() const
 {
-	return this->nr_states; 
+	return this->nr_states;
 }

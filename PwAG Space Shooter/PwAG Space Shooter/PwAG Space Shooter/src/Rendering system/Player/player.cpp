@@ -2,9 +2,9 @@
 #include "player.h"
 #include "GLM/include/gtc/matrix_transform.hpp"
 
-Camera::Camera() {}
+Player::Player() {}
 
-Camera::Camera(glm::vec3 position) 
+Player::Player(glm::vec3 position) 
 {
 	this->position = position;
 	this->horizontalAngle = 3.14f;
@@ -16,14 +16,14 @@ Camera::Camera(glm::vec3 position)
 }
 
 // Insert camera properties to outer shaders
-void Camera::setCameraUniforms(ShaderProgram* shaderProgram) 
+void Player::setCameraUniforms(ShaderProgram* shaderProgram) 
 {
 	shaderProgram->setMat4("ViewMatrix", this->ViewMatrix);
 	shaderProgram->setMat4("ProjectionMatrix", this->ProjectionMatrix);
 	shaderProgram->setVec3f("cameraPos", this->position);
 }
 
-void Camera::updateInput(GameReference gameReference, Keyboard& keyboard, Mouse& mouse, float deltaTime)
+void Player::updateInput(GameReference gameReference, Keyboard& keyboard, Mouse& mouse, float deltaTime)
 {
 	// Get mouse position
 	double xpos, ypos;
@@ -94,24 +94,24 @@ void Camera::updateInput(GameReference gameReference, Keyboard& keyboard, Mouse&
 	);
 }
 
-void Camera::setCameraPosition(glm::vec3 position)
+void Player::setCameraPosition(glm::vec3 position)
 {
 	this->position = position;
 }
 
-glm::vec3 Camera::getCameraPosition() const
+glm::vec3 Player::getCameraPosition() const
 {
 	return this->position;
 }
 
-glm::mat4 Camera::getViewMatrix()
+glm::mat4 Player::getViewMatrix()
 {
 	return this->ViewMatrix;
 }
 
-glm::mat4 Camera::getProjectionMatrix()
+glm::mat4 Player::getProjectionMatrix()
 {
 	return this->ProjectionMatrix;
 }
 
-Camera::~Camera() {}
+Player::~Player() {}

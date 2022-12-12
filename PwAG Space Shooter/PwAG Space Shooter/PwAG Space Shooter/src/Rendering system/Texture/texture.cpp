@@ -7,7 +7,7 @@
 #pragma region BitMapFile
 Texture::BitMapFile::BitMapFile() = default;
 
-Texture::BitMapFile::BitMapFile(const std::string & filePath)
+Texture::BitMapFile::BitMapFile(const std::string& filePath)
 {
 	this->loadFromFile(filePath);
 }
@@ -21,7 +21,7 @@ Texture::BitMapFile::BitMapFile(BitMapFile&& other) noexcept
 
 Texture::BitMapFile::~BitMapFile()
 {
-	if(data)
+	if (data)
 	{
 		stbi_image_free(data);
 	}
@@ -29,7 +29,7 @@ Texture::BitMapFile::~BitMapFile()
 
 Texture::BitMapFile& Texture::BitMapFile::operator=(BitMapFile&& other) noexcept
 {
-	if(this != &other)
+	if (this != &other)
 	{
 		sizeX = other.sizeX;
 		sizeY = other.sizeY;
@@ -43,10 +43,10 @@ Texture::BitMapFile& Texture::BitMapFile::operator=(BitMapFile&& other) noexcept
 	return *this;
 }
 
-void Texture::BitMapFile::loadFromFile(const std::string & filePath)
+void Texture::BitMapFile::loadFromFile(const std::string& filePath)
 {
 	data = stbi_load(filePath.c_str(), &sizeX, &sizeY, &nrChannels, 0);
-	if(data == nullptr)
+	if (data == nullptr)
 	{
 		std::cout << "Failed loading texture: " + filePath << std::endl;
 	}
@@ -59,9 +59,9 @@ Texture::Texture(Texture::Type type)
 	glGenTextures(1, &this->texture);
 }
 
-Texture Texture::createTextureFromFile(const std::string & textureFilePath, Texture::Type textureType)
+Texture Texture::createTextureFromFile(const std::string& textureFilePath, Texture::Type textureType)
 {
-	Texture toReturn { textureType };
+	Texture toReturn{ textureType };
 	toReturn.bmp.loadFromFile(textureFilePath);
 	toReturn.initializeTexture();
 
@@ -70,7 +70,7 @@ Texture Texture::createTextureFromFile(const std::string & textureFilePath, Text
 
 Texture Texture::createDepthTexture()
 {
-	Texture toReturn { Texture::Type::DEPTH };
+	Texture toReturn{ Texture::Type::DEPTH };
 	toReturn.initializeTexture();
 
 	return toReturn;
@@ -78,7 +78,7 @@ Texture Texture::createDepthTexture()
 
 Texture Texture::createTextureForPositionBuffer()
 {
-	Texture toReturn { Texture::Type::G_BUFFER_POSITION };
+	Texture toReturn{ Texture::Type::G_BUFFER_POSITION };
 	toReturn.initializeTexture();
 
 	return toReturn;
@@ -86,7 +86,7 @@ Texture Texture::createTextureForPositionBuffer()
 
 Texture Texture::createTextureForNormalBuffer()
 {
-	Texture toReturn { Texture::Type::G_BUFFER_NORMAL };
+	Texture toReturn{ Texture::Type::G_BUFFER_NORMAL };
 	toReturn.initializeTexture();
 
 	return toReturn;
@@ -94,7 +94,7 @@ Texture Texture::createTextureForNormalBuffer()
 
 Texture Texture::createTextureForAlbedoBuffer()
 {
-	Texture toReturn { Texture::Type::G_BUFFER_ALBEDO };
+	Texture toReturn{ Texture::Type::G_BUFFER_ALBEDO };
 	toReturn.initializeTexture();
 
 	return toReturn;
@@ -132,7 +132,7 @@ Texture Texture::createTexture_OIT_reveal()
 	return toReturn;
 }
 
-Texture::Texture(Texture && other) noexcept
+Texture::Texture(Texture&& other) noexcept
 	: textureType(other.textureType), bmp(std::move(other.bmp))
 {
 	texture = other.texture;
@@ -144,9 +144,9 @@ Texture::~Texture()
 	glDeleteTextures(1, &this->texture);
 }
 
-Texture& Texture::operator=(Texture && other) noexcept
+Texture& Texture::operator=(Texture&& other) noexcept
 {
-	if(this != &other)
+	if (this != &other)
 	{
 		texture = other.texture;
 		other.texture = 0;
@@ -164,7 +164,7 @@ void Texture::initializeTexture()
 
 	glBindTexture(GL_TEXTURE_2D, this->texture);
 
-	if(this->textureType == Texture::Type::DEPTH)
+	if (this->textureType == Texture::Type::DEPTH)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, this->bmp.sizeX, this->bmp.sizeY, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
 
@@ -173,27 +173,27 @@ void Texture::initializeTexture()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
-	else if(this->textureType == Texture::Type::G_BUFFER_POSITION || this->textureType == Texture::Type::G_BUFFER_NORMAL || this->textureType == Texture::Type::G_BUFFER_ALBEDO)
+	else if (this->textureType == Texture::Type::G_BUFFER_POSITION || this->textureType == Texture::Type::G_BUFFER_NORMAL || this->textureType == Texture::Type::G_BUFFER_ALBEDO)
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		if(this->textureType == Texture::Type::G_BUFFER_POSITION)
+		if (this->textureType == Texture::Type::G_BUFFER_POSITION)
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, Config::g_defaultWidth, Config::g_defaultHeight, 0, GL_RGB, GL_FLOAT, nullptr);
 		}
-		else if(this->textureType == Texture::Type::G_BUFFER_NORMAL)
+		else if (this->textureType == Texture::Type::G_BUFFER_NORMAL)
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, Config::g_defaultWidth, Config::g_defaultHeight, 0, GL_RGB, GL_FLOAT, nullptr);
 		}
-		else if(this->textureType == Texture::Type::G_BUFFER_ALBEDO)
+		else if (this->textureType == Texture::Type::G_BUFFER_ALBEDO)
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Config::g_defaultWidth, Config::g_defaultHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 		}
 	}
-	else if(this->textureType >= Texture::Type::OIT_OPAQUE && this->textureType <= Texture::Type::OIT_REVEAL)
+	else if (this->textureType >= Texture::Type::OIT_OPAQUE && this->textureType <= Texture::Type::OIT_REVEAL)
 	{
-		if(this->textureType == Texture::Type::OIT_OPAQUE)
+		if (this->textureType == Texture::Type::OIT_OPAQUE)
 		{
 			glBindTexture(GL_TEXTURE_2D, this->texture);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, Config::g_defaultWidth, Config::g_defaultHeight, 0, GL_RGBA, GL_HALF_FLOAT, nullptr);
@@ -201,13 +201,13 @@ void Texture::initializeTexture()
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
-		else if(this->textureType == Texture::Type::OIT_DEPTH)
+		else if (this->textureType == Texture::Type::OIT_DEPTH)
 		{
 			glBindTexture(GL_TEXTURE_2D, this->texture);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, Config::g_defaultWidth, Config::g_defaultHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
-		else if(this->textureType == Texture::Type::OIT_ACCUM)
+		else if (this->textureType == Texture::Type::OIT_ACCUM)
 		{
 			glBindTexture(GL_TEXTURE_2D, this->texture);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, Config::g_defaultWidth, Config::g_defaultHeight, 0, GL_RGBA, GL_HALF_FLOAT, nullptr);
@@ -231,30 +231,30 @@ void Texture::initializeTexture()
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		if(this->textureType == Texture::Type::NORMAL_MAP)
+		if (this->textureType == Texture::Type::NORMAL_MAP)
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->bmp.sizeX, this->bmp.sizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->bmp.data);
 		}
-		else if(this->textureType == Texture::Type::BMP)
+		else if (this->textureType == Texture::Type::BMP)
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->bmp.sizeX, this->bmp.sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, this->bmp.data);
 		}
-		else if(this->textureType == Texture::Type::PNG)
+		else if (this->textureType == Texture::Type::PNG)
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->bmp.sizeX, this->bmp.sizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->bmp.data);
 		}
-		else if(this->textureType == Texture::Type::SPECULAR)
+		else if (this->textureType == Texture::Type::SPECULAR)
 		{
 			GLenum format;
-			if(bmp.nrChannels == 1)
+			if (bmp.nrChannels == 1)
 			{
 				format = GL_RED;
 			}
-			else if(bmp.nrChannels == 3)
+			else if (bmp.nrChannels == 3)
 			{
 				format = GL_RGB;
 			}
-			else if(bmp.nrChannels == 4)
+			else if (bmp.nrChannels == 4)
 			{
 				format = GL_RGBA;
 			}

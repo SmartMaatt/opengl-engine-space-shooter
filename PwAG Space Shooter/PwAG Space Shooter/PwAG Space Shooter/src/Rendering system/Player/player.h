@@ -3,11 +3,11 @@
 #include "../../Event system/keyboard.h"
 #include "../../Event system/mouse.h"
 
-class Camera
+class Player
 {
 public:
-	Camera();
-	Camera(glm::vec3 position = glm::vec3(0.0f));
+	Player();
+	Player(glm::vec3 position = glm::vec3(0.0f));
 
 	void setCameraUniforms(ShaderProgram* shaderProgram);
 	void updateInput(GameReference gameReference, Keyboard& keyboard, Mouse& mouse, float deltaTime);
@@ -19,7 +19,7 @@ public:
 	glm::mat4 getViewMatrix();
 	glm::mat4 getProjectionMatrix();
 
-	virtual ~Camera();
+	virtual ~Player();
 
 private:
 	// Initial position : on +Z

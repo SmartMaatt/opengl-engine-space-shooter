@@ -44,6 +44,7 @@ public:
 	{
 		glBindVertexArray(id);
 	}
+
 	void unbind()
 	{
 		glBindVertexArray(0);
@@ -52,4 +53,3 @@ public:
 private:
 	GLuint id = 0;
 };
-

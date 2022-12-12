@@ -58,12 +58,6 @@
     <Filter Include="Pliki źródłowe\Rendering system">
       <UniqueIdentifier>{753d5a0e-70d4-4b84-ab1b-30ada168e9a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki nagłówkowe\Rendering system\Deferred rendering">
-      <UniqueIdentifier>{00cabbd9-7a06-4f3b-a69f-ec00a94603d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Rendering system\Deferred rendering">
-      <UniqueIdentifier>{856c709c-35d6-4bf4-bbfb-3e84b803a498}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Pliki źródłowe\Rendering system\Lighting">
       <UniqueIdentifier>{83fedfea-ccd3-423b-97b5-d2cfdd6448ea}</UniqueIdentifier>
     </Filter>
@@ -76,23 +70,11 @@
     <Filter Include="Pliki źródłowe\Rendering system\Model">
       <UniqueIdentifier>{5a8f9cb8-5998-4d6d-b2bd-be13198a4228}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki nagłówkowe\Rendering system\OIT">
-      <UniqueIdentifier>{cbdd3f27-72c9-496a-b0c0-501c101e2bb7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Rendering system\OIT">
-      <UniqueIdentifier>{32cd41ba-fc7d-4e5a-8b0a-bcc3db41b5f8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Pliki źródłowe\Rendering system\OpenGL objects">
       <UniqueIdentifier>{4040bf3f-f734-43b1-b5cd-e9abf15b1cf3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Pliki nagłówkowe\Rendering system\OpenGL objects">
       <UniqueIdentifier>{e0ebcc47-cc97-4790-a1ec-0392917bacc6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki nagłówkowe\Rendering system\Particle system">
-      <UniqueIdentifier>{2fdf72e9-324a-4c8c-b4f7-51071b962a93}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Rendering system\Particle system">
-      <UniqueIdentifier>{6d2b1e5e-72ed-4fab-959a-d367835b30a5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Pliki nagłówkowe\Rendering system\Shader">
       <UniqueIdentifier>{5dbc0d03-cf5f-428a-89f9-daf04dd61fd8}</UniqueIdentifier>
@@ -153,9 +135,6 @@
     <ClCompile Include="src\PCH\pch.cpp">
       <Filter>Pliki źródłowe\Pch</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering system\Deferred rendering\deferredRenderer.cpp">
-      <Filter>Pliki źródłowe\Rendering system\Deferred rendering</Filter>
-    </ClCompile>
     <ClCompile Include="src\Rendering system\Lighting\attenuation.cpp">
       <Filter>Pliki źródłowe\Rendering system\Lighting</Filter>
     </ClCompile>
@@ -177,9 +156,6 @@
     <ClCompile Include="src\Rendering system\Model\transformationOBJ.cpp">
       <Filter>Pliki źródłowe\Rendering system\Model</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering system\OIT\oit.cpp">
-      <Filter>Pliki źródłowe\Rendering system\OIT</Filter>
-    </ClCompile>
     <ClCompile Include="src\Rendering system\OpenGL Objects\ebo.cpp">
       <Filter>Pliki źródłowe\Rendering system\OpenGL objects</Filter>
     </ClCompile>
@@ -191,12 +167,6 @@
     </ClCompile>
     <ClCompile Include="src\Rendering system\OpenGL Objects\vbo.cpp">
       <Filter>Pliki źródłowe\Rendering system\OpenGL objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Rendering system\Particle system\particleEmitter.cpp">
-      <Filter>Pliki źródłowe\Rendering system\Particle system</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Rendering system\Particle system\particle.cpp">
-      <Filter>Pliki źródłowe\Rendering system\Particle system</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering system\Shader\shader.cpp">
       <Filter>Pliki źródłowe\Rendering system\Shader</Filter>
@@ -226,9 +196,6 @@
       <Filter>Pliki źródłowe\Window</Filter>
     </ClCompile>
     <ClCompile Include="enemy.cpp">
-      <Filter>Pliki źródłowe\Rendering system</Filter>
-    </ClCompile>
-    <ClCompile Include="respawnPoint.cpp">
       <Filter>Pliki źródłowe\Rendering system</Filter>
     </ClCompile>
     <ClCompile Include="src\State machine\stateMachine.cpp">
@@ -281,9 +248,6 @@
     <ClInclude Include="src\PCH\pch.h">
       <Filter>Pliki nagłówkowe\Pch</Filter>
     </ClInclude>
-    <ClInclude Include="src\Rendering system\Deferred rendering\deferredRenderer.h">
-      <Filter>Pliki nagłówkowe\Rendering system\Deferred rendering</Filter>
-    </ClInclude>
     <ClInclude Include="src\Rendering system\Lighting\attenuation.h">
       <Filter>Pliki nagłówkowe\Rendering system\Lighting</Filter>
     </ClInclude>
@@ -308,9 +272,6 @@
     <ClInclude Include="src\Rendering system\Model\transformationOBJ.h">
       <Filter>Pliki nagłówkowe\Rendering system\Model</Filter>
     </ClInclude>
-    <ClInclude Include="src\Rendering system\OIT\oit.h">
-      <Filter>Pliki nagłówkowe\Rendering system\OIT</Filter>
-    </ClInclude>
     <ClInclude Include="src\Rendering system\OpenGL Objects\vbo.h">
       <Filter>Pliki nagłówkowe\Rendering system\OpenGL objects</Filter>
     </ClInclude>
@@ -322,12 +283,6 @@
     </ClInclude>
     <ClInclude Include="src\Rendering system\OpenGL Objects\ebo.h">
       <Filter>Pliki nagłówkowe\Rendering system\OpenGL objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Rendering system\Particle system\particleEmitter.h">
-      <Filter>Pliki nagłówkowe\Rendering system\Particle system</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Rendering system\Particle system\particle.h">
-      <Filter>Pliki nagłówkowe\Rendering system\Particle system</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering system\Shader\shader.h">
       <Filter>Pliki nagłówkowe\Rendering system\Shader</Filter>
@@ -354,9 +309,6 @@
       <Filter>Pliki nagłówkowe\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="enemy.h">
-      <Filter>Pliki nagłówkowe\Rendering system</Filter>
-    </ClInclude>
-    <ClInclude Include="respawnPoint.h">
       <Filter>Pliki nagłówkowe\Rendering system</Filter>
     </ClInclude>
     <ClInclude Include="src\Window\windowMode.h">

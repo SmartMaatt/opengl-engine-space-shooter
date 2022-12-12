@@ -15,10 +15,12 @@ namespace Light
 		{
 			return constant;
 		}
+
 		float getLinear() const
 		{
 			return linear;
 		}
+
 		float getQuadratic() const
 		{
 			return quadratic;
@@ -28,15 +30,18 @@ namespace Light
 		{
 			this->constant = constant;
 		}
+
 		void setLinear(float linear)
 		{
 			this->linear = linear;
 		}
+
 		void setQuadratic(float quadratic)
 		{
 			this->quadratic = quadratic;
 		}
 	#pragma endregion
+
 	private:
 		float constant = 1.0f;
 		float linear = 0.09f;

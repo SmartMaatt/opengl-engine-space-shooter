@@ -6,8 +6,7 @@ class SpaceLevel;
 
 namespace Light
 {
-	class Point 
-		: public Light
+	class Point : public Light
 	{
 	public:
 		Point(const glm::vec3& position, const glm::vec3& color);
@@ -18,14 +17,17 @@ namespace Light
 		{
 			return position;
 		}
+
 		const Attenuation& getAttenuation() const
 		{
 			return attenuation;
 		}
+
 		float getRange() const
 		{
 			return range;
 		}
+
 		const glm::mat4& getLightSpaceMatrix() const
 		{
 			return lightSpaceMatrix[0];
@@ -36,14 +38,17 @@ namespace Light
 		{
 			this->position = position;
 		}
+
 		void setAttenuation(const Attenuation& attenuation)
 		{
 			this->attenuation = attenuation;
 		}
+
 		void setRange(float range)
 		{
 			this->range = range;
 		}
+
 		void setAttenuationByRange(float range)
 		{
 			this->range = range;
@@ -52,8 +57,6 @@ namespace Light
 		}
 	#pragma endregion
 	#pragma endregion
-
-		void renderDepthMap(const ShaderProgram& shader, const SpaceLevel& maze) const;
 
 	private:
 		glm::vec3 position;

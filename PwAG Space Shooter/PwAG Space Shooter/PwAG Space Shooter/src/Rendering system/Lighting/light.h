@@ -34,6 +34,7 @@ namespace Light
 			this->diffuse = color * 0.8f;
 		}
 	#pragma endregion
+
 	protected:
 		glm::vec3 color;
 		glm::vec3 ambient;

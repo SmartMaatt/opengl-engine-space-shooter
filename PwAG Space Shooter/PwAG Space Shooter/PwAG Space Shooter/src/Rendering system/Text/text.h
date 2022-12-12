@@ -4,6 +4,7 @@
 class Text
 {
 	friend class Button;
+
 public:
 	Text(int32_t x, int32_t y, std::string text, const Font& font, const glm::vec3& color = { 0.0f, 1.0f, 0.0f });
 	Text(const Text&) = delete;
@@ -19,6 +20,7 @@ public:
 
 	void setPosition(const glm::vec2& newPosition);
 	glm::vec2 getPosition() const;
+
 private:
 	void setForNewText();
 

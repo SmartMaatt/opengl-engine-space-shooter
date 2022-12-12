@@ -1,27 +1,31 @@
 #include "pch.h"
 #include "mesh.h"
 
-Mesh::Mesh() {
-
+Mesh::Mesh() 
+{
 }
 
-Mesh::Mesh(DataOBJ* vertices, int verticesSize, GLuint* indices, int indicesSize) {
-	
+Mesh::Mesh(DataOBJ* vertices, int verticesSize, GLuint* indices, int indicesSize) 
+{
 	this->verticesSize = verticesSize;
 	this->indicesSize = indicesSize;
 
-	this->vertices = new DataOBJ[this -> verticesSize];
-	for (int i = 0; i < this->verticesSize; i++) {
+	this->vertices = new DataOBJ[this->verticesSize];
+	for (int i = 0; i < this->verticesSize; i++) 
+	{
+
 		this->vertices[i] = vertices[i];
 	}
 
 	this->indices = new GLuint[this->indicesSize];
-	for (int i = 0; i < this->indicesSize; i++) {
+	for (int i = 0; i < this->indicesSize; i++) 
+	{
 		this->indices[i] = indices[i];
 	}
 }
 
-void Mesh::setMeshUniform(ShaderProgram* shaderProgram) {
+void Mesh::setMeshUniform(ShaderProgram* shaderProgram) 
+{
 	shaderProgram->setMat4("ModelMatrix", matrixModel);
 }
 
@@ -36,7 +40,8 @@ void Mesh::setMatrixModel(glm::vec3 position, glm::vec3 origin, glm::vec3 rotati
 	this->matrixModel = glm::scale(this->matrixModel, scale);
 }
 
-Mesh::~Mesh() {
+Mesh::~Mesh() 
+{
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 

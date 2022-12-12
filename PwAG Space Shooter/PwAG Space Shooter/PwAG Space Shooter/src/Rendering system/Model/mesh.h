@@ -1,7 +1,6 @@
 #pragma once
 #include "dataOBJ.h"
 
-// data set for vertices, indices, textures
 class Mesh
 {
 public:
@@ -12,6 +11,7 @@ public:
 	void setMatrixModel(glm::vec3 meshPosition, glm::vec3 meshOrigin, glm::vec3 meshRotation, glm::vec3 meshScale);
 
 	virtual ~Mesh();
+
 private:
 	DataOBJ* vertices;
 	GLuint* indices;
@@ -22,7 +22,6 @@ private:
 	glm::mat4 matrixModel;
 
 	GLuint VAO, VBO, EBO;
-
 	friend class GameObject;
 };
 

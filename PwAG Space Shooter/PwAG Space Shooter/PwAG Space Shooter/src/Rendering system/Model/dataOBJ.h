@@ -11,4 +11,3 @@ struct DataOBJ
 
 	glm::vec2 uv;
 };
-

@@ -52,6 +52,7 @@ public:
 	{
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, usage);
 	}
+
 	void drawElements(GLenum mode, int size, GLenum type, const void* offset = nullptr)
 	{
 		glDrawElements(mode, size, type, offset);

@@ -2,20 +2,12 @@
 #include "gameObject.h"
 #include "../Rendering system/Player/player.h"
 #include "../Rendering system/Lighting/point.h"
-#include "../Rendering system/Particle system/particleEmitter.h"
 #include "../../enemy.h"
-#include "../../respawnPoint.h"
-#include "../Rendering system/Deferred rendering/deferredRenderer.h"
-#include "../Rendering system/OIT/oit.h"
-
-typedef std::pair<double, std::pair<int, int>> pPair;
-typedef std::pair<int, int> Pair;
-typedef std::pair<float, float> PairFloat;
 
 class SpaceLevel
 {
 public:
-	Camera* player;
+	Player* player;
 	glm::vec3 startPosition;
 	glm::vec3 endPosition;
 

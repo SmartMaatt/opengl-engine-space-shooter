@@ -4,8 +4,7 @@
 
 namespace Light
 {
-	class Spot
-		: public Light
+	class Spot : public Light
 	{
 	public:
 		Spot(const glm::vec3& position, const glm::vec3& color, float cutoff);
@@ -22,6 +21,7 @@ namespace Light
 		{
 			return attenuation;
 		}
+
 		float getRange() const
 		{
 			return range;
@@ -37,10 +37,12 @@ namespace Light
 		{
 			this->attenuation = attenuation;
 		}
+
 		void setRange(float range)
 		{
 			this->range = range;
 		}
+
 		void setAttenuationByRange(float range)
 		{
 			this->range = range;
@@ -58,5 +60,4 @@ namespace Light
 		float innerCutoff; //in deg
 		float outerCutoff; //in deg
 	};
-
 }

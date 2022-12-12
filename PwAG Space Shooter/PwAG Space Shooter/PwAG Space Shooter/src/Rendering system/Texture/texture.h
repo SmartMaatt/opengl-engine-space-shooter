@@ -36,10 +36,10 @@ public:
 
 		void loadFromFile(const std::string& filePath);
 
-		int sizeX {};
-		int sizeY {};
-		int nrChannels {};
-		unsigned char* data {};
+		int sizeX{};
+		int sizeY{};
+		int nrChannels{};
+		unsigned char* data{};
 	};
 
 	static Texture createTextureFromFile(const std::string& textureFilePath, Texture::Type textureType);
@@ -72,7 +72,7 @@ public:
 
 
 private:
-	GLuint texture {};
+	GLuint texture{};
 	BitMapFile bmp;
 
 	Texture::Type textureType;
@@ -82,4 +82,3 @@ private:
 
 	void initializeTexture();
 };
-

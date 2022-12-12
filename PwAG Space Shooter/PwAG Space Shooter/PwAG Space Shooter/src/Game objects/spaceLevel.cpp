@@ -40,7 +40,7 @@ void SpaceLevel::initObjModels()
 
 	TransformationOBJ transformation = TransformationOBJ();
 
-	this->player = new Camera(glm::vec3(0, 0.5f, 0));
+	this->player = new Player(glm::vec3(0, 0.5f, 0));
 	this->startPosition = glm::vec3(0, 0.5f, 0);
 
 	offsetsTorches.emplace_back(0);

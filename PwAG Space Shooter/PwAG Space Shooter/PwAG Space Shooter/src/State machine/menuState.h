@@ -11,7 +11,7 @@ private:
 
 	Button newGameButton;
 	Button exitGameButton;
-	Camera camera;
+	Player camera;
 
 public:
 	MenuState(GameReference gameReference);

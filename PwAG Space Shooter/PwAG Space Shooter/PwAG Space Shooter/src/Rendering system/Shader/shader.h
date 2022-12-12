@@ -25,6 +25,7 @@ public:
 	{
 		return shaderID;
 	}
+
 	Type getType() const
 	{
 		return type;

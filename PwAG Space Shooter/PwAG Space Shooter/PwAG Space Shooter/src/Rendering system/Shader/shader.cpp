@@ -1,20 +1,19 @@
 ﻿#include "pch.h"
 #include "shader.h"
 
-Shader::Shader(Type type)
-	: type(type)
+Shader::Shader(Type type) : type(type)
 {
 	switch (type)
 	{
-	case Shader::Type::eVertex:
-		shaderID = glCreateShader(GL_VERTEX_SHADER);
-		break;
-	case Shader::Type::eFragment:
-		shaderID = glCreateShader(GL_FRAGMENT_SHADER);
-		break;
-	case Shader::Type::eGeometry:
-		shaderID = glCreateShader(GL_GEOMETRY_SHADER);
-		break;
+		case Shader::Type::eVertex:
+			shaderID = glCreateShader(GL_VERTEX_SHADER);
+			break;
+		case Shader::Type::eFragment:
+			shaderID = glCreateShader(GL_FRAGMENT_SHADER);
+			break;
+		case Shader::Type::eGeometry:
+			shaderID = glCreateShader(GL_GEOMETRY_SHADER);
+			break;
 	}
 }
 

@@ -180,7 +180,8 @@ GameObject::~GameObject()
 	delete this->texture;
 	delete this->mesh;
 
-	if (this->normalMapTexture != nullptr) {
+	if (this->normalMapTexture != nullptr) 
+	{
 		delete this->normalMapTexture;
 	}
 }

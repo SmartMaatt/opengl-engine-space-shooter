@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "text.h"
 
-Text::Text(int32_t x, int32_t y, std::string text, const Font& font, const glm::vec3& color)
-	: x(x), y(y), text(std::move(text)), fontPtr(&font), color(color)
+Text::Text(int32_t x, int32_t y, std::string text, const Font& font, const glm::vec3& color) :
+	x(x), y(y), text(std::move(text)), fontPtr(&font), color(color)
 {
 	setForNewText();
 }
@@ -13,7 +13,7 @@ void Text::render(const ShaderProgram& shader)
 	glBindTexture(GL_TEXTURE_2D, fontPtr->atlasTextureID);
 	shader.setVec3f("textColor", color);
 
-	for(auto i = 0; i < text.size(); ++i)
+	for (auto i = 0; i < text.size(); ++i)
 	{
 		VAOs[i].bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -66,7 +66,7 @@ void Text::setForNewText()
 	float xPos = static_cast<float>(x);
 	float yPos = static_cast<float>(y);
 
-	for(const auto charInText : this->text)
+	for (const auto charInText : this->text)
 	{
 		const Font::Character& character = fontPtr->characters.at(charInText);
 
@@ -77,13 +77,13 @@ void Text::setForNewText()
 		this->height = std::max(this->height, static_cast<int32_t>(height));
 	}
 
-	for(const auto charInText : this->text)
+	for (const auto charInText : this->text)
 	{
 		const Font::Character& character = fontPtr->characters.at(charInText);
 
 		float width = static_cast<float>(character.size.x);
 		float height = static_cast<float>(character.size.y);
-		
+
 		float x1 = xPos + character.bearing.x;
 		float y1 = yPos + character.bearing.y - this->height;
 

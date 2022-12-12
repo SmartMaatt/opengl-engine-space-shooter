@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "attenuation.h"
 
-Light::Attenuation::Attenuation(float constant, float linear, float quadratic)
-	: constant(constant), linear(linear), quadratic(quadratic)
+Light::Attenuation::Attenuation(float constant, float linear, float quadratic) :
+constant(constant), linear(linear), quadratic(quadratic)
 {
 }
 

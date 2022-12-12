@@ -144,10 +144,7 @@
     <ClCompile Include="src\Game Objects\gameObject.cpp">
       <Filter>Pliki źródłowe\Game objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game Objects\maze.cpp">
-      <Filter>Pliki źródłowe\Game objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game Objects\smokeBomb.cpp">
+    <ClCompile Include="src\Game Objects\spaceLevel.cpp">
       <Filter>Pliki źródłowe\Game objects</Filter>
     </ClCompile>
     <ClCompile Include="src\GUI\button.cpp">
@@ -275,13 +272,7 @@
     <ClInclude Include="src\Game Objects\gameObject.h">
       <Filter>Pliki nagłówkowe\Game objects</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game Objects\maze.h">
-      <Filter>Pliki nagłówkowe\Game objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game Objects\smokeBomb.h">
-      <Filter>Pliki nagłówkowe\Game objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game Objects\tileType.h">
+    <ClInclude Include="src\Game Objects\spaceLevel.h">
       <Filter>Pliki nagłówkowe\Game objects</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\button.h">

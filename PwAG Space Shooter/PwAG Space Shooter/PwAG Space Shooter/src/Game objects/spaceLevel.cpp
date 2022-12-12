@@ -1,15 +1,15 @@
 #include "pch.h"
-#include "maze.h"
+#include "spaceLevel.h"
 #include "../Rendering system/Model/objReader.h"
-#include "tileType.h"
 #include <set>
 
-Maze::Maze()
+// Initialization
+SpaceLevel::SpaceLevel()
 {
 	this->initMaze();
 }
 
-void Maze::initMaze()
+void SpaceLevel::initMaze()
 {
 	this->initMazeMaterials();
 	this->initMazeTextures();
@@ -18,13 +18,42 @@ void Maze::initMaze()
 	this->initMatrixMVP();
 }
 
-void Maze::initMatrixMVP()
+void SpaceLevel::initMazeMaterials()
 {
-	this->shaderProgram->useShader();
-	this->camera->setCameraUniforms(this->shaderProgram);
+	this->material = new Material(glm::vec3(0.25));
 }
 
-void Maze::initMazeShaders()
+void SpaceLevel::initMazeTextures()
+{
+	this->torchTexture = new Texture(Texture::createTextureFromFile("res/Textures/wood.png", Texture::Type::PNG));
+	this->specularMapWood = new Texture(Texture::createTextureFromFile("res/Textures/wood_specular.png", Texture::Type::SPECULAR));
+
+	/*this->exitDoorTexture = new Texture(Texture::createTextureFromFile("res/Textures/doors.png", Texture::Type::BMP));
+	this->normalMapDoors = new Texture(Texture::createTextureFromFile("res/Textures/doors_nrm.png", Texture::Type::NORMAL_MAP));
+	this->specularDoors = new Texture(Texture::createTextureFromFile("res/Textures/doors_specular.png", Texture::Type::SPECULAR));*/
+}
+
+void SpaceLevel::initObjModels()
+{
+	std::vector<DataOBJ> torchObjects = readObj("res/Models/torch.obj");
+	int torchInstances = 1;
+
+	TransformationOBJ transformation = TransformationOBJ();
+
+	this->player = new Camera(glm::vec3(0, 0.5f, 0));
+	this->startPosition = glm::vec3(0, 0.5f, 0);
+
+	offsetsTorches.emplace_back(0);
+	offsetsTorches.emplace_back(0);
+	offsetsTorches.emplace_back(0);
+
+	this->pointLights.push_back(Light::Point({ 1,0,1 }, { 1,1,1 }));
+
+	this->torches = new GameObject(material, this->torchTexture, torchObjects, transformation, offsetsTorches, torchInstances);
+	this->torches->setSpecular(this->specularMapWood);
+}
+
+void SpaceLevel::initMazeShaders()
 {
 	this->fragmentShader = Shader::createShaderFromFile("Shaders/map.frag", Shader::Type::eFragment);
 	this->vertexShader = Shader::createShaderFromFile("Shaders/map.vert", Shader::Type::eVertex);
@@ -37,55 +66,31 @@ void Maze::initMazeShaders()
 	updateLightShaders();
 }
 
-void Maze::updateLightShaders()
+void SpaceLevel::initMatrixMVP()
+{
+	this->shaderProgram->useShader();
+	this->player->setCameraUniforms(this->shaderProgram);
+}
+
+
+
+// Update
+void SpaceLevel::updateMaze(float deltaTime)
+{
+	pointLights[0].setRange(1000);
+	pointLights[0].setPosition(this->player->getCameraPosition());
+
+	updateLightShaders();
+	// Meteor collision
+}
+
+void SpaceLevel::updateLightShaders()
 {
 	shaderProgram->useShader();
 	setLightUniforms(*shaderProgram);
 }
 
-void Maze::initMazeMaterials()
-{
-	this->material = new Material(glm::vec3(0.25));
-}
-
-void Maze::initMazeTextures()
-{
-	this->torchTexture = new Texture(Texture::createTextureFromFile("res/Textures/wood.png", Texture::Type::PNG));
-	this->specularMapWood = new Texture(Texture::createTextureFromFile("res/Textures/wood_specular.png", Texture::Type::SPECULAR));
-
-	this->exitDoorTexture = new Texture(Texture::createTextureFromFile("res/Textures/doors.png", Texture::Type::BMP));
-	this->normalMapDoors = new Texture(Texture::createTextureFromFile("res/Textures/doors_nrm.png", Texture::Type::NORMAL_MAP));
-	this->specularDoors = new Texture(Texture::createTextureFromFile("res/Textures/doors_specular.png", Texture::Type::SPECULAR));
-}
-
-void Maze::initObjModels()
-{
-	std::vector<DataOBJ> exitDoorsObjects = readObj("res/Models/exit.obj");
-	std::vector<DataOBJ> torchObjects = readObj("res/Models/torch.obj");
-
-	int exitInstances = 1;
-	int torchInstances = 1;
-
-	TransformationOBJ transformation = TransformationOBJ();
-	
-	this->camera = new Camera(glm::vec3(0,0.5f,0));
-	this->startPosition = glm::vec3(0,0.5f,0);
-
-	offsetsTorches.emplace_back(0);
-	offsetsTorches.emplace_back(0);
-	offsetsTorches.emplace_back(0);
-	this->pointLights.push_back(Light::Point({1,0,1}, { 1,1,1 }));
-
-	this->torches = new GameObject(material, this->torchTexture, torchObjects, transformation, offsetsTorches, torchInstances);
-	this->torches->setSpecular(this->specularMapWood);
-}
-
-void Maze::drawMaze(float deltaTime, bool wireframe)
-{
-	this->defaultRender(deltaTime);
-}
-
-void Maze::setLightUniforms(ShaderProgram& shader)
+void SpaceLevel::setLightUniforms(ShaderProgram& shader)
 {
 	shader.setInt("pointLightsCount", static_cast<int>(pointLights.size()));
 	char lightIndex[20];
@@ -103,28 +108,28 @@ void Maze::setLightUniforms(ShaderProgram& shader)
 	}
 }
 
-void Maze::defaultRender(float deltaTime)
+
+
+// Render
+void SpaceLevel::drawMaze(float deltaTime, bool wireframe)
+{
+	this->defaultRender(deltaTime);
+}
+
+void SpaceLevel::defaultRender(float deltaTime)
 {
 	this->shaderProgram->useShader();
-	this->camera->setCameraUniforms(this->shaderProgram);
+	this->player->setCameraUniforms(this->shaderProgram);
 
 	this->torches->draw(this->shaderProgram);
 }
 
-void Maze::updateMaze(float deltaTime)
+
+
+// Collision
+bool SpaceLevel::willBeCollisionWithExit() 
 {
-	pointLights[0].setRange(1000);
-	pointLights[0].setPosition(this->camera->getCameraPosition());
-	
-	updateLightShaders();
-
-	std::cout << this->camera->getCameraPosition().x << std::endl;
-	// Meteor collision
-}
-
-
-bool Maze::willBeCollisionWithExit() {
-	glm::vec3 playerPosition = this->camera->getCameraPosition();
+	/*glm::vec3 playerPosition = this->player->getCameraPosition();
 	bool isCollision = false;
 
 	for (int i = 0; i < this->offsetsExitDoors.size(); i += 3)
@@ -141,17 +146,17 @@ bool Maze::willBeCollisionWithExit() {
 		}
 	}
 
-	return isCollision;
+	return isCollision;*/
+	return false;
 }
 
 
-Maze::~Maze()
+
+// Deserialization
+SpaceLevel::~SpaceLevel()
 {
 	delete this->torches;
-
-	delete this->camera;
-
+	delete this->player;
 	delete this->shaderProgram;
-
 	delete this->material;
 }

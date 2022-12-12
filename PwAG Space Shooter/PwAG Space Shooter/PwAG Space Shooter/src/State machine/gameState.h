@@ -1,6 +1,6 @@
 #pragma once
 #include "programState.h"
-#include "../Game Objects/maze.h"
+#include "../Game Objects/spaceLevel.h"
 #include "stateMachine.h"
 #include "gameAssets.h"
 #include "gameOverState.h"
@@ -8,7 +8,7 @@
 class GameState : public ProgramState
 {
 private:
-	Maze* spaceLevel;
+	SpaceLevel* spaceLevel;
 	GameReference gameReference;
 
 	int lastMousePosX;

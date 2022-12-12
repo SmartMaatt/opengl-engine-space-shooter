@@ -144,7 +144,6 @@
     <ClCompile Include="src\Rendering system\Deferred rendering\deferredRenderer.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="respawnPoint.cpp" />
-    <ClCompile Include="src\Game Objects\smokeBomb.cpp" />
     <ClCompile Include="src\Rendering system\OpenGL Objects\fbo.cpp" />
     <ClCompile Include="src\Rendering system\Player\player.cpp" />
     <ClCompile Include="src\State machine\gameOverState.cpp" />
@@ -163,7 +162,7 @@
     <ClCompile Include="src\Rendering system\Model\transformationOBJ.cpp" />
     <ClCompile Include="src\Rendering system\Text\font.cpp" />
     <ClCompile Include="src\Game Objects\gameObject.cpp" />
-    <ClCompile Include="src\Game Objects\maze.cpp" />
+    <ClCompile Include="src\Game Objects\spaceLevel.cpp" />
     <ClCompile Include="src\Rendering system\Model\mesh.cpp" />
     <ClCompile Include="src\Rendering system\Shader\shaderProgram.cpp" />
     <ClCompile Include="src\Rendering system\Shader\shader.cpp" />
@@ -197,7 +196,6 @@
     <ClInclude Include="src\Rendering system\Deferred rendering\deferredRenderer.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="respawnPoint.h" />
-    <ClInclude Include="src\Game Objects\smokeBomb.h" />
     <ClInclude Include="src\Rendering system\OpenGL Objects\fbo.h" />
     <ClInclude Include="src\Rendering system\Player\player.h" />
     <ClInclude Include="src\State machine\gameAssets.h" />
@@ -217,7 +215,7 @@
     <ClInclude Include="src\Rendering system\OpenGL Objects\ebo.h" />
     <ClInclude Include="src\Rendering system\Text\font.h" />
     <ClInclude Include="src\Game Objects\gameObject.h" />
-    <ClInclude Include="src\Game Objects\maze.h" />
+    <ClInclude Include="src\Game Objects\spaceLevel.h" />
     <ClInclude Include="src\Rendering system\Model\mesh.h" />
     <ClInclude Include="src\Rendering system\Model\objReader.h" />
     <ClInclude Include="src\Rendering system\Shader\shaderProgram.h" />
@@ -234,7 +232,6 @@
     <ClInclude Include="src\Rendering system\Texture\texture.h" />
     <ClInclude Include="src\Rendering system\OpenGL Objects\vao.h" />
     <ClInclude Include="src\Rendering system\OpenGL Objects\vbo.h" />
-    <ClInclude Include="src\Game Objects\tileType.h" />
     <ClInclude Include="src\Rendering system\Model\transformationOBJ.h" />
     <ClInclude Include="src\Utilities\timer.h" />
   </ItemGroup>

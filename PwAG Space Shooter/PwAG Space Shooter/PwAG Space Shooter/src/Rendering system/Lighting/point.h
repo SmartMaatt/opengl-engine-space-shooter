@@ -2,7 +2,7 @@
 #include "light.h"
 #include "attenuation.h"
 
-class Maze;
+class SpaceLevel;
 
 namespace Light
 {
@@ -53,7 +53,7 @@ namespace Light
 	#pragma endregion
 	#pragma endregion
 
-		void renderDepthMap(const ShaderProgram& shader, const Maze& maze) const;
+		void renderDepthMap(const ShaderProgram& shader, const SpaceLevel& maze) const;
 
 	private:
 		glm::vec3 position;

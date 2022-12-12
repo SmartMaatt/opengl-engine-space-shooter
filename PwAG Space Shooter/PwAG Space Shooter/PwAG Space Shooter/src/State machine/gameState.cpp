@@ -10,14 +10,14 @@ GameState::~GameState() {}
 
 void GameState::initialization()
 {
-	this->spaceLevel = new Maze();
+	this->spaceLevel = new SpaceLevel();
 	glfwSetInputMode(this->gameReference->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	this->cursorDisabled = true;
 }
 
 void GameState::processInput(float deltaTime, Keyboard& keyboard, Mouse& mouse)
 {
-	this->spaceLevel->camera->updateInput(gameReference, keyboard, mouse, deltaTime);
+	this->spaceLevel->player->updateInput(gameReference, keyboard, mouse, deltaTime);
 
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyEscape)]) 
 	{

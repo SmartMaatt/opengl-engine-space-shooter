@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "point.h"
-#include "../../Game Objects/maze.h"
+#include "../../Game Objects/spaceLevel.h"
 
 Light::Point::Point(const glm::vec3& position, const glm::vec3& color)
 	: Light(color), position(position), depthMap(Texture::createDepthTexture())
@@ -28,7 +28,7 @@ Light::Point::Point(const glm::vec3& position, const glm::vec3& color)
 	};
 }
 
-void Light::Point::renderDepthMap(const ShaderProgram& shader, const Maze& maze) const
+void Light::Point::renderDepthMap(const ShaderProgram& shader, const SpaceLevel& maze) const
 {
 	shader.setMat4("lightSpaceMatrix", lightSpaceMatrix[0]);
 

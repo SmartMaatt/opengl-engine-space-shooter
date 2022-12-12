@@ -226,28 +226,8 @@
     <ClInclude Include="src\Utilities\timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\depthMap.frag" />
-    <None Include="Shaders\depthMap.vert" />
     <None Include="Shaders\map.frag" />
     <None Include="Shaders\map.vert" />
-    <None Include="Shaders\mapGrass.frag" />
-    <None Include="Shaders\mapPickup.frag" />
-    <None Include="Shaders\map_deferred.frag" />
-    <None Include="Shaders\map_deferred.vert" />
-    <None Include="Shaders\map_gBuffer.frag" />
-    <None Include="Shaders\map_gBuffer.vert" />
-    <None Include="Shaders\OIT\map.vert" />
-    <None Include="Shaders\OIT\mapPickup.frag" />
-    <None Include="Shaders\OIT\OIT_composite.frag" />
-    <None Include="Shaders\OIT\OIT_composite.vert" />
-    <None Include="Shaders\OIT\OIT_screen.frag" />
-    <None Include="Shaders\OIT\OIT_screen.vert" />
-    <None Include="Shaders\OIT\particle.frag" />
-    <None Include="Shaders\OIT\particle.geom" />
-    <None Include="Shaders\OIT\particle.vert" />
-    <None Include="Shaders\particle.frag" />
-    <None Include="Shaders\particle.geom" />
-    <None Include="Shaders\particle.vert" />
     <None Include="Shaders\text.frag" />
     <None Include="Shaders\text.vert" />
   </ItemGroup>

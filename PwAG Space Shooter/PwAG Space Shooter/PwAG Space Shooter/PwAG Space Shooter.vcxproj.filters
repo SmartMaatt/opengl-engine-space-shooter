@@ -349,70 +349,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\depthMap.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\depthMap.vert">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="Shaders\map.frag">
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\map.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\OIT\map.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\map_deferred.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\map_deferred.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\map_gBuffer.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\map_gBuffer.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\mapGrass.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\mapPickup.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\OIT\mapPickup.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\OIT\OIT_composite.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\OIT\OIT_composite.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\OIT\OIT_screen.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\OIT\OIT_screen.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\OIT\particle.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\particle.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\OIT\particle.geom">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\particle.geom">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\OIT\particle.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\particle.vert">
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\text.frag">

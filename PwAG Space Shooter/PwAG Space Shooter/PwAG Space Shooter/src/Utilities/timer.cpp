@@ -31,7 +31,6 @@ double Timer::getCurrentDurationInNanoseconds(const std::string& name) const
 	return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - start.at(name)).count();
 }
 
-
 double Timer::getMeasuredDurationInSeconds(const std::string& name) const
 {
 	return std::chrono::duration_cast<std::chrono::nanoseconds>(stop.at(name) - start.at(name)).count() / 1000000000.0;

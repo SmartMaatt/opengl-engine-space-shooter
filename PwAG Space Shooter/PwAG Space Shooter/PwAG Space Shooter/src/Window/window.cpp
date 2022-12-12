@@ -57,7 +57,7 @@ Window::Window(uint32_t width, uint32_t height, WindowMode mode, std::string tit
 
 Window::~Window()
 {
-	if(glfwWindowPtr)
+	if (glfwWindowPtr)
 	{
 		glfwDestroyWindow(glfwWindowPtr);
 		glfwWindowPtr = nullptr;
@@ -118,19 +118,17 @@ void Window::createGLFWWindow()
 
 	switch (mode)
 	{
-	case WindowMode::eWindowed:
-		createWindowedWindow();
-		break;
-	case WindowMode::eFullscreen:
-		createFullscreenWindow();
-		break;
-	case WindowMode::eWindowFullscreen:
-		createWindowedFullscreenWindow();
-		break;
+		case WindowMode::eWindowed:
+			createWindowedWindow();
+			break;
+		case WindowMode::eFullscreen:
+			createFullscreenWindow();
+			break;
+		case WindowMode::eWindowFullscreen:
+			createWindowedFullscreenWindow();
+			break;
 	}
 	glfwMakeContextCurrent(glfwWindowPtr);
-	
-	//glfwSetWindowIcon();
 }
 
 void Window::createWindowedWindow()
@@ -163,7 +161,7 @@ void Window::centerWindow() const
 {
 	if (const auto monitor = glfwGetPrimaryMonitor())
 	{
-		if (const auto videoMode = glfwGetVideoMode(monitor)) 
+		if (const auto videoMode = glfwGetVideoMode(monitor))
 		{
 			int monitorX, monitorY;
 			glfwGetMonitorPos(monitor, &monitorX, &monitorY);
@@ -179,9 +177,10 @@ void Window::centerWindow() const
 
 void Window::initOpenGL() const
 {
-	if(!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
+	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
 	{
-		//TODO init exception
+		std::cout << "Failed to initialize OpenGL context" << std::endl;
+		exit;
 	}
 
 	glViewport(0, 0, width, height);

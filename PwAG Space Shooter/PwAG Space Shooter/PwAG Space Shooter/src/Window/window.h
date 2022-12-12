@@ -8,20 +8,22 @@ public:
 	~Window();
 
 #pragma region Inline functions
-	// clear window to RGB color (0 - 255 values)
+	// Clear window to RGB color (0 - 255 values)
 	void clearToColor(uint8_t red, uint8_t green, uint8_t blue) const
 	{
 		constexpr float inverseOfMaxValue = 1.0f / 255.0f;
 		glClearColor(red * inverseOfMaxValue, green * inverseOfMaxValue, blue * inverseOfMaxValue, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
-	// clear window to RGB values (0.0f - 1.0f values)
+
+	// Clear window to RGB values (0.0f - 1.0f values)
 	void clearToColorf(float red, float green, float blue) const
 	{
 		glClearColor(red, green, blue, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
-	// show rendered things on window
+
+	// Show rendered things on window
 	void swapBuffers() const
 	{
 		glfwSwapBuffers(glfwWindowPtr);
@@ -36,14 +38,17 @@ public:
 	{
 		return width;
 	}
+
 	uint32_t getHeight() const
 	{
 		return height;
 	}
+
 	WindowMode getWindowMode() const
 	{
 		return mode;
 	}
+
 	const std::string& getTitle() const
 	{
 		return title;

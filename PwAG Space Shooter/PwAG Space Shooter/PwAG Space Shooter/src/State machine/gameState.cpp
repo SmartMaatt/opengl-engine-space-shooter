@@ -18,20 +18,6 @@ void GameState::initialization()
 void GameState::processInput(float deltaTime, Keyboard& keyboard, Mouse& mouse)
 {
 	this->spaceLevel->player->updateInput(gameReference, keyboard, mouse, deltaTime);
-
-	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyEscape)]) 
-	{
-		if (this->cursorDisabled) 
-		{
-			glfwSetInputMode(this->gameReference->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-			this->cursorDisabled = false;
-		} 
-		else 
-		{
-			glfwSetInputMode(this->gameReference->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-			this->cursorDisabled = true;
-		}
-	}
 }
 
 void GameState::update(float deltaTime)

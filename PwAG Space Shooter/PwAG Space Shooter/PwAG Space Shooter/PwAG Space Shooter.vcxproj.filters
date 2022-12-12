@@ -1,0 +1,484 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Pliki źródłowe">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Pliki zasobów">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{703b17d1-5a1a-4069-9743-feb8d4008c8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Event system">
+      <UniqueIdentifier>{4bd5ef3d-3d02-41ae-b69c-5498ed49a006}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Game objects">
+      <UniqueIdentifier>{67129e89-c506-4ff1-a78b-02f2372c2b84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Event system">
+      <UniqueIdentifier>{492e95c8-49a4-4be7-837f-0bc4c1572114}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Game objects">
+      <UniqueIdentifier>{0bbe108f-f353-4a16-ba5b-47bbacca10ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\GUI">
+      <UniqueIdentifier>{d3067f98-1919-441f-b9ab-1e4c2027cde1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\GUI">
+      <UniqueIdentifier>{db0e0b17-4e99-482f-bf60-56c731576a31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Core">
+      <UniqueIdentifier>{12f9d9f3-cb74-4486-b836-ce62aa1f0f38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Core">
+      <UniqueIdentifier>{bdf9b99c-0c2c-4456-8674-002b058f52d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Pch">
+      <UniqueIdentifier>{21d83c98-bf52-4981-acd9-22d30c1f0957}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Pch">
+      <UniqueIdentifier>{eb1dcc83-ddb8-410d-b6de-75f920792d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\State machine">
+      <UniqueIdentifier>{f536d9b8-be59-4288-9791-295349a52cc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\State machine">
+      <UniqueIdentifier>{eef87fea-cd52-4472-aceb-92cf7dc167ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Rendering system">
+      <UniqueIdentifier>{17bc4a7f-5b1c-4bfe-8f3a-a9fee04b02c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Rendering system">
+      <UniqueIdentifier>{753d5a0e-70d4-4b84-ab1b-30ada168e9a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Rendering system\Deferred rendering">
+      <UniqueIdentifier>{00cabbd9-7a06-4f3b-a69f-ec00a94603d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Rendering system\Deferred rendering">
+      <UniqueIdentifier>{856c709c-35d6-4bf4-bbfb-3e84b803a498}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Rendering system\Lighting">
+      <UniqueIdentifier>{83fedfea-ccd3-423b-97b5-d2cfdd6448ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Rendering system\Lighting">
+      <UniqueIdentifier>{8b541520-4a8a-4bdd-b7e8-9733a2775fc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Rendering system\Model">
+      <UniqueIdentifier>{649234cc-15aa-4626-abc6-4e8ea474a8ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Rendering system\Model">
+      <UniqueIdentifier>{5a8f9cb8-5998-4d6d-b2bd-be13198a4228}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Rendering system\OIT">
+      <UniqueIdentifier>{cbdd3f27-72c9-496a-b0c0-501c101e2bb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Rendering system\OIT">
+      <UniqueIdentifier>{32cd41ba-fc7d-4e5a-8b0a-bcc3db41b5f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Rendering system\OpenGL objects">
+      <UniqueIdentifier>{4040bf3f-f734-43b1-b5cd-e9abf15b1cf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Rendering system\OpenGL objects">
+      <UniqueIdentifier>{e0ebcc47-cc97-4790-a1ec-0392917bacc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Rendering system\Particle system">
+      <UniqueIdentifier>{2fdf72e9-324a-4c8c-b4f7-51071b962a93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Rendering system\Particle system">
+      <UniqueIdentifier>{6d2b1e5e-72ed-4fab-959a-d367835b30a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Rendering system\Shader">
+      <UniqueIdentifier>{5dbc0d03-cf5f-428a-89f9-daf04dd61fd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Rendering system\Shader">
+      <UniqueIdentifier>{86c76f35-afe2-42d6-92eb-86aebc8cf412}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Rendering system\Text">
+      <UniqueIdentifier>{a90b54b9-272f-4fc6-bd55-6e606cbe7a2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Rendering system\Text">
+      <UniqueIdentifier>{81a0e11b-5772-4da3-9f7a-fa19cf7f392f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Rendering system\Texture">
+      <UniqueIdentifier>{5562c820-ed35-475e-bc1a-c430b6e5e993}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Rendering system\Texture">
+      <UniqueIdentifier>{33d50a8e-8178-40eb-817b-05020785c4fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\SourceDep">
+      <UniqueIdentifier>{b3409a90-6163-4615-a02d-f3b4bc5732ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\SourceDep">
+      <UniqueIdentifier>{c3bb708e-82df-4b21-998d-5abaac19f310}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Utilities">
+      <UniqueIdentifier>{8e6addbc-60f6-4ab7-acb1-9a81f70e421d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Utilities">
+      <UniqueIdentifier>{8f34a18c-60aa-43d2-a9bd-0eaa568aedb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Window">
+      <UniqueIdentifier>{356d7b81-740f-4a64-b37c-5ac64923bd8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Window">
+      <UniqueIdentifier>{c4ab5381-be1b-40fb-b30e-6c72a08ae3ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Rendering system\Player">
+      <UniqueIdentifier>{b76ebd4d-6e66-4d6d-a77c-3f70c8e11cbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Rendering system\Player">
+      <UniqueIdentifier>{417fa4d3-20d3-423c-b98b-5e6c3990b941}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Event system\eventManager.cpp">
+      <Filter>Pliki źródłowe\Event system</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game Objects\gameObject.cpp">
+      <Filter>Pliki źródłowe\Game objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game Objects\maze.cpp">
+      <Filter>Pliki źródłowe\Game objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game Objects\smokeBomb.cpp">
+      <Filter>Pliki źródłowe\Game objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\button.cpp">
+      <Filter>Pliki źródłowe\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PCH\pch.cpp">
+      <Filter>Pliki źródłowe\Pch</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Deferred rendering\deferredRenderer.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Deferred rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Lighting\attenuation.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Lighting\light.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Lighting\point.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Lighting\spot.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Model\dataOBJ.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Model\mesh.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Model\transformationOBJ.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\OIT\oit.cpp">
+      <Filter>Pliki źródłowe\Rendering system\OIT</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\OpenGL Objects\ebo.cpp">
+      <Filter>Pliki źródłowe\Rendering system\OpenGL objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\OpenGL Objects\fbo.cpp">
+      <Filter>Pliki źródłowe\Rendering system\OpenGL objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\OpenGL Objects\vao.cpp">
+      <Filter>Pliki źródłowe\Rendering system\OpenGL objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\OpenGL Objects\vbo.cpp">
+      <Filter>Pliki źródłowe\Rendering system\OpenGL objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Particle system\particleEmitter.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Particle system</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Particle system\particle.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Particle system</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Shader\shader.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Shader\shaderProgram.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Text\text.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Text\font.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Texture\texture.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SourceDep\glad.c">
+      <Filter>Pliki źródłowe\SourceDep</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utilities\resourceManager.cpp">
+      <Filter>Pliki źródłowe\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utilities\timer.cpp">
+      <Filter>Pliki źródłowe\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Window\window.cpp">
+      <Filter>Pliki źródłowe\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>Pliki źródłowe\Rendering system</Filter>
+    </ClCompile>
+    <ClCompile Include="respawnPoint.cpp">
+      <Filter>Pliki źródłowe\Rendering system</Filter>
+    </ClCompile>
+    <ClCompile Include="src\State machine\stateMachine.cpp">
+      <Filter>Pliki źródłowe\State machine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\State machine\gameOverState.cpp">
+      <Filter>Pliki źródłowe\State machine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\State machine\gameState.cpp">
+      <Filter>Pliki źródłowe\State machine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\State machine\menuState.cpp">
+      <Filter>Pliki źródłowe\State machine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\main.cpp">
+      <Filter>Pliki źródłowe\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\application.cpp">
+      <Filter>Pliki źródłowe\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Model\material.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Player\player.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Player</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Event system\eventManager.h">
+      <Filter>Pliki nagłówkowe\Event system</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Event system\keyboard.h">
+      <Filter>Pliki nagłówkowe\Event system</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Event system\mouse.h">
+      <Filter>Pliki nagłówkowe\Event system</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Event system\eventType.h">
+      <Filter>Pliki nagłówkowe\Event system</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game Objects\gameObject.h">
+      <Filter>Pliki nagłówkowe\Game objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game Objects\maze.h">
+      <Filter>Pliki nagłówkowe\Game objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game Objects\smokeBomb.h">
+      <Filter>Pliki nagłówkowe\Game objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game Objects\tileType.h">
+      <Filter>Pliki nagłówkowe\Game objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\button.h">
+      <Filter>Pliki nagłówkowe\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PCH\pch.h">
+      <Filter>Pliki nagłówkowe\Pch</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Deferred rendering\deferredRenderer.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Deferred rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Lighting\attenuation.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Lighting\light.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Lighting\point.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Lighting\spot.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Model\dataOBJ.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Model\mesh.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Model\objReader.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Model\transformationOBJ.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\OIT\oit.h">
+      <Filter>Pliki nagłówkowe\Rendering system\OIT</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\OpenGL Objects\vbo.h">
+      <Filter>Pliki nagłówkowe\Rendering system\OpenGL objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\OpenGL Objects\vao.h">
+      <Filter>Pliki nagłówkowe\Rendering system\OpenGL objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\OpenGL Objects\fbo.h">
+      <Filter>Pliki nagłówkowe\Rendering system\OpenGL objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\OpenGL Objects\ebo.h">
+      <Filter>Pliki nagłówkowe\Rendering system\OpenGL objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Particle system\particleEmitter.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Particle system</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Particle system\particle.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Particle system</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Shader\shader.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Shader\shaderProgram.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Text\text.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Text\font.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Texture\texture.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SourceDep\stb_image.h">
+      <Filter>Pliki nagłówkowe\SourceDep</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\resourceManager.h">
+      <Filter>Pliki nagłówkowe\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\timer.h">
+      <Filter>Pliki nagłówkowe\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>Pliki nagłówkowe\Rendering system</Filter>
+    </ClInclude>
+    <ClInclude Include="respawnPoint.h">
+      <Filter>Pliki nagłówkowe\Rendering system</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Window\windowMode.h">
+      <Filter>Pliki nagłówkowe\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Window\window.h">
+      <Filter>Pliki nagłówkowe\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="src\State machine\menuState.h">
+      <Filter>Pliki nagłówkowe\State machine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\State machine\programState.h">
+      <Filter>Pliki nagłówkowe\State machine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\State machine\stateMachine.h">
+      <Filter>Pliki nagłówkowe\State machine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\State machine\gameAssets.h">
+      <Filter>Pliki nagłówkowe\State machine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\State machine\gameOverState.h">
+      <Filter>Pliki nagłówkowe\State machine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\State machine\gameState.h">
+      <Filter>Pliki nagłówkowe\State machine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\application.h">
+      <Filter>Pliki nagłówkowe\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\config.h">
+      <Filter>Pliki nagłówkowe\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Model\material.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Player\player.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Player</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\depthMap.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\depthMap.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\map.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\map.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\OIT\map.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\map_deferred.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\map_deferred.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\map_gBuffer.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\map_gBuffer.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\mapGrass.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\mapPickup.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\OIT\mapPickup.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\OIT\OIT_composite.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\OIT\OIT_composite.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\OIT\OIT_screen.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\OIT\OIT_screen.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\OIT\particle.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\particle.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\OIT\particle.geom">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\particle.geom">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\OIT\particle.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\particle.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\text.frag">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\text.vert">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

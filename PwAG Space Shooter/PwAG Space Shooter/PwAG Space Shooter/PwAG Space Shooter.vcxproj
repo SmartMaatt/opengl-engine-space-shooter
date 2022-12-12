@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dist|x64">
+      <Configuration>Dist</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{754bb917-2c84-4fef-8316-70c7d7c959e6}</ProjectGuid>
+    <RootNamespace>PwAG Space Shooter</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <ProjectName>PwAG Space Shooter</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)out\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)out-int\$(Configuration)\$(Platform)\</IntDir>
+    <LibraryPath>$(ProjectDir)dependencies\lib\Debug\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)out\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)out-int\$(Configuration)\$(Platform)\</IntDir>
+    <LibraryPath>$(ProjectDir)dependencies\lib\Release\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)out\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)out-int\$(Configuration)\$(Platform)\</IntDir>
+    <LibraryPath>$(ProjectDir)dependencies\lib\Release\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\PCH\;$(ProjectDir)dependencies\include\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;freetyped.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\PCH\;$(ProjectDir)dependencies\include\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>DIST;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\PCH\;$(ProjectDir)dependencies\include\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Core\application.cpp" />
+    <ClCompile Include="src\Core\main.cpp" />
+    <ClCompile Include="src\Rendering system\Model\material.cpp" />
+    <ClCompile Include="src\Rendering system\OIT\oit.cpp" />
+    <ClCompile Include="src\GUI\button.cpp" />
+    <ClCompile Include="src\Rendering system\Deferred rendering\deferredRenderer.cpp" />
+    <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="respawnPoint.cpp" />
+    <ClCompile Include="src\Game Objects\smokeBomb.cpp" />
+    <ClCompile Include="src\Rendering system\OpenGL Objects\fbo.cpp" />
+    <ClCompile Include="src\Rendering system\Player\player.cpp" />
+    <ClCompile Include="src\State machine\gameOverState.cpp" />
+    <ClCompile Include="src\State machine\gameState.cpp" />
+    <ClCompile Include="src\State machine\menuState.cpp" />
+    <ClCompile Include="src\State machine\stateMachine.cpp" />
+    <ClCompile Include="src\Utilities\resourceManager.cpp" />
+    <ClCompile Include="src\Rendering system\Particle system\particleEmitter.cpp" />
+    <ClCompile Include="src\Rendering system\Particle system\particle.cpp" />
+    <ClCompile Include="src\Rendering system\Lighting\attenuation.cpp" />
+    <ClCompile Include="src\Rendering system\Lighting\light.cpp" />
+    <ClCompile Include="src\Rendering system\Lighting\spot.cpp" />
+    <ClCompile Include="src\Rendering system\Lighting\point.cpp" />
+    <ClCompile Include="src\Rendering system\OpenGL Objects\ebo.cpp" />
+    <ClCompile Include="src\Rendering system\Model\dataOBJ.cpp" />
+    <ClCompile Include="src\Rendering system\Model\transformationOBJ.cpp" />
+    <ClCompile Include="src\Rendering system\Text\font.cpp" />
+    <ClCompile Include="src\Game Objects\gameObject.cpp" />
+    <ClCompile Include="src\Game Objects\maze.cpp" />
+    <ClCompile Include="src\Rendering system\Model\mesh.cpp" />
+    <ClCompile Include="src\Rendering system\Shader\shaderProgram.cpp" />
+    <ClCompile Include="src\Rendering system\Shader\shader.cpp" />
+    <ClCompile Include="src\Event system\eventManager.cpp" />
+    <ClCompile Include="src\PCH\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\SourceDep\glad.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\Window\window.cpp" />
+    <ClCompile Include="src\Rendering system\Text\text.cpp" />
+    <ClCompile Include="src\Rendering system\Texture\texture.cpp" />
+    <ClCompile Include="src\Rendering system\OpenGL Objects\vao.cpp" />
+    <ClCompile Include="src\Rendering system\OpenGL Objects\vbo.cpp" />
+    <ClCompile Include="src\Utilities\timer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Core\application.h" />
+    <ClInclude Include="src\Core\config.h" />
+    <ClInclude Include="src\Rendering system\Model\material.h" />
+    <ClInclude Include="src\Rendering system\OIT\oit.h" />
+    <ClInclude Include="src\GUI\button.h" />
+    <ClInclude Include="src\Rendering system\Deferred rendering\deferredRenderer.h" />
+    <ClInclude Include="enemy.h" />
+    <ClInclude Include="respawnPoint.h" />
+    <ClInclude Include="src\Game Objects\smokeBomb.h" />
+    <ClInclude Include="src\Rendering system\OpenGL Objects\fbo.h" />
+    <ClInclude Include="src\Rendering system\Player\player.h" />
+    <ClInclude Include="src\State machine\gameAssets.h" />
+    <ClInclude Include="src\State machine\gameOverState.h" />
+    <ClInclude Include="src\State machine\gameState.h" />
+    <ClInclude Include="src\State machine\menuState.h" />
+    <ClInclude Include="src\State machine\programState.h" />
+    <ClInclude Include="src\State machine\stateMachine.h" />
+    <ClInclude Include="src\Utilities\resourceManager.h" />
+    <ClInclude Include="src\Rendering system\Particle system\particleEmitter.h" />
+    <ClInclude Include="src\Rendering system\Particle system\particle.h" />
+    <ClInclude Include="src\Rendering system\Lighting\attenuation.h" />
+    <ClInclude Include="src\Rendering system\Lighting\light.h" />
+    <ClInclude Include="src\Rendering system\Lighting\spot.h" />
+    <ClInclude Include="src\Rendering system\Lighting\point.h" />
+    <ClInclude Include="src\Rendering system\Model\dataOBJ.h" />
+    <ClInclude Include="src\Rendering system\OpenGL Objects\ebo.h" />
+    <ClInclude Include="src\Rendering system\Text\font.h" />
+    <ClInclude Include="src\Game Objects\gameObject.h" />
+    <ClInclude Include="src\Game Objects\maze.h" />
+    <ClInclude Include="src\Rendering system\Model\mesh.h" />
+    <ClInclude Include="src\Rendering system\Model\objReader.h" />
+    <ClInclude Include="src\Rendering system\Shader\shaderProgram.h" />
+    <ClInclude Include="src\Rendering system\Shader\shader.h" />
+    <ClInclude Include="src\Event system\keyboard.h" />
+    <ClInclude Include="src\Event system\mouse.h" />
+    <ClInclude Include="src\Event system\eventManager.h" />
+    <ClInclude Include="src\Event system\eventType.h" />
+    <ClInclude Include="src\PCH\pch.h" />
+    <ClInclude Include="src\SourceDep\stb_image.h" />
+    <ClInclude Include="src\Window\window.h" />
+    <ClInclude Include="src\Window\windowMode.h" />
+    <ClInclude Include="src\Rendering system\Text\text.h" />
+    <ClInclude Include="src\Rendering system\Texture\texture.h" />
+    <ClInclude Include="src\Rendering system\OpenGL Objects\vao.h" />
+    <ClInclude Include="src\Rendering system\OpenGL Objects\vbo.h" />
+    <ClInclude Include="src\Game Objects\tileType.h" />
+    <ClInclude Include="src\Rendering system\Model\transformationOBJ.h" />
+    <ClInclude Include="src\Utilities\timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\depthMap.frag" />
+    <None Include="Shaders\depthMap.vert" />
+    <None Include="Shaders\map.frag" />
+    <None Include="Shaders\map.vert" />
+    <None Include="Shaders\mapGrass.frag" />
+    <None Include="Shaders\mapPickup.frag" />
+    <None Include="Shaders\map_deferred.frag" />
+    <None Include="Shaders\map_deferred.vert" />
+    <None Include="Shaders\map_gBuffer.frag" />
+    <None Include="Shaders\map_gBuffer.vert" />
+    <None Include="Shaders\OIT\map.vert" />
+    <None Include="Shaders\OIT\mapPickup.frag" />
+    <None Include="Shaders\OIT\OIT_composite.frag" />
+    <None Include="Shaders\OIT\OIT_composite.vert" />
+    <None Include="Shaders\OIT\OIT_screen.frag" />
+    <None Include="Shaders\OIT\OIT_screen.vert" />
+    <None Include="Shaders\OIT\particle.frag" />
+    <None Include="Shaders\OIT\particle.geom" />
+    <None Include="Shaders\OIT\particle.vert" />
+    <None Include="Shaders\particle.frag" />
+    <None Include="Shaders\particle.geom" />
+    <None Include="Shaders\particle.vert" />
+    <None Include="Shaders\text.frag" />
+    <None Include="Shaders\text.vert" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

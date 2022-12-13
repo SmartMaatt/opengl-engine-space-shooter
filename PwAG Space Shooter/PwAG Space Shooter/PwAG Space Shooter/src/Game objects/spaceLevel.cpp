@@ -25,8 +25,8 @@ void SpaceLevel::initMazeMaterials()
 
 void SpaceLevel::initMazeTextures()
 {
-	this->torchTexture = new Texture(Texture::createTextureFromFile("res/Textures/asteroid.png", Texture::Type::PNG));
-	this->specularMapWood = new Texture(Texture::createTextureFromFile("res/Textures/asteroid_specular.png", Texture::Type::SPECULAR));
+	this->torchTexture = new Texture(Texture::createTextureFromFile("res/Textures/crystal.png", Texture::Type::PNG));
+	this->specularMapWood = new Texture(Texture::createTextureFromFile("res/Textures/simple_specular.png", Texture::Type::SPECULAR));
 
 	/*this->exitDoorTexture = new Texture(Texture::createTextureFromFile("res/Textures/doors.png", Texture::Type::BMP));
 	this->normalMapDoors = new Texture(Texture::createTextureFromFile("res/Textures/doors_nrm.png", Texture::Type::NORMAL_MAP));
@@ -35,7 +35,7 @@ void SpaceLevel::initMazeTextures()
 
 void SpaceLevel::initObjModels()
 {
-	std::vector<DataOBJ> torchObjects = readObj("res/Models/asteroid.obj");
+	std::vector<DataOBJ> torchObjects = readObj("res/Models/crystal.obj");
 	int torchInstances = 1;
 
 	TransformationOBJ transformation = TransformationOBJ();

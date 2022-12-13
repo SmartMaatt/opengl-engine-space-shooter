@@ -127,6 +127,11 @@ void PlayerStats::addPoint()
 	points++;
 }
 
+float  PlayerStats::getPlayerRadius()
+{
+	return playerRadius;
+}
+
 void PlayerStats::updateInput(GameReference gameReference, Keyboard& keyboard, Mouse& mouse, float deltaTime)
 {
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyF)])

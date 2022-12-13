@@ -21,6 +21,8 @@ public:
 	int getPoints();
 	void addPoint();
 
+	float getPlayerRadius();
+
 	void updateInput(GameReference gameReference, Keyboard& keyboard, Mouse& mouse, float deltaTime);
 
 	~PlayerStats();
@@ -43,4 +45,6 @@ private:
 	int pointsToWin = 5;
 
 	bool alreadyShoot = false;
+
+	float playerRadius = 0.5f;
 };

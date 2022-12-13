@@ -138,9 +138,9 @@
   <ItemGroup>
     <ClCompile Include="src\Core\application.cpp" />
     <ClCompile Include="src\Core\main.cpp" />
+    <ClCompile Include="src\Rendering system\Entity\entity.cpp" />
     <ClCompile Include="src\Rendering system\Model\material.cpp" />
     <ClCompile Include="src\GUI\button.cpp" />
-    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="src\Rendering system\OpenGL Objects\fbo.cpp" />
     <ClCompile Include="src\Rendering system\Player\player.cpp" />
     <ClCompile Include="src\State machine\gameOverState.cpp" />
@@ -185,9 +185,9 @@
   <ItemGroup>
     <ClInclude Include="src\Core\application.h" />
     <ClInclude Include="src\Core\config.h" />
+    <ClInclude Include="src\Rendering system\Entity\entity.h" />
     <ClInclude Include="src\Rendering system\Model\material.h" />
     <ClInclude Include="src\GUI\button.h" />
-    <ClInclude Include="enemy.h" />
     <ClInclude Include="src\Rendering system\OpenGL Objects\fbo.h" />
     <ClInclude Include="src\Rendering system\Player\player.h" />
     <ClInclude Include="src\State machine\gameAssets.h" />

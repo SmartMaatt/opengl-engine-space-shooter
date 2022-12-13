@@ -118,6 +118,12 @@
     <Filter Include="Pliki nagłówkowe\Rendering system\Player">
       <UniqueIdentifier>{417fa4d3-20d3-423c-b98b-5e6c3990b941}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki źródłowe\Rendering system\Entity">
+      <UniqueIdentifier>{fbe1b2fa-293d-48fb-888c-b0c1b3b07d38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Rendering system\Entity">
+      <UniqueIdentifier>{893bec8c-4cb4-472e-91cd-63fa7bff4e49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Event system\eventManager.cpp">
@@ -195,9 +201,6 @@
     <ClCompile Include="src\Window\window.cpp">
       <Filter>Pliki źródłowe\Window</Filter>
     </ClCompile>
-    <ClCompile Include="enemy.cpp">
-      <Filter>Pliki źródłowe\Rendering system</Filter>
-    </ClCompile>
     <ClCompile Include="src\State machine\stateMachine.cpp">
       <Filter>Pliki źródłowe\State machine</Filter>
     </ClCompile>
@@ -221,6 +224,9 @@
     </ClCompile>
     <ClCompile Include="src\Rendering system\Player\player.cpp">
       <Filter>Pliki źródłowe\Rendering system\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Entity\entity.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -308,9 +314,6 @@
     <ClInclude Include="src\Utilities\timer.h">
       <Filter>Pliki nagłówkowe\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="enemy.h">
-      <Filter>Pliki nagłówkowe\Rendering system</Filter>
-    </ClInclude>
     <ClInclude Include="src\Window\windowMode.h">
       <Filter>Pliki nagłówkowe\Window</Filter>
     </ClInclude>
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="src\Rendering system\Player\player.h">
       <Filter>Pliki nagłówkowe\Rendering system\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Entity\entity.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

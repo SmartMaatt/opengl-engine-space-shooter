@@ -11,4 +11,3 @@ public:
 	virtual void update(float deltaTime) = 0;
 	virtual void initialization() = 0;
 };
-

@@ -36,21 +36,35 @@ void SpaceLevel::initMazeTextures()
 void SpaceLevel::initObjModels()
 {
 	std::vector<DataOBJ> torchObjects = readObj("res/Models/torch.obj");
-	int torchInstances = 1;
+	int torchInstances = 3;
 
 	TransformationOBJ transformation = TransformationOBJ();
 
 	this->player = new Player(glm::vec3(0, 0.5f, 0));
 	this->startPosition = glm::vec3(0, 0.5f, 0);
 
-	offsetsTorches.emplace_back(0);
-	offsetsTorches.emplace_back(0);
-	offsetsTorches.emplace_back(0);
-
 	this->pointLights.push_back(Light::Point({ 1,0,1 }, { 1,1,1 }));
 
-	this->torches = new GameObject(material, this->torchTexture, torchObjects, transformation, offsetsTorches, torchInstances);
-	this->torches->setSpecular(this->specularMapWood);
+	for (int i = 0; i < torchInstances; i++)
+	{
+		GameObject* model = new GameObject(material, this->torchTexture, torchObjects, transformation, generateOffset(0, 0, 0), 1);
+		model->setSpecular(this->specularMapWood);
+
+		Entity* entity = new Entity(model);
+		entity->setPosition(glm::vec3(i, 0, i));
+		entity->setDirection(glm::vec3(0, 1, 0));
+		entity->setSpeed(0.1f);
+		this->torches.push_back(entity);
+	}
+}
+
+std::vector<GLfloat> SpaceLevel::generateOffset(GLfloat x, GLfloat y, GLfloat z)
+{
+	std::vector<GLfloat> offsetsTorches;
+	offsetsTorches.emplace_back(x);
+	offsetsTorches.emplace_back(y);
+	offsetsTorches.emplace_back(z);
+	return offsetsTorches;
 }
 
 void SpaceLevel::initMazeShaders()
@@ -77,7 +91,11 @@ void SpaceLevel::initMatrixMVP()
 // Update
 void SpaceLevel::updateMaze(float deltaTime)
 {
-	pointLights[0].setRange(1000);
+	for (int i = 0; i < this->torches.size(); i++)
+	{
+		this->torches[i]->moveWithDirection(deltaTime);
+	}
+
 	pointLights[0].setPosition(this->player->getCameraPosition());
 
 	updateLightShaders();
@@ -121,13 +139,16 @@ void SpaceLevel::defaultRender(float deltaTime)
 	this->shaderProgram->useShader();
 	this->player->setCameraUniforms(this->shaderProgram);
 
-	this->torches->draw(this->shaderProgram);
+	for (int i = 0; i < this->torches.size(); i++)
+	{
+		this->torches[i]->drawEntity(this->shaderProgram);
+	}
 }
 
 
 
 // Collision
-bool SpaceLevel::willBeCollisionWithExit() 
+bool SpaceLevel::willBeCollisionWithExit()
 {
 	/*glm::vec3 playerPosition = this->player->getCameraPosition();
 	bool isCollision = false;
@@ -155,7 +176,6 @@ bool SpaceLevel::willBeCollisionWithExit()
 // Deserialization
 SpaceLevel::~SpaceLevel()
 {
-	delete this->torches;
 	delete this->player;
 	delete this->shaderProgram;
 	delete this->material;

@@ -2,7 +2,7 @@
 #include "gameObject.h"
 #include "../Rendering system/Player/player.h"
 #include "../Rendering system/Lighting/point.h"
-#include "../../enemy.h"
+#include "../Rendering system/Entity/entity.h"
 
 class SpaceLevel
 {
@@ -35,10 +35,15 @@ public:
 
 private:
 	void defaultRender(float deltaTime);
-	void setLightUniforms(ShaderProgram& shader);;
+	void setLightUniforms(ShaderProgram& shader);
+	std::vector<GLfloat> generateOffset(GLfloat x, GLfloat y, GLfloat z);
 
-	GameObject* torches;
 	std::vector<Light::Point> pointLights;
+	std::vector<Entity*> torches;
+
+	GameObject* dupa1;
+	GameObject* dupa2;
+	GameObject* dupa3;
 
 	ShaderProgram* shaderProgram;
 	Shader vertexShader;
@@ -48,6 +53,4 @@ private:
 
 	Texture* torchTexture;
 	Texture* specularMapWood;
-
-	std::vector<GLfloat> offsetsTorches;
 };

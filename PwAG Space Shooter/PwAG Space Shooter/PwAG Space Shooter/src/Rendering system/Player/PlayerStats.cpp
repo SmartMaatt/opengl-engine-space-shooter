@@ -7,6 +7,7 @@ PlayerStats::PlayerStats()
 	ammunition = maxAmmunition;
 	timeAfterLastShoot = reloadingCooldown;
 	timeAfterLastReload = 1.0f;
+	timeAfterLastHit = safeTimeAfterHit;
 }
 
 int PlayerStats::getHitPoints()
@@ -16,9 +17,26 @@ int PlayerStats::getHitPoints()
 
 void PlayerStats::takeDamage(int damage)
 {
+	if (!checkSafeTime)
+	{
+		return;
+	}
+
 	hitPoints -= damage;
-	
 	checkHitPoints();
+}
+
+bool PlayerStats::checkSafeTime(float deltaTime)
+{
+	if (safeTimeAfterHit <= timeAfterLastHit)
+	{
+		return true;
+	}
+	else
+	{
+		timeAfterLastHit += deltaTime;
+		return false;
+	}
 }
 
 void PlayerStats::checkHitPoints()

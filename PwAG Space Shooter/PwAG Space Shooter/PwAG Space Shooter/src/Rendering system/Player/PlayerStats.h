@@ -9,13 +9,11 @@ public:
 	int getHitPoints();
 	void takeDamage(int damage);
 	void checkHitPoints();
+	bool checkSafeTime(float deltaTime);
 
 	int getAmmunition();
-	//void setAmmunition(int currentAmmunitionCount);
 	void shoot();
 
-	/*float getTimeAfterLastShoot();
-	void setTimeAfterLastShoot();*/
 	bool checkReloadingCooldown(float deltaTime);
 	bool checkReloadingTime(float deltaTime);
 	void reload(float deltaTime);
@@ -30,6 +28,8 @@ public:
 private:
 	int hitPoints;
 	int maxHitPoints = 100;
+	float safeTimeAfterHit = 2.0f;
+	float timeAfterLastHit;
 
 	int ammunition;
 	int maxAmmunition = 10;

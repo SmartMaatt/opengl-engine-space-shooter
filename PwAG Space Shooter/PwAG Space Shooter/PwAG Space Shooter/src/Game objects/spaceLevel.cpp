@@ -2,6 +2,7 @@
 #include "spaceLevel.h"
 #include "../Rendering system/Model/objReader.h"
 #include <set>
+#include <ctime>
 
 // Initialization
 SpaceLevel::SpaceLevel()
@@ -11,6 +12,7 @@ SpaceLevel::SpaceLevel()
 
 void SpaceLevel::initMaze()
 {
+	srand(static_cast <unsigned> (time(0)));
 	this->initMazeMaterials();
 	this->initMazeTextures();
 	this->initObjModels();
@@ -35,9 +37,7 @@ void SpaceLevel::initMazeTextures()
 
 void SpaceLevel::initObjModels()
 {
-	std::vector<DataOBJ> torchObjects = readObj("res/Models/crystal.obj");
-	int torchInstances = 1;
-
+	std::vector<DataOBJ> meteosObjects = readObj("res/Models/asteroid.obj");
 	TransformationOBJ transformation = TransformationOBJ();
 
 	this->player = new Player(glm::vec3(0, 0.5f, 0));
@@ -47,17 +47,29 @@ void SpaceLevel::initObjModels()
 
 	this->pointLights.push_back(Light::Point({ 1,0,1 }, { 1,1,1 }));
 
-	for (int i = 0; i < torchInstances; i++)
+	int meteosInstances = 5;
+	for (int i = 0; i < meteosInstances; i++)
 	{
-		GameObject* model = new GameObject(material, this->torchTexture, torchObjects, transformation, generateOffset(0, 0, 0), 1);
+		GameObject* model = new GameObject(material, this->torchTexture, meteosObjects, transformation, generateOffset(0, 0, 0), 1);
 		model->setSpecular(this->specularMapWood);
 
 		Entity* entity = new Entity(model);
-		entity->setPosition(glm::vec3(i, 0, i));
-		entity->setDirection(glm::vec3(0, 0.2f * (i+1), 0));
-		entity->setSpeed(0.2f * (i+1));
-		this->torches.push_back(entity);
+		entity->setName("Meteo " + std::to_string(i));
+
+		entity->setPosition(glm::vec3(0, 0, 0));
+		float size = randVal(0.1f, 0.75f);
+		entity->setScale(glm::vec3(size, size, size));
+		entity->setColliderRadius(size);
+
+		entity->setDirection(glm::vec3(randVal(-1.0f, 1.0f), randVal(-1.0f, 1.0f), randVal(-1.0f, 1.0f)));
+		entity->setSpeed(randVal(0.01f, 0.1f));
+		this->meteos.push_back(entity);
 	}
+}
+
+float SpaceLevel::randVal(float LO, float HI)
+{
+	return LO + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (HI - LO)));
 }
 
 std::vector<GLfloat> SpaceLevel::generateOffset(GLfloat x, GLfloat y, GLfloat z)
@@ -95,14 +107,14 @@ void SpaceLevel::updateMaze(float deltaTime)
 {
 	this->playerStats->reload(deltaTime);
 
-
-	for (int i = 0; i < this->torches.size(); i++)
+	for (int i = 0; i < this->meteos.size(); i++)
 	{
-		this->torches[i]->moveWithDirection(deltaTime);
+		this->meteos[i]->moveWithDirection(deltaTime);
 	}
 
-	pointLights[0].setPosition(this->player->getCameraPosition());
+	playerToMeteoCollision();
 
+	pointLights[0].setPosition(this->player->getCameraPosition());
 	updateLightShaders();
 	// Meteor collision
 }
@@ -144,36 +156,32 @@ void SpaceLevel::defaultRender(float deltaTime)
 	this->shaderProgram->useShader();
 	this->player->setCameraUniforms(this->shaderProgram);
 
-	for (int i = 0; i < this->torches.size(); i++)
+	for (int i = 0; i < this->meteos.size(); i++)
 	{
-		this->torches[i]->drawEntity(this->shaderProgram);
+		this->meteos[i]->drawEntity(this->shaderProgram);
 	}
 }
 
 
 
 // Collision
-bool SpaceLevel::willBeCollisionWithExit()
+void SpaceLevel::playerToMeteoCollision()
 {
-	/*glm::vec3 playerPosition = this->player->getCameraPosition();
-	bool isCollision = false;
-
-	for (int i = 0; i < this->offsetsExitDoors.size(); i += 3)
+	for (int i = 0; i < this->meteos.size(); i++)
 	{
-		float x = this->offsetsExitDoors[i];
-		float z = this->offsetsExitDoors[i + 2];
-
-		if (x - 1.5f < playerPosition.x &&
-			x + 1.5f > playerPosition.x &&
-			z - 1.5f < playerPosition.z &&
-			z + 1.5f > playerPosition.z) {
-
-			isCollision = true;
+		if (areSpheresCollided(player->getCameraPosition(), playerStats->getPlayerRadius(), meteos[i]->getPosition(), meteos[i]->getColliderRadius()))
+		{
+			std::cout << "Collision: Player <---> " << meteos[i]->getName() << std::endl;
 		}
 	}
+}
 
-	return isCollision;*/
-	return false;
+bool SpaceLevel::areSpheresCollided(glm::vec3 center1, float rad1, glm::vec3 center2, float rad2)
+{
+	float radSum = rad1 + rad2;
+	float distance = glm::distance(center1, center2);
+
+	return (radSum > distance);
 }
 
 

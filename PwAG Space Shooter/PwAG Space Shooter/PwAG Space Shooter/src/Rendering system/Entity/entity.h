@@ -9,6 +9,10 @@ public:
 
 	void drawEntity(ShaderProgram* shaderProgram);
 
+	// Name
+	void setName(std::string name);
+	std::string getName();
+
 	// Position
 	void setPosition(const glm::vec3 position);
 	glm::vec3 getPosition();
@@ -30,8 +34,14 @@ public:
 	void setSpeed(float speed);
 	float getSpeed();
 
+	// Collider radius
+	void setColliderRadius(float colRad);
+	float getColliderRadius();
+
 protected:
+	std::string name;
 	GameObject* model;
 	glm::vec3 direction = glm::vec3(0.0f);
 	float speed = 0;
+	float colRad = 0;
 };

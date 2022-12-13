@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "pch.h"
 #include "entity.h"
+#include <string>
 
 Entity::Entity(GameObject* model)
 {
@@ -15,6 +16,16 @@ Entity::~Entity()
 void Entity::drawEntity(ShaderProgram* shaderProgram)
 {
 	this->model->draw(shaderProgram);
+}
+
+void Entity::setName(std::string name)
+{
+	this->name = name;
+}
+
+std::string Entity::getName()
+{
+	return this->name;
 }
 
 // Position
@@ -76,4 +87,14 @@ void Entity::setSpeed(float speed)
 float Entity::getSpeed()
 {
 	return this->speed;
+}
+
+void Entity::setColliderRadius(float colRad)
+{
+	this->colRad = colRad;
+}
+
+float Entity::getColliderRadius()
+{
+	return this->colRad;
 }

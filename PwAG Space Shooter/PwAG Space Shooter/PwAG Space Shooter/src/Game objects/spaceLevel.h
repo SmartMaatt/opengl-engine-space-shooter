@@ -23,6 +23,8 @@ public:
 	void initMazeTextures();
 	void initObjModels();
 
+	float randVal(float LO, float HI);
+
 	// Update
 	void updateMaze(float deltaTime);
 	void updateLightShaders();
@@ -31,7 +33,8 @@ public:
 	void drawMaze(float deltaTime, bool wireframe);
 
 	// Collision
-	bool willBeCollisionWithExit();
+	void playerToMeteoCollision();
+	bool areSpheresCollided(glm::vec3 center1, float rad1, glm::vec3 center2, float rad2);
 	
 	// Deserialization
 	virtual ~SpaceLevel();
@@ -42,11 +45,7 @@ private:
 	std::vector<GLfloat> generateOffset(GLfloat x, GLfloat y, GLfloat z);
 
 	std::vector<Light::Point> pointLights;
-	std::vector<Entity*> torches;
-
-	GameObject* dupa1;
-	GameObject* dupa2;
-	GameObject* dupa3;
+	std::vector<Entity*> meteos;
 
 	ShaderProgram* shaderProgram;
 	Shader vertexShader;

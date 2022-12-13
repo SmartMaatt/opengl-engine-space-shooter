@@ -46,5 +46,5 @@ private:
 
 	bool alreadyShoot = false;
 
-	float playerRadius = 0.5f;
+	float playerRadius = 0.3f;
 };

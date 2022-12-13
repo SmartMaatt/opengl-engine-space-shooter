@@ -7,7 +7,7 @@ public:
 	PlayerStats();
 
 	int getHitPoints();
-	void takeDamage(int damage);
+	void takeDamage(int damage, float  deltaTime);
 	void checkHitPoints();
 	bool checkSafeTime(float deltaTime);
 

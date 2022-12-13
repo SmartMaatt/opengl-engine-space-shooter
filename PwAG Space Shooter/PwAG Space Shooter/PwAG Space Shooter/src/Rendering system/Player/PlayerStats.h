@@ -41,4 +41,6 @@ private:
 
 	int points = 0;
 	int pointsToWin = 5;
+
+	bool alreadyShoot = false;
 };

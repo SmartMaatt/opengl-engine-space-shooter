@@ -39,27 +39,17 @@ int PlayerStats::getAmmunition()
 	return ammunition;
 }
 
-//void PlayerStats::setAmmunition(int currentAmmunitionCount)
-//{
-//	ammunition = currentAmmunitionCount;
-//}
-
 void PlayerStats::shoot()
 {
-	//setAmmunition(ammunition - 1);
+	if (alreadyShoot ||ammunition == 0)
+	{
+		return;
+	}
+
+	alreadyShoot = true;
 	ammunition--;
 	timeAfterLastShoot = 0;
 }
-
-//float PlayerStats::getTimeAfterLastShoot()
-//{
-//	return timeAfterLastShoot;
-//}
-//
-//void PlayerStats::setTimeAfterLastShoot()
-//{
-//	timeAfterLastShoot = 0;
-//}
 
 bool PlayerStats::checkReloadingCooldown(float deltaTime)
 {
@@ -98,8 +88,15 @@ void PlayerStats::reload(float deltaTime)
 	{
 		return;
 	}
+	if (ammunition >= maxAmmunition)
+	{
+		ammunition = maxAmmunition;
+		return;
+	}
 
 	ammunition += reloadingSpeed;
+
+	std::cout << "Ammunition reloading: " << this->getAmmunition() << std::endl;
 }
 
 int PlayerStats::getPoints()
@@ -117,7 +114,10 @@ void PlayerStats::updateInput(GameReference gameReference, Keyboard& keyboard, M
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyF)])
 	{
 		this->shoot();
-		std::cout << "Ammunition " + this->getAmmunition() << std::endl;
+	}
+	else
+	{
+		alreadyShoot = false;
 	}
 }
 

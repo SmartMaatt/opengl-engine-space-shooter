@@ -1,12 +1,15 @@
 #include "pch.h"
 #include "menuState.h"
 
-MenuState::MenuState(GameReference gameReference) : 
+MenuState::MenuState(GameReference gameReference) :
 	newGameButton("New game", { 700, 100 }, { 0.7, 0.7, 0.0 }),
 	exitGameButton("Exit", { 745, 175 }, { 0.7, 0.7, 0.0 }), 
 	camera(glm::vec3(0, 0, 0))
 {
 	this->gameReference = gameReference;
+
+
+
 	newGameButton.setAction([this]()
 	{
 		this->gameReference->m_stateMachine.addNewState(StateReference(new GameState(this->gameReference)));

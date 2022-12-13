@@ -23,6 +23,8 @@ public:
 	int getPoints();
 	void addPoint();
 
+	void updateInput(GameReference gameReference, Keyboard& keyboard, Mouse& mouse, float deltaTime);
+
 	~PlayerStats();
 
 private:

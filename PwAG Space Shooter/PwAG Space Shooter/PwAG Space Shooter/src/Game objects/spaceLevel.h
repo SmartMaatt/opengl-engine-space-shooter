@@ -1,6 +1,7 @@
 #pragma once
 #include "gameObject.h"
 #include "../Rendering system/Player/player.h"
+#include "../Rendering system/Player/PlayerStats.h"
 #include "../Rendering system/Lighting/point.h"
 #include "../Rendering system/Entity/entity.h"
 
@@ -8,6 +9,8 @@ class SpaceLevel
 {
 public:
 	Player* player;
+	PlayerStats* playerStats;
+
 	glm::vec3 startPosition;
 	glm::vec3 endPosition;
 

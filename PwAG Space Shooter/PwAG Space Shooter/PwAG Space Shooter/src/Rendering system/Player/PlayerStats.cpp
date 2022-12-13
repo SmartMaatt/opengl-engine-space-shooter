@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "PlayerStats.h"
 
 PlayerStats::PlayerStats()
@@ -109,6 +110,15 @@ int PlayerStats::getPoints()
 void PlayerStats::addPoint()
 {
 	points++;
+}
+
+void PlayerStats::updateInput(GameReference gameReference, Keyboard& keyboard, Mouse& mouse, float deltaTime)
+{
+	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyF)])
+	{
+		this->shoot();
+		std::cout << "Ammunition " + this->getAmmunition() << std::endl;
+	}
 }
 
 PlayerStats::~PlayerStats()

@@ -143,6 +143,7 @@
     <ClCompile Include="src\GUI\button.cpp" />
     <ClCompile Include="src\Rendering system\OpenGL Objects\fbo.cpp" />
     <ClCompile Include="src\Rendering system\Player\player.cpp" />
+    <ClCompile Include="src\Rendering system\Player\PlayerStats.cpp" />
     <ClCompile Include="src\State machine\gameOverState.cpp" />
     <ClCompile Include="src\State machine\gameState.cpp" />
     <ClCompile Include="src\State machine\menuState.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="src\GUI\button.h" />
     <ClInclude Include="src\Rendering system\OpenGL Objects\fbo.h" />
     <ClInclude Include="src\Rendering system\Player\player.h" />
+    <ClInclude Include="src\Rendering system\Player\PlayerStats.h" />
     <ClInclude Include="src\State machine\gameAssets.h" />
     <ClInclude Include="src\State machine\gameOverState.h" />
     <ClInclude Include="src\State machine\gameState.h" />

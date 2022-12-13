@@ -228,6 +228,9 @@
     <ClCompile Include="src\Rendering system\Entity\entity.cpp">
       <Filter>Pliki źródłowe\Rendering system\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering system\Player\PlayerStats.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Event system\eventManager.h">
@@ -352,6 +355,9 @@
     </ClInclude>
     <ClInclude Include="src\Rendering system\Entity\entity.h">
       <Filter>Pliki nagłówkowe\Rendering system\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Player\PlayerStats.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

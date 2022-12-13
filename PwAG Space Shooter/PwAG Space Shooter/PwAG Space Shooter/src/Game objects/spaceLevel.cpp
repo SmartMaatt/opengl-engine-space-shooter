@@ -43,6 +43,8 @@ void SpaceLevel::initObjModels()
 	this->player = new Player(glm::vec3(0, 0.5f, 0));
 	this->startPosition = glm::vec3(0, 0.5f, 0);
 
+	this->playerStats = new PlayerStats();
+
 	this->pointLights.push_back(Light::Point({ 1,0,1 }, { 1,1,1 }));
 
 	for (int i = 0; i < torchInstances; i++)
@@ -52,8 +54,8 @@ void SpaceLevel::initObjModels()
 
 		Entity* entity = new Entity(model);
 		entity->setPosition(glm::vec3(i, 0, i));
-		entity->setDirection(glm::vec3(0, 1, 0));
-		entity->setSpeed(0.1f);
+		entity->setDirection(glm::vec3(0, 0.2f * (i+1), 0));
+		entity->setSpeed(0.2f * (i+1));
 		this->torches.push_back(entity);
 	}
 }
@@ -91,6 +93,9 @@ void SpaceLevel::initMatrixMVP()
 // Update
 void SpaceLevel::updateMaze(float deltaTime)
 {
+	this->playerStats->reload(deltaTime);
+
+
 	for (int i = 0; i < this->torches.size(); i++)
 	{
 		this->torches[i]->moveWithDirection(deltaTime);

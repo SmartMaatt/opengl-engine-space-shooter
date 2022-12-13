@@ -167,11 +167,18 @@ void SpaceLevel::defaultRender(float deltaTime)
 // Collision
 void SpaceLevel::playerToMeteoCollision()
 {
-	for (int i = 0; i < this->meteos.size(); i++)
+	for (auto it = meteos.begin(); it != meteos.end();)
 	{
-		if (areSpheresCollided(player->getCameraPosition(), playerStats->getPlayerRadius(), meteos[i]->getPosition(), meteos[i]->getColliderRadius()))
+		if (areSpheresCollided(player->getCameraPosition(), playerStats->getPlayerRadius(), (*it)->getPosition(), (*it)->getColliderRadius()))
 		{
-			std::cout << "Collision: Player <---> " << meteos[i]->getName() << std::endl;
+			std::cout << "Collision: Player <---> " << (*it)->getName() << std::endl;
+			playerStats->takeDamage(20);
+			std::cout << "Player health: " << playerStats->getHitPoints() << std::endl;
+			it = meteos.erase(it);
+		}
+		else
+		{
+			++it;
 		}
 	}
 }

@@ -15,12 +15,12 @@ int PlayerStats::getHitPoints()
 	return hitPoints;
 }
 
-void PlayerStats::takeDamage(int damage, float deltaTime)
+void PlayerStats::takeDamage(int damage)
 {
-	if (!checkSafeTime(deltaTime))
+	/*if (!checkSafeTime(deltaTime))
 	{
 		return;
-	}
+	}*/
 
 	hitPoints -= damage;
 	checkHitPoints();

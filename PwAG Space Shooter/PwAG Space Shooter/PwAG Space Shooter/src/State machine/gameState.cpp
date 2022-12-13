@@ -23,10 +23,10 @@ void GameState::processInput(float deltaTime, Keyboard& keyboard, Mouse& mouse)
 
 void GameState::update(float deltaTime)
 {
-	this->spaceLevel->updateMaze(deltaTime);
+	this->spaceLevel->updateLevel(deltaTime);
 }
 
 void GameState::render(float deltaTime, bool wireframe)
 {
-	this->spaceLevel->drawMaze(deltaTime, wireframe);
+	this->spaceLevel->drawLevel(deltaTime, wireframe);
 }

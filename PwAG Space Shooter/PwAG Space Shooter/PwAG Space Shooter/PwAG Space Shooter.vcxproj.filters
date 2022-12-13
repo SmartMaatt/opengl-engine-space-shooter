@@ -231,6 +231,9 @@
     <ClCompile Include="src\Rendering system\Player\PlayerStats.cpp">
       <Filter>Pliki źródłowe\Rendering system\Player</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering system\Entity\crystal.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Event system\eventManager.h">
@@ -358,6 +361,9 @@
     </ClInclude>
     <ClInclude Include="src\Rendering system\Player\PlayerStats.h">
       <Filter>Pliki nagłówkowe\Rendering system\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Entity\crystal.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

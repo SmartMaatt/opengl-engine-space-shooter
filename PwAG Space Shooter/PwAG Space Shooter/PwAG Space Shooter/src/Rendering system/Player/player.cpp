@@ -114,4 +114,9 @@ glm::mat4 Player::getProjectionMatrix()
 	return this->ProjectionMatrix;
 }
 
+glm::vec3 Player::getDirection()
+{
+	return this->direction;
+}
+
 Player::~Player() {}

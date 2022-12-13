@@ -10,6 +10,7 @@ namespace Light
 	{
 	public:
 		Point(const glm::vec3& position, const glm::vec3& color);
+		Point(const Point& light);
 		
 	#pragma region Inline functions
 	#pragma region Getters

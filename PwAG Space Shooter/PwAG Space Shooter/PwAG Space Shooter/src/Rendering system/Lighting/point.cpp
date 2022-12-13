@@ -27,3 +27,29 @@ Light(color), position(position), depthMap(Texture::createDepthTexture())
 		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f))
 	};
 }
+
+Light::Point::Point(const Point& light) :
+Light(light.getColor()), position(light.getPosition()), depthMap(Texture::createDepthTexture())
+{
+	setColor(color);
+	attenuation.setAttenuationByRange(range);
+
+	fbo.bind();
+	fbo.setDepthAttachment(this->depthMap);
+	fbo.drawBufferNone();
+	fbo.readBufferNone();
+	fbo.unbind();
+
+	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
+	this->position = position;
+
+	lightSpaceMatrix =
+	{
+		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f))
+	};
+}

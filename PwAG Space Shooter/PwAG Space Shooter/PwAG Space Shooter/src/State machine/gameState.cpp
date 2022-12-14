@@ -18,7 +18,12 @@ void GameState::initialization()
 void GameState::processInput(float deltaTime, Keyboard& keyboard, Mouse& mouse)
 {
 	this->spaceLevel->player->updateInput(gameReference, keyboard, mouse, deltaTime);
-	this->spaceLevel->playerStats->updateInput(gameReference, keyboard, mouse, deltaTime);
+
+	// Shooting
+	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyF)])
+	{
+		this->spaceLevel->shootBullet();
+	}
 }
 
 void GameState::update(float deltaTime)

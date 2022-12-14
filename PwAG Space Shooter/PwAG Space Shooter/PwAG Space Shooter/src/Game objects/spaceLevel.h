@@ -5,6 +5,7 @@
 #include "../Rendering system/Lighting/point.h"
 #include "../Rendering system/Entity/entity.h"
 #include "../Rendering system/Entity/crystal.h"
+#include "../Rendering system/Entity/bullet.h"
 
 class SpaceLevel
 {
@@ -40,19 +41,25 @@ public:
 	void drawLevel(float deltaTime, bool wireframe);
 
 	// Collision
-
 	bool areSpheresCollided(glm::vec3 center1, float rad1, glm::vec3 center2, float rad2);
 	
+	// Shooting
+	void shootBullet();
+
 	// Deserialization
 	virtual ~SpaceLevel();
 
 private:
 	void setLightUniforms(ShaderProgram& shader);
+	Bullet* spawnBullet();
 	std::vector<GLfloat> generateOffset(GLfloat x, GLfloat y, GLfloat z);
 
 	std::vector<Light::Point> pointLights;
 	std::vector<Entity*> meteors;
 	std::vector<Crystal*> crystals;
+
+	Bullet* bullet = nullptr;
+	std::vector<DataOBJ> bulletObjects;
 
 	glm::vec3 zero = glm::vec3(0, 0, 0);
 	glm::vec3 one = glm::vec3(1, 1, 1);
@@ -67,4 +74,5 @@ private:
 	Texture* specularMapMeteor;
 	Texture* crystalTexture;
 	Texture* specularMapCrystal;
+	Texture* bulletTexture;
 };

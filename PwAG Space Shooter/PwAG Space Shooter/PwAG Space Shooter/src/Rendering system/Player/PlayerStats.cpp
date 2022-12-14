@@ -4,9 +4,6 @@
 PlayerStats::PlayerStats()
 {
 	hitPoints = maxHitPoints;
-	ammunition = maxAmmunition;
-	timeAfterLastShoot = reloadingCooldown;
-	timeAfterLastReload = 1.0f;
 	timeAfterLastHit = safeTimeAfterHit;
 }
 
@@ -45,76 +42,41 @@ void PlayerStats::checkHitPoints()
 	{
 		hitPoints = maxHitPoints;
 	}
-	
+
 	if (hitPoints < 0)
 	{
 		hitPoints = 0;
 	}
 }
 
-int PlayerStats::getAmmunition()
-{
-	return ammunition;
-}
 
 void PlayerStats::shoot()
 {
-	if (alreadyShoot ||ammunition == 0)
+	if (canShoot)
 	{
-		return;
-	}
-
-	alreadyShoot = true;
-	ammunition--;
-	timeAfterLastShoot = 0;
-}
-
-bool PlayerStats::checkReloadingCooldown(float deltaTime)
-{
-	if (reloadingCooldown <= timeAfterLastShoot)
-	{
-		return true;
-	}
-	else
-	{
-		timeAfterLastShoot += deltaTime;
-		return false;
+		canShoot = false;
+		reloadState = 0.0f;
 	}
 }
 
-bool PlayerStats::checkReloadingTime(float deltaTime)
+void PlayerStats::reloadBullet(float deltaTime)
 {
-	if (1.0f <= timeAfterLastReload)
+	if (!canShoot)
 	{
-		timeAfterLastReload = 0.0f;
-		return true;
-	}
-	else
-	{
-		timeAfterLastReload += deltaTime;
-		return false;
+		if (reloadState < reloadingTime)
+		{
+			reloadState += deltaTime;
+		}
+		else
+		{
+			canShoot = true;
+		}
 	}
 }
 
-void PlayerStats::reload(float deltaTime)
+bool PlayerStats::canIShoot()
 {
-	if (!checkReloadingCooldown(deltaTime))
-	{
-		return;
-	}
-	if (!checkReloadingTime(deltaTime))
-	{
-		return;
-	}
-	if (ammunition >= maxAmmunition)
-	{
-		ammunition = maxAmmunition;
-		return;
-	}
-
-	ammunition += reloadingSpeed;
-
-	std::cout << "Ammunition reloading: " << this->getAmmunition() << std::endl;
+	return this->canShoot;
 }
 
 int PlayerStats::getPoints()
@@ -132,17 +94,6 @@ float  PlayerStats::getPlayerRadius()
 	return playerRadius;
 }
 
-void PlayerStats::updateInput(GameReference gameReference, Keyboard& keyboard, Mouse& mouse, float deltaTime)
-{
-	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyF)])
-	{
-		this->shoot();
-	}
-	else
-	{
-		alreadyShoot = false;
-	}
-}
 
 PlayerStats::~PlayerStats()
 {

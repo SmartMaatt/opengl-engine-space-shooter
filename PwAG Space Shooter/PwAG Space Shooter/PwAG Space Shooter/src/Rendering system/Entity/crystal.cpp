@@ -7,3 +7,5 @@
 Crystal::Crystal(GameObject* model) : Entity(model)
 {
 }
+
+Crystal::~Crystal() {}

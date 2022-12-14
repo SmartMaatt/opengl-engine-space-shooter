@@ -29,15 +29,18 @@ void SpaceLevel::initLevelTextures()
 {
 	this->meteorTexture = new Texture(Texture::createTextureFromFile("res/Textures/asteroid.png", Texture::Type::PNG));
 	this->specularMapMeteor = new Texture(Texture::createTextureFromFile("res/Textures/asteroid_specular.png", Texture::Type::SPECULAR));
-	
+
 	this->crystalTexture = new Texture(Texture::createTextureFromFile("res/Textures/crystal.png", Texture::Type::PNG));
 	this->specularMapCrystal = new Texture(Texture::createTextureFromFile("res/Textures/simple_specular.png", Texture::Type::SPECULAR));
+
+	this->bulletTexture = new Texture(Texture::createTextureFromFile("res/Textures/sphere.png", Texture::Type::PNG));
 }
 
 void SpaceLevel::initObjModels()
 {
 	std::vector<DataOBJ> meteorsObjects = readObj("res/Models/asteroid.obj");
 	std::vector<DataOBJ> crystalsObjects = readObj("res/Models/crystal.obj");
+	this->bulletObjects = readObj("res/Models/sphere.obj");
 	TransformationOBJ transformation = TransformationOBJ();
 
 	// Player
@@ -154,7 +157,7 @@ void SpaceLevel::updateLevel(float deltaTime)
 	if (playerPos.z < -this->worldRadius) { this->player->setCameraPosition(glm::vec3(playerPos.x, playerPos.y, -this->worldRadius)); }
 
 	// Player stats
-	this->playerStats->reload(deltaTime);
+	this->playerStats->reloadBullet(deltaTime);
 
 	// Meteors
 	for (auto it = meteors.begin(); it != meteors.end();)
@@ -175,6 +178,7 @@ void SpaceLevel::updateLevel(float deltaTime)
 			std::cout << "Collision: Player <---> " << (*it)->getName() << std::endl;
 			playerStats->takeDamage(20);
 			std::cout << "Player health: " << playerStats->getHitPoints() << std::endl;
+			delete (*it);
 			it = meteors.erase(it);
 		}
 		else { ++it; }
@@ -191,9 +195,42 @@ void SpaceLevel::updateLevel(float deltaTime)
 		if (areSpheresCollided(player->getCameraPosition(), playerStats->getPlayerRadius(), (*it)->getPosition(), (*it)->getColliderRadius()))
 		{
 			std::cout << "Collision: Player <---> " << (*it)->getName() << std::endl;
+			delete (*it);
 			it = crystals.erase(it);
 		}
 		else { ++it; }
+	}
+
+	// Bullet
+	if (bullet != nullptr)
+	{
+		bullet->moveWithDirection(deltaTime);
+		bullet->light->setPosition(bullet->getPosition());
+
+		// Bullet death
+		bullet->calcAge(deltaTime);
+		if (bullet->isDead())
+		{
+			delete bullet;
+			bullet = nullptr;
+			std::cout << "Erased bullet" << std::endl;
+		}
+
+		for (auto it = meteors.begin(); it != meteors.end();)
+		{
+			// Meteor - bullet collision
+			if (areSpheresCollided(bullet->getPosition(), bullet->getColliderRadius(), (*it)->getPosition(), (*it)->getColliderRadius()))
+			{
+				std::cout << "Collision: Bullet <---> " << (*it)->getName() << std::endl;
+				delete (*it);
+				delete bullet;
+
+				it = meteors.erase(it);
+				bullet = nullptr;
+				break;
+			}
+			else { ++it; }
+		}
 	}
 
 	pointLights[0].setPosition(this->player->getCameraPosition());
@@ -208,8 +245,13 @@ void SpaceLevel::updateLightShaders()
 
 void SpaceLevel::setLightUniforms(ShaderProgram& shader)
 {
-	shader.setInt("pointLightsCount", static_cast<int>(pointLights.size() + crystals.size()));
+	int includeBullet = 0;
+	if (bullet != nullptr) { includeBullet = 1; }
+
+	shader.setInt("pointLightsCount", static_cast<int>(pointLights.size() + crystals.size() + includeBullet));
 	char lightIndex[20];
+
+	// Default lights
 	for (int i = 0; i < pointLights.size(); ++i)
 	{
 		sprintf_s(lightIndex, 20, "pointLights[%d].", i);
@@ -223,6 +265,7 @@ void SpaceLevel::setLightUniforms(ShaderProgram& shader)
 		shader.setFloat(index + "quadratic", pointLights[i].getAttenuation().getQuadratic());
 	}
 
+	// Crystals lights
 	for (int i = pointLights.size(); i < crystals.size() + pointLights.size(); i++)
 	{
 		sprintf_s(lightIndex, 20, "pointLights[%d].", i);
@@ -236,6 +279,21 @@ void SpaceLevel::setLightUniforms(ShaderProgram& shader)
 		shader.setFloat(index + "constant", crystals[objIndex]->light->getAttenuation().getConstant());
 		shader.setFloat(index + "linear", crystals[objIndex]->light->getAttenuation().getLinear());
 		shader.setFloat(index + "quadratic", crystals[objIndex]->light->getAttenuation().getQuadratic());
+	}
+
+	// Bullet lights
+	if (bullet != nullptr)
+	{
+		sprintf_s(lightIndex, 20, "pointLights[%d].", pointLights.size() + crystals.size());
+		std::string index{ lightIndex };
+
+		shader.setVec3f(index + "position", bullet->light->getPosition());
+		shader.setVec3f(index + "diffuse", bullet->light->getDiffuse());
+		shader.setVec3f(index + "specular", bullet->light->getSpecular());
+
+		shader.setFloat(index + "constant", bullet->light->getAttenuation().getConstant());
+		shader.setFloat(index + "linear", bullet->light->getAttenuation().getLinear());
+		shader.setFloat(index + "quadratic", bullet->light->getAttenuation().getQuadratic());
 	}
 }
 
@@ -256,6 +314,11 @@ void SpaceLevel::drawLevel(float deltaTime, bool wireframe)
 	{
 		this->crystals[i]->drawEntity(this->shaderProgram);
 	}
+
+	if (bullet != nullptr)
+	{
+		this->bullet->drawEntity(this->shaderProgram);
+	}
 }
 
 
@@ -271,10 +334,54 @@ bool SpaceLevel::areSpheresCollided(glm::vec3 center1, float rad1, glm::vec3 cen
 
 
 
+// Shooting
+void SpaceLevel::shootBullet()
+{
+	if (this->playerStats->canIShoot())
+	{
+		// Bullet spawn
+		this->bullet = spawnBullet();
+		this->playerStats->shoot();
+	}
+	else
+	{
+		std::cout << "Can't shoot bullet" << std::endl;
+	}
+}
+
+Bullet* SpaceLevel::spawnBullet()
+{
+	TransformationOBJ transformation = TransformationOBJ();
+	GameObject* model = new GameObject(new Material(glm::vec3(0.25)), this->bulletTexture, bulletObjects, transformation, generateOffset(0, 0, 0), 1);
+
+	Bullet* bullet = new Bullet(model, 7);
+	bullet->setName("Bullet");
+
+	bullet->setPosition(this->player->getCameraPosition() + this->player->getDirection() * 0.3f);
+	bullet->setOrigin(this->player->getCameraPosition());
+	bullet->setScale(this->one * 0.05f);
+
+	bullet->setDirection(this->player->getDirection());
+	bullet->setSpeed(5);
+	bullet->setColliderRadius(0.5f);
+
+	bullet->light = new Light::Point(bullet->getPosition(), { 0,0,1 });
+	return bullet;
+}
+
+
+
+
 // Deserialization
 SpaceLevel::~SpaceLevel()
 {
 	delete this->player;
 	delete this->shaderProgram;
 	delete this->material;
+
+	delete this->meteorTexture;
+	delete this->specularMapMeteor;
+	delete this->crystalTexture;
+	delete this->specularMapCrystal;
+	delete this->bulletTexture;
 }

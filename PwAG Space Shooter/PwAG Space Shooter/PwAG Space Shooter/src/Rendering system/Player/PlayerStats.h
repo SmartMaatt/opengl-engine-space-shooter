@@ -11,19 +11,14 @@ public:
 	void checkHitPoints();
 	bool checkSafeTime(float deltaTime);
 
-	int getAmmunition();
 	void shoot();
-
-	bool checkReloadingCooldown(float deltaTime);
-	bool checkReloadingTime(float deltaTime);
-	void reload(float deltaTime);
+	void reloadBullet(float deltaTime);
+	bool canIShoot();
 
 	int getPoints();
 	void addPoint();
 
 	float getPlayerRadius();
-
-	void updateInput(GameReference gameReference, Keyboard& keyboard, Mouse& mouse, float deltaTime);
 
 	~PlayerStats();
 
@@ -33,13 +28,9 @@ private:
 	float safeTimeAfterHit = 2.0f;
 	float timeAfterLastHit;
 
-	int ammunition;
-	int maxAmmunition = 10;
-
-	float reloadingCooldown = 3.5f;
-	float timeAfterLastShoot;
-	int reloadingSpeed = 2; // ammunition that will be reloaded in 1 second
-	float timeAfterLastReload;
+	float reloadingTime = 8.0f;
+	float reloadState = 0.0f;
+	bool canShoot = true;
 
 	int points = 0;
 	int pointsToWin = 5;

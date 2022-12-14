@@ -176,8 +176,6 @@ std::vector<GLfloat> GameObject::getOffsets()
 
 GameObject::~GameObject()
 {
-	delete this->material;
-	delete this->texture;
 	delete this->mesh;
 
 	if (this->normalMapTexture != nullptr) 

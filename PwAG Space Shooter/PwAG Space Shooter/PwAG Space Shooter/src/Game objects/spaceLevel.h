@@ -6,6 +6,7 @@
 #include "../Rendering system/Entity/entity.h"
 #include "../Rendering system/Entity/crystal.h"
 #include "../Rendering system/Entity/bullet.h"
+#include "../Rendering system/Model/indexedDataOBJ.h"
 
 class SpaceLevel
 {
@@ -35,6 +36,11 @@ public:
 
 	// Update
 	void updateLevel(float deltaTime);
+
+	void updatePlayer(float deltaTime);
+	void updateMeteors(float deltaTime);
+	void updateCrystals(float deltaTime);
+	void updateBullet(float deltaTime);
 	void updateLightShaders();
 
 	// Render
@@ -52,14 +58,13 @@ public:
 private:
 	void setLightUniforms(ShaderProgram& shader);
 	Bullet* spawnBullet();
-	std::vector<GLfloat> generateOffset(GLfloat x, GLfloat y, GLfloat z);
 
 	std::vector<Light::Point> pointLights;
 	std::vector<Entity*> meteors;
 	std::vector<Crystal*> crystals;
 
 	Bullet* bullet = nullptr;
-	std::vector<DataOBJ> bulletObjects;
+	IndexedDataOBJ indexedBulletObjects;
 
 	glm::vec3 zero = glm::vec3(0, 0, 0);
 	glm::vec3 one = glm::vec3(1, 1, 1);

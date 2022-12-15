@@ -141,8 +141,10 @@
     <ClCompile Include="src\Rendering system\Entity\bullet.cpp" />
     <ClCompile Include="src\Rendering system\Entity\crystal.cpp" />
     <ClCompile Include="src\Rendering system\Entity\entity.cpp" />
+    <ClCompile Include="src\Rendering system\Model\indexedDataOBJ.cpp" />
     <ClCompile Include="src\Rendering system\Model\material.cpp" />
     <ClCompile Include="src\GUI\button.cpp" />
+    <ClCompile Include="src\Rendering system\Model\vboIndexer.cpp" />
     <ClCompile Include="src\Rendering system\OpenGL Objects\fbo.cpp" />
     <ClCompile Include="src\Rendering system\Player\player.cpp" />
     <ClCompile Include="src\Rendering system\Player\PlayerStats.cpp" />
@@ -191,8 +193,10 @@
     <ClInclude Include="src\Rendering system\Entity\bullet.h" />
     <ClInclude Include="src\Rendering system\Entity\crystal.h" />
     <ClInclude Include="src\Rendering system\Entity\entity.h" />
+    <ClInclude Include="src\Rendering system\Model\indexedDataOBJ.h" />
     <ClInclude Include="src\Rendering system\Model\material.h" />
     <ClInclude Include="src\GUI\button.h" />
+    <ClInclude Include="src\Rendering system\Model\vboIndexer.h" />
     <ClInclude Include="src\Rendering system\OpenGL Objects\fbo.h" />
     <ClInclude Include="src\Rendering system\Player\player.h" />
     <ClInclude Include="src\Rendering system\Player\PlayerStats.h" />

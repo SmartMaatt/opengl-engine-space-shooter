@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "spaceLevel.h"
-#include "../Rendering system/Model/objReader.h"
 #include <set>
 #include <ctime>
+
+#include "../Rendering system/Model/objReader.h"
+#include "../Rendering system/Model/vboIndexer.h"
 
 // Initialization
 SpaceLevel::SpaceLevel()
@@ -38,10 +40,13 @@ void SpaceLevel::initLevelTextures()
 
 void SpaceLevel::initObjModels()
 {
-	std::vector<DataOBJ> meteorsObjects = readObj("res/Models/asteroid.obj");
-	std::vector<DataOBJ> crystalsObjects = readObj("res/Models/crystal.obj");
-	this->bulletObjects = readObj("res/Models/sphere.obj");
-	TransformationOBJ transformation = TransformationOBJ();
+	DataOBJ meteorsObjects = readObj("res/Models/asteroid.obj");
+	DataOBJ crystalsObjects = readObj("res/Models/crystal.obj");
+	DataOBJ bulletObjects = readObj("res/Models/sphere.obj");
+
+	IndexedDataOBJ meteorsIndexedObjects = indexVBO_TBN(meteorsObjects);
+	IndexedDataOBJ crystalsIndexedObjects = indexVBO_TBN(crystalsObjects);
+	this->indexedBulletObjects = indexVBO_TBN(bulletObjects);
 
 	// Player
 	this->player = new Player(glm::vec3(0, 0.5f, 0));
@@ -54,7 +59,7 @@ void SpaceLevel::initObjModels()
 	// Meteors
 	for (int i = 0; i < this->meteorsInstances; i++)
 	{
-		GameObject* model = new GameObject(material, this->meteorTexture, meteorsObjects, transformation, generateOffset(0, 0, 0), 1);
+		GameObject* model = new GameObject(material, this->meteorTexture, meteorsIndexedObjects, this->zero, 1);
 		model->setSpecular(this->specularMapMeteor);
 
 		Entity* entity = new Entity(model);
@@ -73,7 +78,7 @@ void SpaceLevel::initObjModels()
 	// Crystals
 	for (int i = 0; i < this->crystalsInstances; i++)
 	{
-		GameObject* model = new GameObject(material, this->crystalTexture, crystalsObjects, transformation, generateOffset(0, 0, 0), 1);
+		GameObject* model = new GameObject(material, this->crystalTexture, crystalsIndexedObjects, this->zero, 1);
 		model->setSpecular(this->specularMapCrystal);
 
 		Crystal* crystal = new Crystal(model);
@@ -88,15 +93,6 @@ void SpaceLevel::initObjModels()
 		crystal->light = new Light::Point(crystal->getPosition(), { 1,0,0 });
 		this->crystals.push_back(crystal);
 	}
-}
-
-std::vector<GLfloat> SpaceLevel::generateOffset(GLfloat x, GLfloat y, GLfloat z)
-{
-	std::vector<GLfloat> offsetsTorches;
-	offsetsTorches.emplace_back(x);
-	offsetsTorches.emplace_back(y);
-	offsetsTorches.emplace_back(z);
-	return offsetsTorches;
 }
 
 void SpaceLevel::initLevelShaders()
@@ -146,6 +142,17 @@ glm::vec3 SpaceLevel::randCoordsInSphere(float radius)
 // Update
 void SpaceLevel::updateLevel(float deltaTime)
 {
+	updatePlayer(deltaTime);
+	updateMeteors(deltaTime);
+	updateCrystals(deltaTime);
+	updateBullet(deltaTime);
+
+	pointLights[0].setPosition(this->player->getCameraPosition());
+	updateLightShaders();
+}
+
+void SpaceLevel::updatePlayer(float deltaTime)
+{
 	// Player
 	// Square border holder ;)
 	glm::vec3 playerPos = this->player->getCameraPosition();
@@ -158,7 +165,10 @@ void SpaceLevel::updateLevel(float deltaTime)
 
 	// Player stats
 	this->playerStats->reloadBullet(deltaTime);
+}
 
+void SpaceLevel::updateMeteors(float deltaTime)
+{
 	// Meteors
 	for (auto it = meteors.begin(); it != meteors.end();)
 	{
@@ -183,7 +193,10 @@ void SpaceLevel::updateLevel(float deltaTime)
 		}
 		else { ++it; }
 	}
+}
 
+void SpaceLevel::updateCrystals(float deltaTime)
+{
 	// Crystals
 	for (auto it = crystals.begin(); it != crystals.end();)
 	{
@@ -200,7 +213,10 @@ void SpaceLevel::updateLevel(float deltaTime)
 		}
 		else { ++it; }
 	}
+}
 
+void SpaceLevel::updateBullet(float deltaTime)
+{
 	// Bullet
 	if (bullet != nullptr)
 	{
@@ -214,6 +230,7 @@ void SpaceLevel::updateLevel(float deltaTime)
 			delete bullet;
 			bullet = nullptr;
 			std::cout << "Erased bullet" << std::endl;
+			return;
 		}
 
 		for (auto it = meteors.begin(); it != meteors.end();)
@@ -227,14 +244,11 @@ void SpaceLevel::updateLevel(float deltaTime)
 
 				it = meteors.erase(it);
 				bullet = nullptr;
-				break;
+				return;
 			}
 			else { ++it; }
 		}
 	}
-
-	pointLights[0].setPosition(this->player->getCameraPosition());
-	updateLightShaders();
 }
 
 void SpaceLevel::updateLightShaders()
@@ -351,8 +365,7 @@ void SpaceLevel::shootBullet()
 
 Bullet* SpaceLevel::spawnBullet()
 {
-	TransformationOBJ transformation = TransformationOBJ();
-	GameObject* model = new GameObject(new Material(glm::vec3(0.25)), this->bulletTexture, bulletObjects, transformation, generateOffset(0, 0, 0), 1);
+	GameObject* model = new GameObject(new Material(glm::vec3(0.25)), this->bulletTexture, this->indexedBulletObjects, this->zero, 1);
 
 	Bullet* bullet = new Bullet(model, 7);
 	bullet->setName("Bullet");

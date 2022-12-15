@@ -3,18 +3,13 @@
 #include "../Rendering system/Model/material.h"
 #include "../Rendering system/Model/mesh.h"
 #include "../Rendering system/Model/transformationOBJ.h"
+#include "../Rendering system/Model/indexedDataOBJ.h"
 
 class GameObject
 {
 public:
 	GameObject();
-	GameObject(
-		Material* material,
-		Texture* texture,
-		std::vector<DataOBJ> mesh,
-		TransformationOBJ transformation,
-		std::vector<GLfloat> offsets,
-		int instances);
+	GameObject(Material* material, Texture* texture, IndexedDataOBJ objData, glm::vec3 offset, int instances);
 
 	void draw(ShaderProgram* shaderProgram);
 
@@ -31,8 +26,6 @@ public:
 	glm::vec3 getPosition();
 	glm::vec3 getRotation();
 
-	std::vector<GLfloat> getOffsets();
-
 	~GameObject();
 
 private:
@@ -44,11 +37,4 @@ private:
 
 	Material* material;
 	Mesh* mesh;
-
-	std::vector<GLfloat> offsets;
-
-	int instances;
-
-	void initGameObject();
 };
-

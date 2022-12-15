@@ -237,6 +237,12 @@
     <ClCompile Include="src\Rendering system\Entity\bullet.cpp">
       <Filter>Pliki źródłowe\Rendering system\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering system\Model\vboIndexer.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Model\indexedDataOBJ.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Event system\eventManager.h">
@@ -370,6 +376,12 @@
     </ClInclude>
     <ClInclude Include="src\Rendering system\Entity\bullet.h">
       <Filter>Pliki nagłówkowe\Rendering system\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Model\vboIndexer.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Model\indexedDataOBJ.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

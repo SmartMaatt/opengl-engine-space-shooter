@@ -1,7 +1,7 @@
 #pragma once
 #include "dataOBJ.h"
 
-std::vector<DataOBJ> readObj(const std::string& objPathName, glm::vec3 color = glm::vec3(1.0, 0.0, 0.0)) 
+DataOBJ readObj(const std::string& objPathName, glm::vec3 color = glm::vec3(1.0, 0.0, 0.0)) 
 {
 	std::vector<unsigned int> vertexIndices;
 	std::vector<unsigned int> uvIndices;
@@ -87,7 +87,7 @@ std::vector<DataOBJ> readObj(const std::string& objPathName, glm::vec3 color = g
 	}
 
 	objFile.close();
-	std::vector<DataOBJ> objData;
+	DataOBJ objData {};
 
 	for (unsigned int i = 0; i < vertexIndices.size(); i++) 
 	{
@@ -102,14 +102,40 @@ std::vector<DataOBJ> readObj(const std::string& objPathName, glm::vec3 color = g
 		glm::vec3 normal = tempNormals[normalIndex - 1];
 
 		// Put the attributes in buffers
+		objData.vertices.push_back(vertex);
+		objData.colors.push_back(color);
+		objData.normals.push_back(normal);
+		objData.uvs.push_back(uv);
+	}
 
-		DataOBJ data{};
-		data.vertex = vertex;
-		data.uv = uv;
-		data.normal = normal;
-		data.color = color;
+	// Calculate tangent and bitangent
+	for (unsigned int i = 0; i < objData.vertices.size(); i += 3)
+	{
+		glm::vec2& uv_0 = objData.uvs[0 + i];
+		glm::vec2& uv_1 = objData.uvs[1 + i];
+		glm::vec2& uv_2 = objData.uvs[2 + i];
 
-		objData.push_back(data);
+		glm::vec3& v_0 = objData.vertices[0 + i];
+		glm::vec3& v_1 = objData.vertices[1 + i];
+		glm::vec3& v_2 = objData.vertices[2 + i];
+
+		glm::vec3 deltaPosition_1 = v_1 - v_0;
+		glm::vec3 deltaPosition_2 = v_2 - v_0;
+
+		glm::vec2 delta_UV_1 = uv_1 - uv_0;
+		glm::vec2 delta_UV_2 = uv_2 - uv_0;
+
+		float r = 1.0f / (delta_UV_1.x * delta_UV_2.y - delta_UV_1.y * delta_UV_2.x);
+		glm::vec3 tangent = (deltaPosition_1 * delta_UV_2.y - deltaPosition_2 * delta_UV_1.y) * r;
+		glm::vec3 bitangent = (deltaPosition_2 * delta_UV_1.x - deltaPosition_1 * delta_UV_2.x) * r;
+
+		objData.tangents.push_back(tangent);
+		objData.tangents.push_back(tangent);
+		objData.tangents.push_back(tangent);
+
+		objData.bittangents.push_back(bitangent);
+		objData.bittangents.push_back(bitangent);
+		objData.bittangents.push_back(bitangent);
 	}
 
 	return objData;

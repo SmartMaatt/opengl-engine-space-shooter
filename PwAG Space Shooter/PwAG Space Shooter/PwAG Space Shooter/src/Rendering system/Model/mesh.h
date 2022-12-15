@@ -1,11 +1,14 @@
 #pragma once
 #include "dataOBJ.h"
+#include "indexedDataOBJ.h"
 
 class Mesh
 {
 public:
 	Mesh();
-	Mesh(DataOBJ* vertices, int verticesSize, GLuint* indices, int indicesSize);
+	Mesh(IndexedDataOBJ objData, glm::vec3 offset, int instances);
+
+	void drawMesh();
 
 	void setMeshUniform(ShaderProgram* shaderProgram);
 	void setMatrixModel(glm::vec3 meshPosition, glm::vec3 meshOrigin, glm::vec3 meshRotation, glm::vec3 meshScale);
@@ -13,15 +16,25 @@ public:
 	virtual ~Mesh();
 
 private:
-	DataOBJ* vertices;
-	GLuint* indices;
+	void initBuffers();
 
-	int verticesSize;
-	int indicesSize;
+	IndexedDataOBJ indexedData;
+
+	glm::vec3 offset;
+	std::vector<glm::vec3> offsets;
+	int instances = 0;
 
 	glm::mat4 matrixModel;
 
-	GLuint VAO, VBO, EBO;
-	friend class GameObject;
+	GLuint vertexArrayID;
+	GLuint elementBuffer;
+
+	GLuint verticesBuffer;
+	GLuint colorsBuffer;
+	GLuint normalsBuffer;
+	GLuint tangentBuffer;
+	GLuint bitangentBuffer;
+	GLuint uvsBuffer;
+	GLuint offsetBuffer;
 };
 

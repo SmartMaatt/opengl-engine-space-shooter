@@ -13,7 +13,7 @@ private:
 	Button menuButton;
 
 public:
-	GameOverState(GameReference gameReference);
+	GameOverState(GameReference gameReference, std::string header);
 	~GameOverState();
 
 	void initialization() override;

@@ -33,9 +33,7 @@ private:
 	bool canShoot = true;
 
 	int points = 0;
-	int pointsToWin = 5;
 
 	bool alreadyShoot = false;
-
 	float playerRadius = 0.3f;
 };

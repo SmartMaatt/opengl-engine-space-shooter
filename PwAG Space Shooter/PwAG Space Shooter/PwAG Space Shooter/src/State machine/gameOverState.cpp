@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "gameOverState.h"
 
-GameOverState::GameOverState(GameReference gameReference) :
-	menuButton("Return", { 700, 175 }, { 0.7, 0.7, 0.0 }),
-	winLabel("Victory!", { 700, 100 }, { 0.0, 0.7, 0.0 })
+GameOverState::GameOverState(GameReference gameReference, std::string header) :
+	menuButton("Return", { 725, 175 }, { 0.7, 0.7, 0.0 }),
+	winLabel(header, { 700, 100 }, { 0.7, 0.7, 0.0 })
 {
 	this->gameReference = gameReference;
 

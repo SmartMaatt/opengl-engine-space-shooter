@@ -210,6 +210,7 @@ void SpaceLevel::updateCrystals(float deltaTime)
 			std::cout << "Collision: Player <---> " << (*it)->getName() << std::endl;
 			delete (*it);
 			it = crystals.erase(it);
+			this->playerStats->addPoint();
 		}
 		else { ++it; }
 	}

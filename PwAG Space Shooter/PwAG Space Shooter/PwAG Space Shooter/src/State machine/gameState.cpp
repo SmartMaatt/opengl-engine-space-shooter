@@ -29,6 +29,18 @@ void GameState::processInput(float deltaTime, Keyboard& keyboard, Mouse& mouse)
 void GameState::update(float deltaTime)
 {
 	this->spaceLevel->updateLevel(deltaTime);
+
+	if (this->spaceLevel->crystalsInstances == this->spaceLevel->playerStats->getPoints())
+	{
+		std::cout << "You won!" << std::endl;
+		this->gameReference->m_stateMachine.addNewState(StateReference(new GameOverState(this->gameReference, "You won!")));
+	}
+
+	if (this->spaceLevel->playerStats->getHitPoints() == 0)
+	{
+		std::cout << "You loose!" << std::endl;
+		this->gameReference->m_stateMachine.addNewState(StateReference(new GameOverState(this->gameReference, "You loose!")));
+	}
 }
 
 void GameState::render(float deltaTime, bool wireframe)

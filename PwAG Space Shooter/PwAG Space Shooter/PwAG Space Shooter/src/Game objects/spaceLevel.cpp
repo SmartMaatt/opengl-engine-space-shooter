@@ -65,7 +65,7 @@ void SpaceLevel::initObjModels()
 		Entity* entity = new Entity(model);
 		entity->setName("Meteo " + std::to_string(i));
 
-		entity->setPosition(randCoordsInSphere(this->worldRadius));
+		entity->setPosition(randCoordsInSphere(this->worldRadius / 2));
 		float size = randVal(0.1f, 0.75f);
 		entity->setScale(glm::vec3(size, size, size));
 		entity->setColliderRadius(size);
@@ -392,6 +392,16 @@ SpaceLevel::~SpaceLevel()
 	delete this->player;
 	delete this->shaderProgram;
 	delete this->material;
+
+	for (size_t i = 0; i < meteors.size(); i++)
+	{
+		delete meteors[i];
+	}
+
+	for (size_t i = 0; i < crystals.size(); i++)
+	{
+		delete crystals[i];
+	}
 
 	delete this->meteorTexture;
 	delete this->specularMapMeteor;

@@ -12,7 +12,7 @@ class SpaceLevel
 {
 public:
 	int meteorsInstances = 25;
-	int crystalsInstances = 2;
+	int crystalsInstances = 3;
 	float worldRadius = 10;
 
 	Player* player;

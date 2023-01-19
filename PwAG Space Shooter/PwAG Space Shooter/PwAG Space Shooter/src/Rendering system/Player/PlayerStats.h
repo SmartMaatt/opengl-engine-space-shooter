@@ -7,6 +7,7 @@ public:
 	PlayerStats();
 
 	int getHitPoints();
+	int getMaxHitPoints();
 	void takeDamage(int damage);
 	void checkHitPoints();
 	bool checkSafeTime(float deltaTime);
@@ -14,6 +15,8 @@ public:
 	void shoot();
 	void reloadBullet(float deltaTime);
 	bool canIShoot();
+	float getReloadMaxTime();
+	float getReloadTime();
 
 	int getPoints();
 	void addPoint();
@@ -28,8 +31,8 @@ private:
 	float safeTimeAfterHit = 2.0f;
 	float timeAfterLastHit;
 
-	float reloadingTime = 8.0f;
-	float reloadState = 0.0f;
+	float reloadMaxTime = 8.0f;
+	float reloadTime = 0.0f;
 	bool canShoot = true;
 
 	int points = 0;

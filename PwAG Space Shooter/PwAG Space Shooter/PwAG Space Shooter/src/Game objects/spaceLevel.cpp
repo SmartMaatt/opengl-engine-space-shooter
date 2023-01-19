@@ -7,7 +7,11 @@
 #include "../Rendering system/Model/vboIndexer.h"
 
 // Initialization
-SpaceLevel::SpaceLevel()
+SpaceLevel::SpaceLevel():
+	tmpDefaultFont(std::move(Font("res/Fonts/Segan.ttf", 32))),
+	healthLabel(10, 50, "Health:", tmpDefaultFont), healthValueText(140, 53, "0", tmpDefaultFont),
+	crystalsLabel(10, 90, "Crystals:", tmpDefaultFont), crystalsValueText(140, 93, "0", tmpDefaultFont),
+	bulletLabel(10, 130, "Bullet:", tmpDefaultFont), bulletValueText(140, 130, "0", tmpDefaultFont)
 {
 	this->initLevel();
 }
@@ -20,6 +24,7 @@ void SpaceLevel::initLevel()
 	this->initObjModels();
 	this->initLevelShaders();
 	this->initMatrixMVP();
+	this->initText();
 }
 
 void SpaceLevel::initLevelMaterials()
@@ -114,6 +119,27 @@ void SpaceLevel::initMatrixMVP()
 	this->player->setCameraUniforms(this->shaderProgram);
 }
 
+void SpaceLevel::initText()
+{
+	// Gui text shader initialization
+	Shader textVert = Shader::createShaderFromFile("Shaders/text.vert", Shader::Type::eVertex);
+	Shader textFrag = Shader::createShaderFromFile("Shaders/text.frag", Shader::Type::eFragment);
+
+	textShader.attachShader(textVert);
+	textShader.attachShader(textFrag);
+	textShader.linkShaderProgram();
+
+	// Gui text color
+	healthLabel.setColor(glm::vec3(1, 1, 1));
+	healthValueText.setColor(glm::vec3(1, 1, 1));	
+	
+	crystalsLabel.setColor(glm::vec3(1, 0, 0));
+	crystalsValueText.setColor(glm::vec3(1, 0, 0));
+
+	bulletLabel.setColor(glm::vec3(0, 0, 1));
+	bulletValueText.setColor(glm::vec3(0, 0, 1));
+}
+
 
 
 // Randomize
@@ -149,6 +175,7 @@ void SpaceLevel::updateLevel(float deltaTime)
 
 	pointLights[0].setPosition(this->player->getCameraPosition());
 	updateLightShaders();
+	updateTextValues();
 }
 
 void SpaceLevel::updatePlayer(float deltaTime)
@@ -312,6 +339,36 @@ void SpaceLevel::setLightUniforms(ShaderProgram& shader)
 	}
 }
 
+void SpaceLevel::updateTextValues()
+{
+#ifndef DIST
+	std::stringstream streamForHealth;
+	streamForHealth << std::fixed << std::setprecision(4);
+	streamForHealth << playerStats->getHitPoints() << "/" << playerStats->getMaxHitPoints();
+	healthValueText.setText(streamForHealth.str());
+
+	std::stringstream streamForCrystals;
+	streamForCrystals << std::fixed << std::setprecision(4);
+	streamForCrystals << playerStats->getPoints() << "/" << crystalsInstances;
+	crystalsValueText.setText(streamForCrystals.str());
+
+	if (playerStats->canIShoot())
+	{
+		bulletLabel.setText("Bullet:");
+		bulletValueText.setText("loaded!");
+	}
+	else
+	{
+		std::stringstream streamForBullet;
+		streamForBullet << std::fixed << std::setprecision(2);
+		streamForBullet << playerStats->getReloadTime() << "/" << playerStats->getReloadMaxTime();
+		bulletLabel.setText("Loading:");
+		bulletValueText.setText(streamForBullet.str());
+	}
+#endif
+}
+
+
 
 
 // Render
@@ -334,7 +391,28 @@ void SpaceLevel::drawLevel(float deltaTime, bool wireframe)
 	{
 		this->bullet->drawEntity(this->shaderProgram);
 	}
+
+	drawGui();
 }
+
+void SpaceLevel::drawGui() 
+{
+#ifndef DIST
+	textShader.useShader();
+	auto projection = glm::ortho(0.0f, static_cast<float>(Config::g_defaultWidth), 0.0f, static_cast<float>(Config::g_defaultHeight));
+	textShader.setMat4("MVP", projection);
+
+	healthLabel.render(textShader);
+	healthValueText.render(textShader);
+
+	crystalsLabel.render(textShader);
+	crystalsValueText.render(textShader);
+
+	bulletLabel.render(textShader);
+	bulletValueText.render(textShader);
+#endif
+}
+
 
 
 
@@ -346,6 +424,7 @@ bool SpaceLevel::areSpheresCollided(glm::vec3 center1, float rad1, glm::vec3 cen
 
 	return (radSum > distance);
 }
+
 
 
 

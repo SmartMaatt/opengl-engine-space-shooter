@@ -12,6 +12,11 @@ int PlayerStats::getHitPoints()
 	return hitPoints;
 }
 
+int PlayerStats::getMaxHitPoints()
+{
+	return maxHitPoints;
+}
+
 void PlayerStats::takeDamage(int damage)
 {
 	/*if (!checkSafeTime(deltaTime))
@@ -49,13 +54,12 @@ void PlayerStats::checkHitPoints()
 	}
 }
 
-
 void PlayerStats::shoot()
 {
 	if (canShoot)
 	{
 		canShoot = false;
-		reloadState = 0.0f;
+		reloadTime = 0.0f;
 	}
 }
 
@@ -63,9 +67,9 @@ void PlayerStats::reloadBullet(float deltaTime)
 {
 	if (!canShoot)
 	{
-		if (reloadState < reloadingTime)
+		if (reloadTime < reloadMaxTime)
 		{
-			reloadState += deltaTime;
+			reloadTime += deltaTime;
 		}
 		else
 		{
@@ -77,6 +81,16 @@ void PlayerStats::reloadBullet(float deltaTime)
 bool PlayerStats::canIShoot()
 {
 	return this->canShoot;
+}
+
+float PlayerStats::getReloadMaxTime()
+{
+	return this->reloadMaxTime;
+}
+
+float PlayerStats::getReloadTime()
+{
+	return this->reloadTime;
 }
 
 int PlayerStats::getPoints()
@@ -93,7 +107,6 @@ float  PlayerStats::getPlayerRadius()
 {
 	return playerRadius;
 }
-
 
 PlayerStats::~PlayerStats()
 {

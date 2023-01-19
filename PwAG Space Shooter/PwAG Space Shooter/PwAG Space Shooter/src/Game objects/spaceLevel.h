@@ -11,8 +11,8 @@
 class SpaceLevel
 {
 public:
-	int meteorsInstances = 25;
-	int crystalsInstances = 3;
+	int meteorsInstances = 40;
+	int crystalsInstances = 5;
 	float worldRadius = 10;
 
 	Player* player;
@@ -29,6 +29,7 @@ public:
 	void initLevelMaterials();
 	void initLevelTextures();
 	void initObjModels();
+	void initText();
 
 	// Randomization
 	float randVal(float LO, float HI);
@@ -42,9 +43,11 @@ public:
 	void updateCrystals(float deltaTime);
 	void updateBullet(float deltaTime);
 	void updateLightShaders();
+	void updateTextValues();
 
 	// Render
 	void drawLevel(float deltaTime, bool wireframe);
+	void drawGui();
 
 	// Collision
 	bool areSpheresCollided(glm::vec3 center1, float rad1, glm::vec3 center2, float rad2);
@@ -80,4 +83,15 @@ private:
 	Texture* crystalTexture;
 	Texture* specularMapCrystal;
 	Texture* bulletTexture;
+
+	// Text related
+	Font tmpDefaultFont;
+	ShaderProgram textShader;
+
+	Text healthLabel;
+	Text healthValueText;
+	Text crystalsLabel;
+	Text crystalsValueText;
+	Text bulletLabel;
+	Text bulletValueText;
 };

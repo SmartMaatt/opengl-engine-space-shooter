@@ -48,6 +48,7 @@ public:
 	// Render
 	void drawLevel(float deltaTime, bool wireframe);
 	void drawGui();
+	void ToggleHUD();
 
 	// Collision
 	bool areSpheresCollided(glm::vec3 center1, float rad1, glm::vec3 center2, float rad2);
@@ -94,4 +95,8 @@ private:
 	Text crystalsValueText;
 	Text bulletLabel;
 	Text bulletValueText;
+
+	Sprite HUD;
+	bool hudActivated = true;
+	int hudChangeLatch = 0;
 };

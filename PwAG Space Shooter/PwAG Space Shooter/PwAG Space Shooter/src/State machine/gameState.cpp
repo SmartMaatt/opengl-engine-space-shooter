@@ -24,6 +24,12 @@ void GameState::processInput(float deltaTime, Keyboard& keyboard, Mouse& mouse)
 	{
 		this->spaceLevel->shootBullet();
 	}
+
+	// Activating HUD
+	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyH)])
+	{
+		this->spaceLevel->ToggleHUD();
+	}
 }
 
 void GameState::update(float deltaTime)

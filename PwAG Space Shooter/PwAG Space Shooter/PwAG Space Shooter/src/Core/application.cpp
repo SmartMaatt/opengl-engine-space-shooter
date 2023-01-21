@@ -2,17 +2,18 @@
 #include "application.h"
 #include "../State machine/gameState.h"
 #include "../State machine/menuState.h"
+#include "../SourceDep/stb_image.h"
 
 Application::Application() :
 	tmpDefaultFont(std::move(Font("res/Fonts/Segan.ttf", 18))),
-	fpsLabel(0, 880, "FPS:", tmpDefaultFont), fpsValueText(65, 880, "0", tmpDefaultFont),
-	inputTimeLabel(0, 860, "Input:", tmpDefaultFont), inputValueText(65, 860, "0", tmpDefaultFont),
-	updateTimeLabel(0, 840, "Update:", tmpDefaultFont), updateValueText(65, 840, "0", tmpDefaultFont),
-	renderTimeLabel(0, 820, "Render:", tmpDefaultFont), renderValueText(65, 820, "0", tmpDefaultFont)
+	fpsLabel(10, 880, "FPS:", tmpDefaultFont), fpsValueText(75, 880, "0", tmpDefaultFont),
+	inputTimeLabel(10, 860, "Input:", tmpDefaultFont), inputValueText(75, 860, "0", tmpDefaultFont),
+	updateTimeLabel(10, 840, "Update:", tmpDefaultFont), updateValueText(75, 840, "0", tmpDefaultFont),
+	renderTimeLabel(10, 820, "Render:", tmpDefaultFont), renderValueText(75, 820, "0", tmpDefaultFont)
 {
 	glfwInit();
 
-	ResourceManager::getInstance().loadFont("default", "res/Fonts/Segan.ttf", 32);
+	ResourceManager::getInstance().loadFont("default", "res/Fonts/Segan.ttf", 42);
 	ResourceManager::getInstance().addShaderProgram("text", "Shaders/text.vert", "Shaders/text.frag");
 
 	eventManager.registerKeyboard(keyboard);

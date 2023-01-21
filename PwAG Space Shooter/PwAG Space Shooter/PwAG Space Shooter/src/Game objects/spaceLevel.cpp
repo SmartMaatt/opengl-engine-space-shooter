@@ -5,13 +5,15 @@
 
 #include "../Rendering system/Model/objReader.h"
 #include "../Rendering system/Model/vboIndexer.h"
+#include "../SourceDep/stb_image.h"
 
 // Initialization
-SpaceLevel::SpaceLevel():
+SpaceLevel::SpaceLevel() :
 	tmpDefaultFont(std::move(Font("res/Fonts/Segan.ttf", 32))),
-	healthLabel(10, 50, "Health:", tmpDefaultFont), healthValueText(140, 53, "0", tmpDefaultFont),
-	crystalsLabel(10, 90, "Crystals:", tmpDefaultFont), crystalsValueText(140, 93, "0", tmpDefaultFont),
-	bulletLabel(10, 130, "Bullet:", tmpDefaultFont), bulletValueText(140, 130, "0", tmpDefaultFont)
+	healthLabel(20, 50, "Health:", tmpDefaultFont), healthValueText(140, 53, "0", tmpDefaultFont),
+	crystalsLabel(20, 90, "Crystals:", tmpDefaultFont), crystalsValueText(140, 93, "0", tmpDefaultFont),
+	bulletLabel(20, 130, "Bullet:", tmpDefaultFont), bulletValueText(140, 130, "0", tmpDefaultFont),
+	HUD("res/Textures/HUD.png", 1600, 900, 800, 450, true)
 {
 	this->initLevel();
 }
@@ -397,6 +399,11 @@ void SpaceLevel::drawLevel(float deltaTime, bool wireframe)
 
 void SpaceLevel::drawGui() 
 {
+	if (hudActivated)
+	{
+		HUD.Draw();
+	}
+
 #ifndef DIST
 	textShader.useShader();
 	auto projection = glm::ortho(0.0f, static_cast<float>(Config::g_defaultWidth), 0.0f, static_cast<float>(Config::g_defaultHeight));
@@ -411,7 +418,20 @@ void SpaceLevel::drawGui()
 	bulletLabel.render(textShader);
 	bulletValueText.render(textShader);
 #endif
+
+	if (hudChangeLatch > 0)
+		hudChangeLatch--;
 }
+
+void SpaceLevel::ToggleHUD()
+{
+	if (!(hudChangeLatch > 0))
+	{
+		hudActivated = !hudActivated;
+		hudChangeLatch = 10;
+	}
+}
+
 
 
 

@@ -8,10 +8,14 @@ class MenuState : public ProgramState
 {
 private:
 	GameReference gameReference;
+	Player camera;
 
 	Button newGameButton;
 	Button exitGameButton;
-	Player camera;
+
+	Sprite stars;
+	Sprite logo;
+	Sprite devLogo;
 
 public:
 	MenuState(GameReference gameReference);

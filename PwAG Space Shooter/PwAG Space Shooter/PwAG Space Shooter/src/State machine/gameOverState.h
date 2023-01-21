@@ -12,6 +12,10 @@ private:
 	Button winLabel;
 	Button menuButton;
 
+	Sprite stars;
+	Sprite logo;
+	Sprite devLogo;
+
 public:
 	GameOverState(GameReference gameReference, std::string header);
 	~GameOverState();

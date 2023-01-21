@@ -55,5 +55,6 @@
 #include "../Utilities/resourceManager.h"
 
 #include "../GUI/button.h"
+#include "../GUI/sprite.h"
 
 #endif

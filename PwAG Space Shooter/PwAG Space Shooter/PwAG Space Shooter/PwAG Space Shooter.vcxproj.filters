@@ -243,6 +243,9 @@
     <ClCompile Include="src\Rendering system\Model\indexedDataOBJ.cpp">
       <Filter>Pliki źródłowe\Rendering system\Model</Filter>
     </ClCompile>
+    <ClCompile Include="src\GUI\sprite.cpp">
+      <Filter>Pliki źródłowe\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Event system\eventManager.h">
@@ -382,6 +385,12 @@
     </ClInclude>
     <ClInclude Include="src\Rendering system\Model\indexedDataOBJ.h">
       <Filter>Pliki nagłówkowe\Rendering system\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Texture\stb_image.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\sprite.h">
+      <Filter>Pliki nagłówkowe\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

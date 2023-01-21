@@ -78,7 +78,12 @@ void Button::update(const Mouse& mouse)
 
 void Button::draw()
 {
+#ifndef DIST
+	shaderRef.useShader();
+	auto projection = glm::ortho(0.0f, static_cast<float>(Config::g_defaultWidth), 0.0f, static_cast<float>(Config::g_defaultHeight));
+	shaderRef.setMat4("MVP", projection);
 	this->text.render(this->shaderRef);
+#endif
 }
 
 void Button::setAction(std::function<void(void)> action)

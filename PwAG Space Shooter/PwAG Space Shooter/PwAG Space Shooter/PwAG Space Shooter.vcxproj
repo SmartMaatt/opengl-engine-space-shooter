@@ -189,6 +189,7 @@
     <ClCompile Include="src\Utilities\timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\Core\application.h" />
     <ClInclude Include="src\Core\config.h" />
     <ClInclude Include="src\GUI\sprite.h" />
@@ -243,6 +244,13 @@
     <None Include="Shaders\map.vert" />
     <None Include="Shaders\text.frag" />
     <None Include="Shaders\text.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PwAG Space Shooter.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Icons\DevLogo.ico" />
+    <Image Include="res\Textures\DevLogo.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

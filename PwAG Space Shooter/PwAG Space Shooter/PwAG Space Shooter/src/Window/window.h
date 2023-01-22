@@ -76,6 +76,7 @@ private:
 	void createWindowedFullscreenWindow();
 
 	void centerWindow() const;
+	void createWindowIcon();
 
 	GLFWwindow* glfwWindowPtr{};
 

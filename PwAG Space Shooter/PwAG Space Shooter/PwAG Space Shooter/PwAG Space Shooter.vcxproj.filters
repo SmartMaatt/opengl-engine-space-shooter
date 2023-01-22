@@ -392,6 +392,9 @@
     <ClInclude Include="src\GUI\sprite.h">
       <Filter>Pliki nagłówkowe\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\map.frag">
@@ -408,5 +411,18 @@
     <None Include="Shaders\text.vert">
       <Filter>Shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PwAG Space Shooter.rc">
+      <Filter>Pliki zasobów</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Textures\DevLogo.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="res\Icons\DevLogo.ico">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
   </ItemGroup>
 </Project>

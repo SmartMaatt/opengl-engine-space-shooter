@@ -128,7 +128,9 @@ void Window::createGLFWWindow()
 			createWindowedFullscreenWindow();
 			break;
 	}
+
 	glfwMakeContextCurrent(glfwWindowPtr);
+	createWindowIcon();
 }
 
 void Window::createWindowedWindow()
@@ -173,6 +175,22 @@ void Window::centerWindow() const
 		}
 	}
 
+}
+
+void Window::createWindowIcon()
+{
+	// Load image
+	int width, height;
+	int channels;
+	unsigned char* pixels = stbi_load("res/Textures/DevLogo.png", &width, &height, &channels, 4);
+
+	// Change window icon
+	GLFWimage images[1];
+	images[0].width = width;
+	images[0].height = height;
+	images[0].pixels = pixels;
+
+	glfwSetWindowIcon(glfwWindowPtr, 1, images);
 }
 
 void Window::initOpenGL() const

@@ -72,7 +72,7 @@ void SpaceLevel::initObjModels()
 		Entity* entity = new Entity(model);
 		entity->setName("Meteo " + std::to_string(i));
 
-		entity->setPosition(randCoordsInSphere(this->worldRadius / 2));
+		entity->setPosition(randCoordsInSphere(this->worldRadius));
 		float size = randVal(0.1f, 0.75f);
 		entity->setScale(glm::vec3(size, size, size));
 		entity->setColliderRadius(size);

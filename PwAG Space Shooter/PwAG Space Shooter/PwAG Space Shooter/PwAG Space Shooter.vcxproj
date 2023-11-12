@@ -19,7 +19,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{754bb917-2c84-4fef-8316-70c7d7c959e6}</ProjectGuid>
     <RootNamespace>PwAG Space Shooter</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>PwAG Space Shooter</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -63,14 +63,14 @@
     <IncludePath>$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)out\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)out-int\$(Configuration)\$(Platform)\</IntDir>
-    <LibraryPath>$(ProjectDir)dependencies\lib\Debug\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)dependencies\lib\debug-lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)out\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)out-int\$(Configuration)\$(Platform)\</IntDir>
-    <LibraryPath>$(ProjectDir)dependencies\lib\Release\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)dependencies\lib\release-lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <LinkIncremental>false</LinkIncremental>

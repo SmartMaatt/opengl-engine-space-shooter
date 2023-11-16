@@ -6,12 +6,10 @@ GameObject::GameObject()
 
 }
 
-GameObject::GameObject(Material* material, Texture* texture, IndexedDataOBJ objData, glm::vec3 offset, int instances) 
+GameObject::GameObject(Material* material, IndexedDataOBJ objData, glm::vec3 offset) 
 {
 	this->material = material;
-	this->texture = texture;
-
-	this->mesh = new Mesh(objData, offset, instances);
+	this->mesh = new Mesh(objData, offset, 1);
 }
 
 void GameObject::draw(ShaderProgram* shaderProgram) 
@@ -19,19 +17,10 @@ void GameObject::draw(ShaderProgram* shaderProgram)
 	// Use shader
 	shaderProgram->useShader();
 
-	// Textures
-	this->texture->bindTexture(0);
-	if (this->specular)
-	{
-		this->specular->bindTexture(1);
-	}
+	// Binding textures
+	this->material->bindTextures();
 
-	if (this->normalMapTexture != nullptr) 
-	{
-		this->normalMapTexture->bindTexture(2);
-	}
-
-	// Shader uniform values
+	// Setting uniforms
 	this->mesh->setMeshUniform(shaderProgram);
 	this->material->setMaterialShaderUniforms(*shaderProgram);
 
@@ -65,21 +54,6 @@ void GameObject::setScale(const glm::vec3 scale)
 	this->transformation.objectScale = scale;
 }
 
-void GameObject::setNormalMapTexture(Texture* normalMapTexture)
-{
-	this->normalMapTexture = normalMapTexture;
-}
-
-void GameObject::setTexture(Texture* texture)
-{
-	this->texture = texture;
-}
-
-void GameObject::setSpecular(Texture* texture)
-{
-	this->specular = texture;
-}
-
 glm::vec3 GameObject::getPosition() {
 	return this->transformation.objectPosition;
 }
@@ -90,10 +64,15 @@ glm::vec3 GameObject::getRotation() {
 
 GameObject::~GameObject()
 {
-	delete this->mesh;
-
-	if (this->normalMapTexture != nullptr) 
+	if (this->material)
 	{
-		delete this->normalMapTexture;
+		delete this->material;
+		this->material = nullptr;
 	}
+
+	/*if (this->mesh)
+	{
+		delete this->mesh;
+		this->mesh = nullptr;
+	}*/
 }

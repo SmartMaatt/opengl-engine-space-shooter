@@ -9,7 +9,7 @@ class GameObject
 {
 public:
 	GameObject();
-	GameObject(Material* material, Texture* texture, IndexedDataOBJ objData, glm::vec3 offset, int instances);
+	GameObject(Material* material, IndexedDataOBJ objData, glm::vec3 offset);
 
 	void draw(ShaderProgram* shaderProgram);
 
@@ -30,11 +30,6 @@ public:
 
 private:
 	TransformationOBJ transformation;
-
-	Texture* texture;
-	Texture* specular;
-	Texture* normalMapTexture;
-
 	Material* material;
 	Mesh* mesh;
 };

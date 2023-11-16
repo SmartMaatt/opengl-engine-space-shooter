@@ -22,7 +22,6 @@ void SpaceLevel::initLevel()
 {
 	srand(static_cast <unsigned> (time(0)));
 	this->initLevelMaterials();
-	this->initLevelTextures();
 	this->initObjModels();
 	this->initLevelShaders();
 	this->initMatrixMVP();
@@ -31,18 +30,22 @@ void SpaceLevel::initLevel()
 
 void SpaceLevel::initLevelMaterials()
 {
-	this->material = new Material(glm::vec3(0.25));
-}
+	Texture* meteorTexture = new Texture(Texture::createTextureFromFile("res/Textures/asteroid.png", Texture::Type::PNG));
+	Texture* specularMapMeteor = new Texture(Texture::createTextureFromFile("res/Textures/asteroid_specular.png", Texture::Type::SPECULAR));
+	Texture* crystalTexture = new Texture(Texture::createTextureFromFile("res/Textures/crystal.png", Texture::Type::PNG));
+	Texture* specularMapCrystal = new Texture(Texture::createTextureFromFile("res/Textures/simple_specular.png", Texture::Type::SPECULAR));
+	Texture* bulletTexture = new Texture(Texture::createTextureFromFile("res/Textures/sphere.png", Texture::Type::PNG));
 
-void SpaceLevel::initLevelTextures()
-{
-	this->meteorTexture = new Texture(Texture::createTextureFromFile("res/Textures/asteroid.png", Texture::Type::PNG));
-	this->specularMapMeteor = new Texture(Texture::createTextureFromFile("res/Textures/asteroid_specular.png", Texture::Type::SPECULAR));
+	// To remove allocation at the end of scene
+	textures.push_back(meteorTexture);
+	textures.push_back(specularMapMeteor);
+	textures.push_back(crystalTexture);
+	textures.push_back(specularMapCrystal);
+	textures.push_back(bulletTexture);
 
-	this->crystalTexture = new Texture(Texture::createTextureFromFile("res/Textures/crystal.png", Texture::Type::PNG));
-	this->specularMapCrystal = new Texture(Texture::createTextureFromFile("res/Textures/simple_specular.png", Texture::Type::SPECULAR));
-
-	this->bulletTexture = new Texture(Texture::createTextureFromFile("res/Textures/sphere.png", Texture::Type::PNG));
+	this->meteorMaterialPrefab = new Material(meteorTexture, specularMapMeteor, nullptr, 0, 1, glm::vec3(0.1));
+	this->crystalMaterialPrefab = new Material(crystalTexture, specularMapCrystal, nullptr, 0, 1, glm::vec3(0.1));
+	this->bulletMaterialPrefab = new Material(bulletTexture, nullptr, nullptr, 0, 1, glm::vec3(0.25));
 }
 
 void SpaceLevel::initObjModels()
@@ -66,8 +69,7 @@ void SpaceLevel::initObjModels()
 	// Meteors
 	for (int i = 0; i < this->meteorsInstances; i++)
 	{
-		GameObject* model = new GameObject(material, this->meteorTexture, meteorsIndexedObjects, this->zero, 1);
-		model->setSpecular(this->specularMapMeteor);
+		GameObject* model = new GameObject(new Material(*meteorMaterialPrefab), meteorsIndexedObjects, this->zeroVec);
 
 		Entity* entity = new Entity(model);
 		entity->setName("Meteo " + std::to_string(i));
@@ -85,8 +87,7 @@ void SpaceLevel::initObjModels()
 	// Crystals
 	for (int i = 0; i < this->crystalsInstances; i++)
 	{
-		GameObject* model = new GameObject(material, this->crystalTexture, crystalsIndexedObjects, this->zero, 1);
-		model->setSpecular(this->specularMapCrystal);
+		GameObject* model = new GameObject(new Material(*crystalMaterialPrefab), crystalsIndexedObjects, this->zeroVec);
 
 		Crystal* crystal = new Crystal(model);
 		crystal->setName("Crystal " + std::to_string(i));
@@ -94,7 +95,7 @@ void SpaceLevel::initObjModels()
 		crystal->setRotation(glm::vec3(-90, 0, 0));
 		crystal->setPosition(randCoordsInSphere(this->worldRadius));
 		crystal->setOrigin(crystal->getPosition());
-		crystal->setScale(this->one * 0.05f);
+		crystal->setScale(this->oneVec * 0.05f);
 		crystal->setColliderRadius(0.5f);
 
 		crystal->light = new Light::Point(crystal->getPosition(), { 1,0,0 });
@@ -205,7 +206,7 @@ void SpaceLevel::updateMeteors(float deltaTime)
 		(*it)->moveWithDirection(deltaTime);
 
 		// World border
-		if (glm::distance((*it)->getPosition(), this->zero) > this->worldRadius)
+		if (glm::distance((*it)->getPosition(), this->zeroVec) > this->worldRadius)
 		{
 			(*it)->setDirection(glm::vec3(randVal(-1.0f, 1.0f), randVal(-1.0f, 1.0f), randVal(-1.0f, 1.0f)));
 			// std::cout << this->meteors[i]->getName() << " changed direction!" << std::endl;
@@ -394,7 +395,7 @@ void SpaceLevel::drawLevel(float deltaTime, bool wireframe)
 		this->bullet->drawEntity(this->shaderProgram);
 	}
 
-	drawGui();
+	//drawGui();
 }
 
 void SpaceLevel::drawGui() 
@@ -465,14 +466,14 @@ void SpaceLevel::shootBullet()
 
 Bullet* SpaceLevel::spawnBullet()
 {
-	GameObject* model = new GameObject(new Material(glm::vec3(0.25)), this->bulletTexture, this->indexedBulletObjects, this->zero, 1);
+	GameObject* model = new GameObject(new Material(*bulletMaterialPrefab), this->indexedBulletObjects, this->zeroVec);
 
 	Bullet* bullet = new Bullet(model, 7);
 	bullet->setName("Bullet");
 
 	bullet->setPosition(this->player->getCameraPosition() + this->player->getDirection() * 0.3f);
 	bullet->setOrigin(this->player->getCameraPosition());
-	bullet->setScale(this->one * 0.05f);
+	bullet->setScale(this->oneVec * 0.05f);
 
 	bullet->setDirection(this->player->getDirection());
 	bullet->setSpeed(5);
@@ -490,8 +491,19 @@ SpaceLevel::~SpaceLevel()
 {
 	delete this->player;
 	delete this->shaderProgram;
-	delete this->material;
 
+	// Materials
+	delete this->meteorMaterialPrefab;
+	delete this->crystalMaterialPrefab;
+	delete this->bulletMaterialPrefab;
+
+	// Textures
+	for (size_t i = 0; i < textures.size(); i++)
+	{
+		delete textures[i];
+	}
+
+	// Objects
 	for (size_t i = 0; i < meteors.size(); i++)
 	{
 		delete meteors[i];
@@ -501,10 +513,4 @@ SpaceLevel::~SpaceLevel()
 	{
 		delete crystals[i];
 	}
-
-	delete this->meteorTexture;
-	delete this->specularMapMeteor;
-	delete this->crystalTexture;
-	delete this->specularMapCrystal;
-	delete this->bulletTexture;
 }

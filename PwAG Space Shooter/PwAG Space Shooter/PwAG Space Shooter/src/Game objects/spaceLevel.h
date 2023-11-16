@@ -27,7 +27,6 @@ public:
 	void initMatrixMVP();
 	void initLevelShaders();
 	void initLevelMaterials();
-	void initLevelTextures();
 	void initObjModels();
 	void initText();
 
@@ -70,20 +69,20 @@ private:
 	Bullet* bullet = nullptr;
 	IndexedDataOBJ indexedBulletObjects;
 
-	glm::vec3 zero = glm::vec3(0, 0, 0);
-	glm::vec3 one = glm::vec3(1, 1, 1);
+	glm::vec3 zeroVec = glm::vec3(0, 0, 0);
+	glm::vec3 oneVec = glm::vec3(1, 1, 1);
 
 	ShaderProgram* shaderProgram;
 	Shader vertexShader;
 	Shader fragmentShader;
 
-	Material* material;
+	// Textures
+	std::vector<Texture*> textures;
 
-	Texture* meteorTexture;
-	Texture* specularMapMeteor;
-	Texture* crystalTexture;
-	Texture* specularMapCrystal;
-	Texture* bulletTexture;
+	// Materials
+	Material* meteorMaterialPrefab;
+	Material* crystalMaterialPrefab;
+	Material* bulletMaterialPrefab;
 
 	// Text related
 	Font tmpDefaultFont;

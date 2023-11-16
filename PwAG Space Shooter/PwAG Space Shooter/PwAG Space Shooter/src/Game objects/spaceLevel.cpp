@@ -50,13 +50,15 @@ void SpaceLevel::initLevelMaterials()
 
 void SpaceLevel::initObjModels()
 {
-	DataOBJ meteorsObjects = readObj("res/Models/asteroid.obj");
-	DataOBJ crystalsObjects = readObj("res/Models/crystal.obj");
-	DataOBJ bulletObjects = readObj("res/Models/sphere.obj");
+	// Loading data from obj
+	DataOBJ meteorMeshData = readObj("res/Models/asteroid.obj");
+	DataOBJ crystalMeshData = readObj("res/Models/crystal.obj");
+	DataOBJ bulletMeshData = readObj("res/Models/sphere.obj");
 
-	IndexedDataOBJ meteorsIndexedObjects = indexVBO_TBN(meteorsObjects);
-	IndexedDataOBJ crystalsIndexedObjects = indexVBO_TBN(crystalsObjects);
-	this->indexedBulletObjects = indexVBO_TBN(bulletObjects);
+	// Instantiating meshes prefabs
+	this->meteorMeshPrefab = new Mesh(meteorMeshData, this->zeroVec);
+	this->crystalMeshPrefab = new Mesh(crystalMeshData, this->zeroVec);
+	this->bulletMeshPrefab = new Mesh(bulletMeshData, this->zeroVec);
 
 	// Player
 	this->player = new Player(glm::vec3(0, 0.5f, 0));
@@ -69,7 +71,7 @@ void SpaceLevel::initObjModels()
 	// Meteors
 	for (int i = 0; i < this->meteorsInstances; i++)
 	{
-		GameObject* model = new GameObject(new Material(*meteorMaterialPrefab), meteorsIndexedObjects, this->zeroVec);
+		GameObject* model = new GameObject(new Material(*meteorMaterialPrefab), new Mesh(*meteorMeshPrefab));
 
 		Entity* entity = new Entity(model);
 		entity->setName("Meteo " + std::to_string(i));
@@ -87,7 +89,7 @@ void SpaceLevel::initObjModels()
 	// Crystals
 	for (int i = 0; i < this->crystalsInstances; i++)
 	{
-		GameObject* model = new GameObject(new Material(*crystalMaterialPrefab), crystalsIndexedObjects, this->zeroVec);
+		GameObject* model = new GameObject(new Material(*crystalMaterialPrefab), new Mesh(*crystalMeshPrefab));
 
 		Crystal* crystal = new Crystal(model);
 		crystal->setName("Crystal " + std::to_string(i));
@@ -395,7 +397,7 @@ void SpaceLevel::drawLevel(float deltaTime, bool wireframe)
 		this->bullet->drawEntity(this->shaderProgram);
 	}
 
-	//drawGui();
+	drawGui();
 }
 
 void SpaceLevel::drawGui() 
@@ -466,7 +468,7 @@ void SpaceLevel::shootBullet()
 
 Bullet* SpaceLevel::spawnBullet()
 {
-	GameObject* model = new GameObject(new Material(*bulletMaterialPrefab), this->indexedBulletObjects, this->zeroVec);
+	GameObject* model = new GameObject(new Material(*bulletMaterialPrefab), new Mesh(*bulletMeshPrefab));
 
 	Bullet* bullet = new Bullet(model, 7);
 	bullet->setName("Bullet");

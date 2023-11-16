@@ -62,16 +62,16 @@ private:
 	void setLightUniforms(ShaderProgram& shader);
 	Bullet* spawnBullet();
 
-	std::vector<Light::Point> pointLights;
-	std::vector<Entity*> meteors;
-	std::vector<Crystal*> crystals;
-
-	Bullet* bullet = nullptr;
-	IndexedDataOBJ indexedBulletObjects;
-
 	glm::vec3 zeroVec = glm::vec3(0, 0, 0);
 	glm::vec3 oneVec = glm::vec3(1, 1, 1);
 
+	// Instances
+	std::vector<Light::Point> pointLights;
+	std::vector<Entity*> meteors;
+	std::vector<Crystal*> crystals;
+	Bullet* bullet = nullptr;
+
+	// Shaders
 	ShaderProgram* shaderProgram;
 	Shader vertexShader;
 	Shader fragmentShader;
@@ -83,6 +83,11 @@ private:
 	Material* meteorMaterialPrefab;
 	Material* crystalMaterialPrefab;
 	Material* bulletMaterialPrefab;
+
+	// Meshes
+	Mesh* meteorMeshPrefab;
+	Mesh* crystalMeshPrefab;
+	Mesh* bulletMeshPrefab;
 
 	// Text related
 	Font tmpDefaultFont;

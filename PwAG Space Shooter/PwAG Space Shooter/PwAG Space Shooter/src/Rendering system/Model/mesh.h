@@ -6,23 +6,30 @@ class Mesh
 {
 public:
 	Mesh();
-	Mesh(IndexedDataOBJ objData, glm::vec3 offset, int instances);
+	Mesh(DataOBJ objData, glm::vec3 offset);
+	Mesh(Mesh& src);
 
 	void drawMesh();
 
+	// Uniforms
 	void setMeshUniform(ShaderProgram* shaderProgram);
 	void setMatrixModel(glm::vec3 meshPosition, glm::vec3 meshOrigin, glm::vec3 meshRotation, glm::vec3 meshScale);
+
+	// Getters
+	glm::vec3 getOffset();
+	DataOBJ getMeshData();
+	IndexedDataOBJ getIndexedMeshData();
 
 	virtual ~Mesh();
 
 private:
 	void initBuffers();
 
+	DataOBJ meshData;
 	IndexedDataOBJ indexedData;
 
 	glm::vec3 offset;
 	std::vector<glm::vec3> offsets;
-	int instances = 0;
 
 	glm::mat4 matrixModel;
 

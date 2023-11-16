@@ -9,7 +9,7 @@ class GameObject
 {
 public:
 	GameObject();
-	GameObject(Material* material, IndexedDataOBJ objData, glm::vec3 offset);
+	GameObject(Material* material, Mesh* mesh);
 
 	void draw(ShaderProgram* shaderProgram);
 
@@ -17,11 +17,6 @@ public:
 	void setOrigin(const glm::vec3 origin);
 	void setRotation(const glm::vec3 rotation);
 	void setScale(const glm::vec3 scale);
-
-	void setNormalMapTexture(Texture* normalMapTexture);
-
-	void setTexture(Texture* texture);
-	void setSpecular(Texture* texture);
 
 	glm::vec3 getPosition();
 	glm::vec3 getRotation();

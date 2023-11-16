@@ -6,11 +6,24 @@ Mesh::Mesh()
 {
 }
 
-Mesh::Mesh(IndexedDataOBJ objData, glm::vec3 offset, int instances)
+Mesh::Mesh(DataOBJ meshData, glm::vec3 offset)
 {
-	this->indexedData = objData;
+	this->meshData = meshData;
+	this->indexedData = indexVBO_TBN(meshData);
 	this->offset = offset;
-	this->instances = instances;
+
+	for (unsigned int i = 0; i < indexedData.vertices.size(); i++)
+	{
+		offsets.push_back(offset);
+	}
+	initBuffers();
+}
+
+Mesh::Mesh(Mesh& src)
+{
+	this->meshData = src.getMeshData();
+	this->indexedData = src.getIndexedMeshData();
+	this->offset = offset;
 
 	for (unsigned int i = 0; i < indexedData.vertices.size(); i++)
 	{
@@ -109,6 +122,8 @@ void Mesh::drawMesh()
 	glDisableVertexAttribArray(6);
 }
 
+
+// Uniforms
 void Mesh::setMeshUniform(ShaderProgram* shaderProgram) 
 {
 	shaderProgram->setMat4("ModelMatrix", matrixModel);
@@ -124,6 +139,24 @@ void Mesh::setMatrixModel(glm::vec3 position, glm::vec3 origin, glm::vec3 rotati
 	this->matrixModel = glm::translate(this->matrixModel, position - origin);
 	this->matrixModel = glm::scale(this->matrixModel, scale);
 }
+
+
+// Getters
+glm::vec3 Mesh::getOffset()
+{
+	return this->offset;
+}
+
+DataOBJ Mesh::getMeshData()
+{
+	return this->meshData;
+}
+
+IndexedDataOBJ Mesh::getIndexedMeshData()
+{
+	return this->indexedData;
+}
+
 
 Mesh::~Mesh() 
 {

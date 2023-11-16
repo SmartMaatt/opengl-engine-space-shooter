@@ -6,10 +6,10 @@ GameObject::GameObject()
 
 }
 
-GameObject::GameObject(Material* material, IndexedDataOBJ objData, glm::vec3 offset) 
+GameObject::GameObject(Material* material, Mesh* mesh) 
 {
 	this->material = material;
-	this->mesh = new Mesh(objData, offset, 1);
+	this->mesh = mesh;
 }
 
 void GameObject::draw(ShaderProgram* shaderProgram) 
@@ -70,9 +70,9 @@ GameObject::~GameObject()
 		this->material = nullptr;
 	}
 
-	/*if (this->mesh)
+	if (this->mesh)
 	{
 		delete this->mesh;
 		this->mesh = nullptr;
-	}*/
+	}
 }

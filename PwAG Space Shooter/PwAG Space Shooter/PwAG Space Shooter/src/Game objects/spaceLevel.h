@@ -4,6 +4,7 @@
 #include "../Rendering system/Player/PlayerStats.h"
 #include "../Rendering system/Lighting/point.h"
 #include "../Rendering system/Entity/entity.h"
+#include "../Rendering system/Entity/meteor.h"
 #include "../Rendering system/Entity/crystal.h"
 #include "../Rendering system/Entity/bullet.h"
 #include "../Rendering system/Model/indexedDataOBJ.h"
@@ -30,16 +31,14 @@ public:
 	void initObjModels();
 	void initText();
 
-	// Randomization
-	float randVal(float LO, float HI);
-	glm::vec3 randCoordsInSphere(float radius);
-
 	// Update
 	void updateLevel(float deltaTime);
 
 	void updatePlayer(float deltaTime);
 	void updateMeteors(float deltaTime);
+	void collideMeteor(std::vector<Meteor*>::iterator& meteor);
 	void updateCrystals(float deltaTime);
+	void collideCrystal(std::vector<Crystal*>::iterator& crystal);
 	void updateBullet(float deltaTime);
 	void updateLightShaders();
 	void updateTextValues();
@@ -49,9 +48,6 @@ public:
 	void drawGui();
 	void ToggleHUD();
 
-	// Collision
-	bool areSpheresCollided(glm::vec3 center1, float rad1, glm::vec3 center2, float rad2);
-	
 	// Shooting
 	void shootBullet();
 
@@ -62,14 +58,11 @@ private:
 	void setLightUniforms(ShaderProgram& shader);
 	Bullet* spawnBullet();
 
-	glm::vec3 zeroVec = glm::vec3(0, 0, 0);
-	glm::vec3 oneVec = glm::vec3(1, 1, 1);
-
 	// Instances
 	std::vector<Light::Point> pointLights;
-	std::vector<Entity*> meteors;
+	std::vector<Meteor*> meteors;
 	std::vector<Crystal*> crystals;
-	Bullet* bullet = nullptr;
+	Bullet* bullet;
 
 	// Shaders
 	ShaderProgram* shaderProgram;

@@ -56,14 +56,14 @@ void SpaceLevel::initObjModels()
 	DataOBJ bulletMeshData = readObj("res/Models/sphere.obj");
 
 	// Instantiating meshes prefabs
-	this->meteorMeshPrefab = new Mesh(meteorMeshData, this->zeroVec);
-	this->crystalMeshPrefab = new Mesh(crystalMeshData, this->zeroVec);
-	this->bulletMeshPrefab = new Mesh(bulletMeshData, this->zeroVec);
+	this->meteorMeshPrefab = new Mesh(meteorMeshData, Mathf::zeroVec());
+	this->crystalMeshPrefab = new Mesh(crystalMeshData, Mathf::zeroVec());
+	this->bulletMeshPrefab = new Mesh(bulletMeshData, Mathf::zeroVec());
 
 	// Player
 	this->player = new Player(glm::vec3(0, 0.5f, 0));
-	this->startPosition = glm::vec3(0, 0.5f, 0);
 	this->playerStats = new PlayerStats();
+	this->startPosition = glm::vec3(0, 0.5f, 0);
 
 	// Light source
 	this->pointLights.push_back(Light::Point({ 1,0,1 }, { 1,1,1 }));
@@ -72,17 +72,7 @@ void SpaceLevel::initObjModels()
 	for (int i = 0; i < this->meteorsInstances; i++)
 	{
 		GameObject* model = new GameObject(new Material(*meteorMaterialPrefab), new Mesh(*meteorMeshPrefab));
-
-		Entity* entity = new Entity(model);
-		entity->setName("Meteo " + std::to_string(i));
-
-		entity->setPosition(randCoordsInSphere(this->worldRadius));
-		float size = randVal(0.1f, 0.75f);
-		entity->setScale(glm::vec3(size, size, size));
-		entity->setColliderRadius(size);
-
-		entity->setDirection(glm::vec3(randVal(-1.0f, 1.0f), randVal(-1.0f, 1.0f), randVal(-1.0f, 1.0f)));
-		entity->setSpeed(randVal(0.3f, 0.7f));
+		Meteor* entity = new Meteor(model, "Meteor " + std::to_string(i), this->worldRadius);
 		this->meteors.push_back(entity);
 	}
 
@@ -90,17 +80,7 @@ void SpaceLevel::initObjModels()
 	for (int i = 0; i < this->crystalsInstances; i++)
 	{
 		GameObject* model = new GameObject(new Material(*crystalMaterialPrefab), new Mesh(*crystalMeshPrefab));
-
-		Crystal* crystal = new Crystal(model);
-		crystal->setName("Crystal " + std::to_string(i));
-
-		crystal->setRotation(glm::vec3(-90, 0, 0));
-		crystal->setPosition(randCoordsInSphere(this->worldRadius));
-		crystal->setOrigin(crystal->getPosition());
-		crystal->setScale(this->oneVec * 0.05f);
-		crystal->setColliderRadius(0.5f);
-
-		crystal->light = new Light::Point(crystal->getPosition(), { 1,0,0 });
+		Crystal* crystal = new Crystal(model, "Crystal " + std::to_string(i), this->worldRadius);
 		this->crystals.push_back(crystal);
 	}
 }
@@ -146,30 +126,6 @@ void SpaceLevel::initText()
 }
 
 
-
-// Randomize
-float SpaceLevel::randVal(float LO, float HI)
-{
-	return LO + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (HI - LO)));
-}
-
-glm::vec3 SpaceLevel::randCoordsInSphere(float radius)
-{
-	float x = randVal(-1, 1);
-	float y = randVal(-1, 1);
-	float z = randVal(-1, 1);
-
-	float mag = glm::sqrt((x * x) + (y * y) + (z * z));
-	float d = randVal(0, radius) / mag;
-
-	x *= d;
-	y *= d;
-	z *= d;
-	return glm::vec3(x, y, z);
-}
-
-
-
 // Update
 void SpaceLevel::updateLevel(float deltaTime)
 {
@@ -202,84 +158,91 @@ void SpaceLevel::updatePlayer(float deltaTime)
 void SpaceLevel::updateMeteors(float deltaTime)
 {
 	// Meteors
-	for (auto it = meteors.begin(); it != meteors.end();)
+	for (auto meteor = meteors.begin(); meteor != meteors.end();)
 	{
-		// Move
-		(*it)->moveWithDirection(deltaTime);
-
-		// World border
-		if (glm::distance((*it)->getPosition(), this->zeroVec) > this->worldRadius)
-		{
-			(*it)->setDirection(glm::vec3(randVal(-1.0f, 1.0f), randVal(-1.0f, 1.0f), randVal(-1.0f, 1.0f)));
-			// std::cout << this->meteors[i]->getName() << " changed direction!" << std::endl;
-		}
-
-		// Meteor - player collision
-		if (areSpheresCollided(player->getCameraPosition(), playerStats->getPlayerRadius(), (*it)->getPosition(), (*it)->getColliderRadius()))
-		{
-			std::cout << "Collision: Player <---> " << (*it)->getName() << std::endl;
-			playerStats->takeDamage(20);
-			std::cout << "Player health: " << playerStats->getHitPoints() << std::endl;
-			delete (*it);
-			it = meteors.erase(it);
-		}
-		else { ++it; }
+		// Update
+		(*meteor)->update(deltaTime);
+		
+		// >>> Collisions <<<
+		collideMeteor(meteor);
 	}
+}
+
+void SpaceLevel::collideMeteor(std::vector<Meteor*>::iterator& meteor)
+{
+	// Meteor <-> World border
+	if (glm::distance((*meteor)->getPosition(), Mathf::zeroVec()) > this->worldRadius)
+	{
+		(*meteor)->changeDirectionOnCollision();
+	}
+
+	// Meteor <-> Player
+	if (Mathf::areSpheresCollided(player->getCameraPosition(), playerStats->getPlayerRadius(), (*meteor)->getPosition(), (*meteor)->getColliderRadius()))
+	{
+		playerStats->takeDamage(20);
+
+		std::cout << "Collision: Player <---> " << (*meteor)->getName() << std::endl;
+		std::cout << "Player health: " << playerStats->getHitPoints() << std::endl;
+
+		(*meteor)->destroy();
+		meteor = meteors.erase(meteor);
+	}
+	// Meteor <-> Bullet
+	else if (bullet && !bullet->isDead() && Mathf::areSpheresCollided(bullet->getPosition(), bullet->getColliderRadius(), (*meteor)->getPosition(), (*meteor)->getColliderRadius()))
+	{
+		std::cout << "Collision: Bullet <---> " << (*meteor)->getName() << std::endl;
+		(*meteor)->destroy();
+		bullet->destroy();
+
+		meteor = meteors.erase(meteor);
+		bullet = nullptr;
+	}
+	else { ++meteor; }
 }
 
 void SpaceLevel::updateCrystals(float deltaTime)
 {
 	// Crystals
-	for (auto it = crystals.begin(); it != crystals.end();)
+	for (auto crystal = crystals.begin(); crystal != crystals.end();)
 	{
-		// Rotation
-		glm::vec3 newRotation = (*it)->getRotation() + glm::vec3(0, 0, 6.28f) * deltaTime;
-		(*it)->setRotation(newRotation);
+		// Update
+		(*crystal)->update(deltaTime);
 
-		// Crystal - player collision
-		if (areSpheresCollided(player->getCameraPosition(), playerStats->getPlayerRadius(), (*it)->getPosition(), (*it)->getColliderRadius()))
-		{
-			std::cout << "Collision: Player <---> " << (*it)->getName() << std::endl;
-			delete (*it);
-			it = crystals.erase(it);
-			this->playerStats->addPoint();
-		}
-		else { ++it; }
+		// >>> Collisions <<<
+		collideCrystal(crystal);
 	}
+}
+
+void SpaceLevel::collideCrystal(std::vector<Crystal*>::iterator& crystal)
+{
+	// Crystal <-> Player
+	if (Mathf::areSpheresCollided(player->getCameraPosition(), playerStats->getPlayerRadius(), (*crystal)->getPosition(), (*crystal)->getColliderRadius()))
+	{
+		this->playerStats->addPoint();
+
+		std::cout << "Collision: Player <---> " << (*crystal)->getName() << std::endl;
+
+		(*crystal)->destroy();
+		crystal = crystals.erase(crystal);
+	}
+	else { ++crystal; }
 }
 
 void SpaceLevel::updateBullet(float deltaTime)
 {
 	// Bullet
-	if (bullet != nullptr)
+	if (bullet)
 	{
-		bullet->moveWithDirection(deltaTime);
-		bullet->light->setPosition(bullet->getPosition());
-
-		// Bullet death
-		bullet->calcAge(deltaTime);
 		if (bullet->isDead())
 		{
+			// Kill
 			delete bullet;
 			bullet = nullptr;
-			std::cout << "Erased bullet" << std::endl;
-			return;
 		}
-
-		for (auto it = meteors.begin(); it != meteors.end();)
+		else
 		{
-			// Meteor - bullet collision
-			if (areSpheresCollided(bullet->getPosition(), bullet->getColliderRadius(), (*it)->getPosition(), (*it)->getColliderRadius()))
-			{
-				std::cout << "Collision: Bullet <---> " << (*it)->getName() << std::endl;
-				delete (*it);
-				delete bullet;
-
-				it = meteors.erase(it);
-				bullet = nullptr;
-				return;
-			}
-			else { ++it; }
+			// Update
+			bullet->update(deltaTime);
 		}
 	}
 }
@@ -293,7 +256,7 @@ void SpaceLevel::updateLightShaders()
 void SpaceLevel::setLightUniforms(ShaderProgram& shader)
 {
 	int includeBullet = 0;
-	if (bullet != nullptr) { includeBullet = 1; }
+	if (bullet) { includeBullet = 1; }
 
 	shader.setInt("pointLightsCount", static_cast<int>(pointLights.size() + crystals.size() + includeBullet));
 	char lightIndex[20];
@@ -329,7 +292,7 @@ void SpaceLevel::setLightUniforms(ShaderProgram& shader)
 	}
 
 	// Bullet lights
-	if (bullet != nullptr)
+	if (bullet && !bullet->isDead())
 	{
 		sprintf_s(lightIndex, 20, "pointLights[%d].", pointLights.size() + crystals.size());
 		std::string index{ lightIndex };
@@ -375,7 +338,6 @@ void SpaceLevel::updateTextValues()
 
 
 
-
 // Render
 void SpaceLevel::drawLevel(float deltaTime, bool wireframe)
 {
@@ -384,19 +346,18 @@ void SpaceLevel::drawLevel(float deltaTime, bool wireframe)
 
 	for (int i = 0; i < this->meteors.size(); i++)
 	{
-		this->meteors[i]->drawEntity(this->shaderProgram);
+		this->meteors[i]->draw(this->shaderProgram);
 	}
 
 	for (int i = 0; i < this->crystals.size(); i++)
 	{
-		this->crystals[i]->drawEntity(this->shaderProgram);
+		this->crystals[i]->draw(this->shaderProgram);
 	}
 
-	if (bullet != nullptr)
+	if (bullet && !bullet->isDead())
 	{
-		this->bullet->drawEntity(this->shaderProgram);
+		this->bullet->draw(this->shaderProgram);
 	}
-
 	drawGui();
 }
 
@@ -436,21 +397,6 @@ void SpaceLevel::ToggleHUD()
 }
 
 
-
-
-
-// Collision
-bool SpaceLevel::areSpheresCollided(glm::vec3 center1, float rad1, glm::vec3 center2, float rad2)
-{
-	float radSum = rad1 + rad2;
-	float distance = glm::distance(center1, center2);
-
-	return (radSum > distance);
-}
-
-
-
-
 // Shooting
 void SpaceLevel::shootBullet()
 {
@@ -469,19 +415,7 @@ void SpaceLevel::shootBullet()
 Bullet* SpaceLevel::spawnBullet()
 {
 	GameObject* model = new GameObject(new Material(*bulletMaterialPrefab), new Mesh(*bulletMeshPrefab));
-
-	Bullet* bullet = new Bullet(model, 7);
-	bullet->setName("Bullet");
-
-	bullet->setPosition(this->player->getCameraPosition() + this->player->getDirection() * 0.3f);
-	bullet->setOrigin(this->player->getCameraPosition());
-	bullet->setScale(this->oneVec * 0.05f);
-
-	bullet->setDirection(this->player->getDirection());
-	bullet->setSpeed(5);
-	bullet->setColliderRadius(0.5f);
-
-	bullet->light = new Light::Point(bullet->getPosition(), { 0,0,1 });
+	Bullet* bullet = new Bullet(model, "Bullet", 7, this->player);
 	return bullet;
 }
 
@@ -508,11 +442,16 @@ SpaceLevel::~SpaceLevel()
 	// Objects
 	for (size_t i = 0; i < meteors.size(); i++)
 	{
-		delete meteors[i];
+		meteors[i]->destroy();
 	}
 
 	for (size_t i = 0; i < crystals.size(); i++)
 	{
-		delete crystals[i];
+		crystals[i]->destroy();
+	}
+
+	if (bullet)
+	{
+		bullet->destroy();
 	}
 }

@@ -142,6 +142,8 @@
     <ClCompile Include="src\Rendering system\Entity\bullet.cpp" />
     <ClCompile Include="src\Rendering system\Entity\crystal.cpp" />
     <ClCompile Include="src\Rendering system\Entity\entity.cpp" />
+    <ClCompile Include="src\Rendering system\Entity\livingEntity.cpp" />
+    <ClCompile Include="src\Rendering system\Entity\meteor.cpp" />
     <ClCompile Include="src\Rendering system\Model\indexedDataOBJ.cpp" />
     <ClCompile Include="src\Rendering system\Model\material.cpp" />
     <ClCompile Include="src\GUI\button.cpp" />
@@ -153,6 +155,7 @@
     <ClCompile Include="src\State machine\gameState.cpp" />
     <ClCompile Include="src\State machine\menuState.cpp" />
     <ClCompile Include="src\State machine\stateMachine.cpp" />
+    <ClCompile Include="src\Static\mathf.cpp" />
     <ClCompile Include="src\Utilities\resourceManager.cpp" />
     <ClCompile Include="src\Rendering system\Lighting\attenuation.cpp" />
     <ClCompile Include="src\Rendering system\Lighting\light.cpp" />
@@ -196,6 +199,8 @@
     <ClInclude Include="src\Rendering system\Entity\bullet.h" />
     <ClInclude Include="src\Rendering system\Entity\crystal.h" />
     <ClInclude Include="src\Rendering system\Entity\entity.h" />
+    <ClInclude Include="src\Rendering system\Entity\livingEntity.h" />
+    <ClInclude Include="src\Rendering system\Entity\meteor.h" />
     <ClInclude Include="src\Rendering system\Model\indexedDataOBJ.h" />
     <ClInclude Include="src\Rendering system\Model\material.h" />
     <ClInclude Include="src\GUI\button.h" />
@@ -210,6 +215,7 @@
     <ClInclude Include="src\State machine\menuState.h" />
     <ClInclude Include="src\State machine\programState.h" />
     <ClInclude Include="src\State machine\stateMachine.h" />
+    <ClInclude Include="src\Static\mathf.h" />
     <ClInclude Include="src\Utilities\resourceManager.h" />
     <ClInclude Include="src\Rendering system\Lighting\attenuation.h" />
     <ClInclude Include="src\Rendering system\Lighting\light.h" />

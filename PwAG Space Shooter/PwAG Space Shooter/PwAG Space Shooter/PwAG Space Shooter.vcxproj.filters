@@ -124,6 +124,12 @@
     <Filter Include="Pliki nagłówkowe\Rendering system\Entity">
       <UniqueIdentifier>{893bec8c-4cb4-472e-91cd-63fa7bff4e49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\Static">
+      <UniqueIdentifier>{c2e15504-6dd3-4229-960c-fc56a1785eda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Static">
+      <UniqueIdentifier>{f100cfe1-7e50-4427-97d6-abce25648b05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Event system\eventManager.cpp">
@@ -245,6 +251,15 @@
     </ClCompile>
     <ClCompile Include="src\GUI\sprite.cpp">
       <Filter>Pliki źródłowe\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Static\mathf.cpp">
+      <Filter>Pliki źródłowe\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Entity\meteor.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Entity\livingEntity.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -394,6 +409,15 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Static\mathf.h">
+      <Filter>Pliki nagłówkowe\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Entity\meteor.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Entity\livingEntity.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,25 +1,49 @@
 ﻿#pragma once
 #include "pch.h"
-#include "entity.h"
+#include "livingEntity.h"
 #include "bullet.h"
 #include <string>
 
-Bullet::Bullet(GameObject* model, float dieAge) : Entity(model) 
+// Constructors / Destructor
+Bullet::Bullet(GameObject* gameObj, std::string name, float lifeSpan, Player* player) : LivingEntity(gameObj, name, lifeSpan)
 {
-	this->dieAge = dieAge;
+	// Position
+	setPosition(player->getCameraPosition() + player->getDirection() * 0.3f);
+	setOrigin(player->getCameraPosition());
+
+	// Scale
+	setScale(Mathf::oneVec() * 0.05f);
+	setColliderRadius(0.5f);
+
+	// Movement
+	setDirection(player->getDirection());
+	setSpeed(5);
+
+	// Light
+	light = new Light::Point(getPosition(), { 0,0,1 });
 }
 
 Bullet::~Bullet()
 {
 }
 
-void Bullet::calcAge(float deltaTime)
+// Update
+void Bullet::update(float deltaTime)
 {
-	age += deltaTime;
-	dead = age > dieAge;
+	LivingEntity::update(deltaTime);
+
+	moveWithDirection(deltaTime);
+	light->setPosition(getPosition());
 }
 
-bool Bullet::isDead()
+// Drawing
+void Bullet::draw(ShaderProgram* shaderProgram)
 {
-	return this->dead;
+	LivingEntity::draw(shaderProgram);
+}
+
+// Destroying
+void Bullet::destroy()
+{
+	delete this;
 }

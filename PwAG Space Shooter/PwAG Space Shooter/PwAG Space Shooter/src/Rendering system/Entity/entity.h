@@ -4,12 +4,20 @@
 class Entity 
 {
 public:
-	Entity(GameObject* model);
+	// Constructors / Destructor
+	Entity(GameObject* gameObj, std::string name);
 	~Entity();
 
-	void drawEntity(ShaderProgram* shaderProgram);
+	// Update
+	void update(float deltaTime);
 
-	// Name
+	// Drawing
+	void draw(ShaderProgram* shaderProgram);
+
+	// Destroying;
+	void destroy();
+
+	// Naming
 	void setName(std::string name);
 	std::string getName();
 
@@ -34,14 +42,15 @@ public:
 	void setSpeed(float speed);
 	float getSpeed();
 
-	// Collider radius
+	// Collision
 	void setColliderRadius(float colRad);
 	float getColliderRadius();
 
 protected:
-	std::string name;
-	GameObject* model;
+	GameObject* gameObj = nullptr;
+	std::string name = "";
 	glm::vec3 direction = glm::vec3(0.0f);
+
 	float speed = 0;
 	float colRad = 0;
 };

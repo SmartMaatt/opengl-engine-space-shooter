@@ -1,13 +1,13 @@
 #pragma once
-#include "livingEntity.h"
+#include "entity.h"
 #include "../Lighting/point.h"
 
-class Bullet : public LivingEntity
+class Meteor : public Entity
 {
 public:
 	// Constructors / Destructor
-	Bullet(GameObject* gameObj, std::string name, float lifeSpan, Player* player);
-	~Bullet();
+	Meteor(GameObject* gameObj, std::string name, float worldRadius);
+	~Meteor();
 
 	// Update
 	void update(float deltaTime);
@@ -18,5 +18,6 @@ public:
 	// Destroying
 	void destroy();
 
-	Light::Point* light;
+	// Collision
+	void changeDirectionOnCollision();
 };

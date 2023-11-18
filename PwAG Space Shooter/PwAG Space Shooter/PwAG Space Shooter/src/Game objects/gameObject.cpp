@@ -54,7 +54,8 @@ void GameObject::setScale(const glm::vec3 scale)
 	this->transformation.objectScale = scale;
 }
 
-glm::vec3 GameObject::getPosition() {
+glm::vec3 GameObject::getPosition() 
+{
 	return this->transformation.objectPosition;
 }
 

@@ -102,7 +102,7 @@ void Shader::compile()
 	{
 		char infoLog[1024];
 		glGetShaderInfoLog(this->shaderID, 512, nullptr, infoLog);
-		std::cout << infoLog << std::endl;
+		Debug::LogError(infoLog);
 		//TODO - some exception?
 	}
 }

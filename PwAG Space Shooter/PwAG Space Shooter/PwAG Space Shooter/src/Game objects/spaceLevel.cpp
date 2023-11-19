@@ -341,8 +341,8 @@ void SpaceLevel::_collideMeteor(std::vector<Meteor*>::iterator& meteor)
 	{
 		stats->takeDamage(20);
 
-		std::cout << "Collision: Player <---> " << (*meteor)->getName() << std::endl;
-		std::cout << "Player health: " << stats->getHitPoints() << std::endl;
+		Debug::Log("Collision: Player <---> " + (*meteor)->getName());
+		Debug::Log("Player health: " + std::to_string(stats->getHitPoints()));
 
 		(*meteor)->destroy();
 		meteor = _meteors.erase(meteor);
@@ -350,7 +350,8 @@ void SpaceLevel::_collideMeteor(std::vector<Meteor*>::iterator& meteor)
 	// Meteor <-> Bullet
 	else if (_bullet && !_bullet->isDead() && Mathf::areSpheresCollided(_bullet->getPosition(), _bullet->getColliderRadius(), (*meteor)->getPosition(), (*meteor)->getColliderRadius()))
 	{
-		std::cout << "Collision: Bullet <---> " << (*meteor)->getName() << std::endl;
+		Debug::Log("Collision: Bullet <---> " + (*meteor)->getName());
+
 		(*meteor)->destroy();
 		_bullet->destroy();
 
@@ -368,7 +369,7 @@ void SpaceLevel::_collideCrystal(std::vector<Crystal*>::iterator& crystal)
 	{
 		stats->addPoint();
 
-		std::cout << "Collision: Player <---> " << (*crystal)->getName() << std::endl;
+		Debug::Log("Collision: Player <---> " + (*crystal)->getName());
 
 		(*crystal)->destroy();
 		crystal = _crystals.erase(crystal);
@@ -487,7 +488,7 @@ void SpaceLevel::_shootBullet()
 	}
 	else
 	{
-		std::cout << "Can't shoot bullet" << std::endl;
+		Debug::LogWarning("Can't shoot bullet");
 	}
 }
 

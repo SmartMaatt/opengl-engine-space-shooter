@@ -157,6 +157,7 @@
     <ClCompile Include="src\State machine\gameState.cpp" />
     <ClCompile Include="src\State machine\menuState.cpp" />
     <ClCompile Include="src\State machine\stateMachine.cpp" />
+    <ClCompile Include="src\Static\debug.cpp" />
     <ClCompile Include="src\Static\mathf.cpp" />
     <ClCompile Include="src\Utilities\resourceManager.cpp" />
     <ClCompile Include="src\Rendering system\Lighting\attenuation.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="src\State machine\menuState.h" />
     <ClInclude Include="src\State machine\programState.h" />
     <ClInclude Include="src\State machine\stateMachine.h" />
+    <ClInclude Include="src\Static\debug.h" />
     <ClInclude Include="src\Static\mathf.h" />
     <ClInclude Include="src\Utilities\resourceManager.h" />
     <ClInclude Include="src\Rendering system\Lighting\attenuation.h" />

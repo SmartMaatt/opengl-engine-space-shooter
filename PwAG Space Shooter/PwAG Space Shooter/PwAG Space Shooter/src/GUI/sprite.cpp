@@ -117,7 +117,7 @@ void Sprite::InitTexture()
 	}
 	else
 	{
-		std::cout << "Failed to load texture" << std::endl;
+		Debug::LogError("Failed to load texture");
 	}
 	stbi_image_free(data);
 }

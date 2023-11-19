@@ -46,7 +46,9 @@
 #include "../Rendering system/OpenGL Objects/fbo.h"
 #include "../Rendering system/Lighting/point.h"
 #include "../Rendering system/Player/player.h"
+
 #include "../Static/mathf.h"
+#include "../Static/debug.h"
 
 #include "../Event system/mouse.h"
 #include "../Event system/keyboard.h"

@@ -48,7 +48,7 @@ void Texture::BitMapFile::loadFromFile(const std::string& filePath)
 	data = stbi_load(filePath.c_str(), &sizeX, &sizeY, &nrChannels, 0);
 	if (data == nullptr)
 	{
-		std::cout << "Failed loading texture: " + filePath << std::endl;
+		Debug::LogError("Failed loading texture: " + filePath);
 	}
 }
 #pragma endregion

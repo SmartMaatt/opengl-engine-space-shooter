@@ -197,7 +197,7 @@ void Window::initOpenGL() const
 {
 	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
 	{
-		std::cout << "Failed to initialize OpenGL context" << std::endl;
+		Debug::LogError("Failed to initialize OpenGL context");
 		exit;
 	}
 

@@ -38,12 +38,12 @@ void GameState::render(float deltaTime, bool wireframe)
 /* --->>> Outcomes <<<--- */
 void GameState::winLevel()
 {
-	std::cout << "You won!" << std::endl;
+	Debug::LogSuccess("You won!");
 	this->gameReference->m_stateMachine.addNewState(StateReference(new GameOverState(this->gameReference, "You won!")));
 }
 
 void GameState::looseLevel()
 {
-	std::cout << "You loose!" << std::endl;
+	Debug::LogError("You loose!");
 	this->gameReference->m_stateMachine.addNewState(StateReference(new GameOverState(this->gameReference, "You loose!")));
 }

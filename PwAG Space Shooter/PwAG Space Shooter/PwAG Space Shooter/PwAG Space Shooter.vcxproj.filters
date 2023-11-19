@@ -273,6 +273,9 @@
     <ClCompile Include="src\Rendering system\Skybox\skybox.cpp">
       <Filter>Pliki źródłowe\Rendering system\Skybox</Filter>
     </ClCompile>
+    <ClCompile Include="src\Static\debug.cpp">
+      <Filter>Pliki źródłowe\Static</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Event system\eventManager.h">
@@ -436,6 +439,9 @@
     </ClInclude>
     <ClInclude Include="src\Rendering system\Skybox\skybox.h">
       <Filter>Pliki nagłówkowe\Rendering system\Skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Static\debug.h">
+      <Filter>Pliki nagłówkowe\Static</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

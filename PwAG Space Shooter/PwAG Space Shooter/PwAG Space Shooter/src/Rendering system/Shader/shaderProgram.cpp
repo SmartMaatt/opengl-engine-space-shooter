@@ -82,7 +82,7 @@ bool ShaderProgram::linkShaderProgram()
 	{
 		char infoLog[1024];
 		glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
-		std::cout << infoLog << std::endl;
+		Debug::LogError(infoLog);
 
 		return false;
 	}

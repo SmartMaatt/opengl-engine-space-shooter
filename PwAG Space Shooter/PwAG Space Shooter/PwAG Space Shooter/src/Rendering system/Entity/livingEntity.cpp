@@ -23,7 +23,7 @@ void LivingEntity::update(float deltaTime)
 	calcAge(deltaTime);
 	if (isDead())
 	{
-		std::cout << "Object " << name << " aged to death!" << std::endl;
+		Debug::Log("Object " + name + " aged to death!");
 		// Has to be killed by external manager
 	}
 }

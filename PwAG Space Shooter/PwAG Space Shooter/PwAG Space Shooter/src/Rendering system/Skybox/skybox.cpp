@@ -125,7 +125,7 @@ void Skybox::InitializeTextures(std::string facesCubemap[6])
 		}
 		else
 		{
-			std::cout << "Failed to load texture: " << facesCubemap[i] << std::endl;
+			Debug::LogError("Failed to load texture: " + facesCubemap[i]);
 			stbi_image_free(data);
 		}
 	}

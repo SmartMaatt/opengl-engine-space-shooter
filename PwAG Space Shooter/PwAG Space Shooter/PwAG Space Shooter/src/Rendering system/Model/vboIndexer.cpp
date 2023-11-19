@@ -80,7 +80,7 @@ void indexVBO_slow(
 
 struct PackedVertex
 {
-	glm::vec3 position;
+	glm::vec3 _position;
 	glm::vec2 uv;
 	glm::vec3 normal;
 

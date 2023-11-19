@@ -485,11 +485,11 @@ namespace glm
 	template<typename T>
 	GLM_FUNC_QUALIFIER mat<4, 4, T, defaultp> infinitePerspectiveRH(T fovy, T aspect, T zNear)
 	{
-		T const range = tan(fovy / static_cast<T>(2)) * zNear;
-		T const left = -range * aspect;
-		T const right = range * aspect;
-		T const bottom = -range;
-		T const top = range;
+		T const _range = tan(fovy / static_cast<T>(2)) * zNear;
+		T const left = -_range * aspect;
+		T const right = _range * aspect;
+		T const bottom = -_range;
+		T const top = _range;
 
 		mat<4, 4, T, defaultp> Result(static_cast<T>(0));
 		Result[0][0] = (static_cast<T>(2) * zNear) / (right - left);
@@ -503,11 +503,11 @@ namespace glm
 	template<typename T>
 	GLM_FUNC_QUALIFIER mat<4, 4, T, defaultp> infinitePerspectiveLH(T fovy, T aspect, T zNear)
 	{
-		T const range = tan(fovy / static_cast<T>(2)) * zNear;
-		T const left = -range * aspect;
-		T const right = range * aspect;
-		T const bottom = -range;
-		T const top = range;
+		T const _range = tan(fovy / static_cast<T>(2)) * zNear;
+		T const left = -_range * aspect;
+		T const right = _range * aspect;
+		T const bottom = -_range;
+		T const top = _range;
 
 		mat<4, 4, T, defaultp> Result(T(0));
 		Result[0][0] = (static_cast<T>(2) * zNear) / (right - left);
@@ -532,11 +532,11 @@ namespace glm
 	template<typename T>
 	GLM_FUNC_QUALIFIER mat<4, 4, T, defaultp> tweakedInfinitePerspective(T fovy, T aspect, T zNear, T ep)
 	{
-		T const range = tan(fovy / static_cast<T>(2)) * zNear;
-		T const left = -range * aspect;
-		T const right = range * aspect;
-		T const bottom = -range;
-		T const top = range;
+		T const _range = tan(fovy / static_cast<T>(2)) * zNear;
+		T const left = -_range * aspect;
+		T const right = _range * aspect;
+		T const bottom = -_range;
+		T const top = _range;
 
 		mat<4, 4, T, defaultp> Result(static_cast<T>(0));
 		Result[0][0] = (static_cast<T>(2) * zNear) / (right - left);

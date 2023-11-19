@@ -4,7 +4,7 @@
 #include "bullet.h"
 #include <string>
 
-// Constructors / Destructor
+/* --->>> Constructors / Destructor <<<--- */
 Bullet::Bullet(GameObject* gameObj, std::string name, float lifeSpan, Player* player) : LivingEntity(gameObj, name, lifeSpan)
 {
 	// Position
@@ -20,30 +20,36 @@ Bullet::Bullet(GameObject* gameObj, std::string name, float lifeSpan, Player* pl
 	setSpeed(5);
 
 	// Light
-	light = new Light::Point(getPosition(), { 0,0,1 });
+	_light = new Light::Point(getPosition(), { 0,0,1 });
 }
 
 Bullet::~Bullet()
 {
 }
 
-// Update
+/* --->>> Update <<<--- */
 void Bullet::update(float deltaTime)
 {
 	LivingEntity::update(deltaTime);
 
 	moveWithDirection(deltaTime);
-	light->setPosition(getPosition());
+	_light->setPosition(getPosition());
 }
 
-// Drawing
+/* --->>> Drawing <<<--- */
 void Bullet::draw(ShaderProgram* shaderProgram)
 {
 	LivingEntity::draw(shaderProgram);
 }
 
-// Destroying
+/* --->>> Destroying <<<--- */
 void Bullet::destroy()
 {
 	delete this;
+}
+
+/* --->>> Getters <<<--- */
+Light::Point* Bullet::getLight()
+{
+	return _light;
 }

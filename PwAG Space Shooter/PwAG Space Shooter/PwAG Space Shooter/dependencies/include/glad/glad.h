@@ -2759,7 +2759,7 @@ GLAPI PFNGLRELEASESHADERCOMPILERPROC glad_glReleaseShaderCompiler;
 typedef void (APIENTRYP PFNGLSHADERBINARYPROC)(GLsizei count, const GLuint *shaders, GLenum binaryFormat, const void *binary, GLsizei length);
 GLAPI PFNGLSHADERBINARYPROC glad_glShaderBinary;
 #define glShaderBinary glad_glShaderBinary
-typedef void (APIENTRYP PFNGLGETSHADERPRECISIONFORMATPROC)(GLenum shadertype, GLenum precisiontype, GLint *range, GLint *precision);
+typedef void (APIENTRYP PFNGLGETSHADERPRECISIONFORMATPROC)(GLenum shadertype, GLenum precisiontype, GLint *_range, GLint *precision);
 GLAPI PFNGLGETSHADERPRECISIONFORMATPROC glad_glGetShaderPrecisionFormat;
 #define glGetShaderPrecisionFormat glad_glGetShaderPrecisionFormat
 typedef void (APIENTRYP PFNGLDEPTHRANGEFPROC)(GLfloat n, GLfloat f);

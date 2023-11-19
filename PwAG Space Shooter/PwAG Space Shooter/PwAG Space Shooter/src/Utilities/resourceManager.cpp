@@ -1,18 +1,35 @@
 #include "pch.h"
 #include "resourceManager.h"
 
-ResourceManager ResourceManager::instance;
+/* --->>> Instance <<<--- */
+ResourceManager ResourceManager::_instance;
 
+
+/* --->>> Texture <<<--- */
 void ResourceManager::loadTexture(const std::string& resourceName, const std::string& textureFilePath, Texture::Type type)
 {
-	textures.insert(std::make_pair(resourceName, Texture::createTextureFromFile(textureFilePath, type)));
+	_textures.insert(std::make_pair(resourceName, Texture::createTextureFromFile(textureFilePath, type)));
 }
 
+const Texture& ResourceManager::getTexture(const std::string& resourceName) const
+{
+	return _textures.at(resourceName);
+}
+
+
+/* --->>> Font <<<--- */
 void ResourceManager::loadFont(const std::string& resourceName, const std::string& fontFilePath, uint32_t size)
 {
-	fonts.insert(std::make_pair(resourceName, Font(fontFilePath, size)));
+	_fonts.insert(std::make_pair(resourceName, Font(fontFilePath, size)));
 }
 
+const Font& ResourceManager::getFont(const std::string& resourceName)
+{
+	return _fonts.at(resourceName);
+}
+
+
+/* --->>> Shader <<<--- */
 void ResourceManager::addShaderProgram(const std::string& resourceName, const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath)
 {
 	Shader vert = Shader::createShaderFromFile(vertexShaderFilePath, Shader::Type::eVertex);
@@ -23,7 +40,7 @@ void ResourceManager::addShaderProgram(const std::string& resourceName, const st
 	program.attachShader(frag);
 	program.linkShaderProgram();
 
-	this->shaders.insert(std::make_pair(resourceName, std::move(program)));
+	_shaders.insert(std::make_pair(resourceName, std::move(program)));
 }
 
 void ResourceManager::addShaderProgram(const std::string& resourceName, const std::string& vertexShaderFilePath, const std::string& geometryShaderFilePath, const std::string& fragmentShaderFilePath)
@@ -38,5 +55,10 @@ void ResourceManager::addShaderProgram(const std::string& resourceName, const st
 	program.attachShader(frag);
 	program.linkShaderProgram();
 
-	this->shaders.insert(std::make_pair(resourceName, std::move(program)));
+	_shaders.insert(std::make_pair(resourceName, std::move(program)));
+}
+
+const ShaderProgram& ResourceManager::getShader(const std::string& resourceName)
+{
+	return _shaders.at(resourceName);
 }

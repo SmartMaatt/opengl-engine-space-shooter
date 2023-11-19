@@ -6,23 +6,27 @@ typedef std::unique_ptr<ProgramState> StateReference;
 class StateMachine
 {
 public:
+	// Constructors / Destructor
 	StateMachine() = default;
 	~StateMachine() = default;
 
+	// States
 	void addNewState(StateReference newState);
-
 	void changingState();
 	void deleteState();
 	void removeAllStates();
 
+	// Getters
 	StateReference& getCurrentState();
 	int getNrOfStates() const;
 
 private:
-	std::stack<std::unique_ptr<ProgramState>> m_states;
-	std::unique_ptr<ProgramState> m_newState;
+	// States
+	std::stack<std::unique_ptr<ProgramState>> _states;
+	std::unique_ptr<ProgramState> _newState;
 
-	int nr_states = 0;
-	bool isAdded = false;
-	bool isRemoved = false;
+	// Parameters
+	int _nrStates = 0;
+	bool _isAdded = false;
+	bool _isRemoved = false;
 };

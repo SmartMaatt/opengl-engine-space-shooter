@@ -5,40 +5,45 @@ namespace Light
 	class Light
 	{
 	public:
+		// Constructors / Destructor
 		Light(const glm::vec3& color);
 
-	#pragma region Inline functions
+		// Inline functions
+#pragma region Inline functions
 		const glm::vec3& getColor() const
 		{
-			return color;
+			return _color;
 		}
+
 		const glm::vec3& getAmbient() const
 		{
-			return ambient;
+			return _ambient;
 		}
+
 		const glm::vec3& getSpecular() const
 		{
-			return specular;
+			return _specular;
 		}
+
 		const glm::vec3& getDiffuse() const
 		{
-			return diffuse;
+			return _diffuse;
 		}
 
 		void setColor(const glm::vec3& color)
 		{
-			this->color = color;
-
-			this->ambient = color * 0.05f;
-			this->specular = color * 1.0f;
-			this->diffuse = color * 0.8f;
+			_color = color;
+			_ambient = color * 0.05f;
+			_specular = color * 1.0f;
+			_diffuse = color * 0.8f;
 		}
-	#pragma endregion
+#pragma endregion
 
 	protected:
-		glm::vec3 color;
-		glm::vec3 ambient;
-		glm::vec3 diffuse;
-		glm::vec3 specular;
+		// Parameters
+		glm::vec3 _color;
+		glm::vec3 _ambient;
+		glm::vec3 _diffuse;
+		glm::vec3 _specular;
 	};
 }

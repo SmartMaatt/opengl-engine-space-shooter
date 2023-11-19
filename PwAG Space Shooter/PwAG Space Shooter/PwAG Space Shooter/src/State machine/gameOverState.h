@@ -6,22 +6,27 @@
 
 class GameOverState : public ProgramState
 {
-private:
-	GameReference gameReference;
-
-	Button winLabel;
-	Button menuButton;
-
-	Sprite stars;
-	Sprite logo;
-	Sprite devLogo;
-
 public:
+	// Constructors / Destructor
 	GameOverState(GameReference gameReference, std::string header);
 	~GameOverState();
 
+	// Overrides
 	void initialization() override;
 	void processInput(float deltaTime, Keyboard& keyboard, Mouse& mouse) override;
 	void update(float deltaTime) override;
 	void render(float deltaTime, bool wireframe) override;
+
+private:
+	// References
+	GameReference _gameReference;
+
+	// Buttons
+	Button _winLabel;
+	Button _menuButton;
+
+	// Sprites
+	Sprite _starsBackground;
+	Sprite _logo;
+	Sprite _devLogo;
 };

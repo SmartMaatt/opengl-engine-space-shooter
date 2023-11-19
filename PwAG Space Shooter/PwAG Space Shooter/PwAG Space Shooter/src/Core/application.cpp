@@ -4,25 +4,25 @@
 #include "../State machine/menuState.h"
 #include "../SourceDep/stb_image.h"
 
+/* --->>> Constructors / Destructor <<<--- */
 Application::Application() :
-	tmpDefaultFont(std::move(Font("res/Fonts/Segan.ttf", 18))),
-	fpsLabel(10, 880, "FPS:", tmpDefaultFont), fpsValueText(75, 880, "0", tmpDefaultFont),
-	inputTimeLabel(10, 860, "Input:", tmpDefaultFont), inputValueText(75, 860, "0", tmpDefaultFont),
-	updateTimeLabel(10, 840, "Update:", tmpDefaultFont), updateValueText(75, 840, "0", tmpDefaultFont),
-	renderTimeLabel(10, 820, "Render:", tmpDefaultFont), renderValueText(75, 820, "0", tmpDefaultFont)
+	_tmpDefaultFont(std::move(Font("res/Fonts/Segan.ttf", 18))),
+	_fpsLabel(10, 880, "FPS:", _tmpDefaultFont), _fpsValueText(75, 880, "0", _tmpDefaultFont),
+	_inputTimeLabel(10, 860, "Input:", _tmpDefaultFont), _inputValueText(75, 860, "0", _tmpDefaultFont),
+	_updateTimeLabel(10, 840, "Update:", _tmpDefaultFont), _updateValueText(75, 840, "0", _tmpDefaultFont),
+	_renderTimeLabel(10, 820, "Render:", _tmpDefaultFont), _renderValueText(75, 820, "0", _tmpDefaultFont)
 {
 	glfwInit();
 
-	ResourceManager::getInstance().loadFont("default", "res/Fonts/Segan.ttf", 42);
-	ResourceManager::getInstance().addShaderProgram("text", "Shaders/text.vert", "Shaders/text.frag");
+	_initializeText();
 
-	eventManager.registerKeyboard(keyboard);
-	eventManager.registerMouse(mouse);
+	_eventManager.registerKeyboard(_keyboard);
+	_eventManager.registerMouse(_mouse);
 
-	window.attachEventManager(eventManager);
+	_window.attachEventManager(_eventManager);
 
-	fpsCapCooldown = 1.0 / fpsCap;
-	fpsCapCooldownLeft = 0.0f;
+	_fpsCapCooldown = 1.0 / _fpsCap;
+	_fpsCapCooldownLeft = 0.0f;
 }
 
 Application::~Application()
@@ -32,198 +32,211 @@ Application::~Application()
 
 void Application::run()
 {
-	// FreeType plugin font shaders
-	Shader textVert = Shader::createShaderFromFile("Shaders/text.vert", Shader::Type::eVertex);
-	Shader textFrag = Shader::createShaderFromFile("Shaders/text.frag", Shader::Type::eFragment);
-
-	textShader.attachShader(textVert);
-	textShader.attachShader(textFrag);
-	textShader.linkShaderProgram();
-
 	// Timers initialization
-	timer.startTimer("deltaTime");
-	timer.startTimer("fps");
-	timer.startTimer("previousMeasure");
+	_timer.startTimer("deltaTime");
+	_timer.startTimer("fps");
+	_timer.startTimer("previousMeasure");
 
 	// Reference to state machine and window object
-	this->gameReference->m_stateMachine.addNewState(StateReference(new MenuState(this->gameReference)));
-	this->gameReference->window = this->window.getGLFWWindow();
+	_gameReference->_stateMachine.addNewState(StateReference(new MenuState(_gameReference)));
+	_gameReference->window = _window.getGLFWWindow();
 
 	// Program loop
-	while (mainLoopCondition)
+	while (_mainLoopCondition)
 	{
-		this->gameReference->m_stateMachine.changingState();
+		_gameReference->_stateMachine.changingState();
+		_calculateDeltaTime();
 
-		calculateDeltaTime();
-
-		if (timer.getCurrentDurationInSeconds("previousMeasure") >= fpsMeasureCooldown)
+		if (_timer.getCurrentDurationInSeconds("previousMeasure") >= _fpsMeasureCooldown)
 		{
-			updateFPSThisFrame = true;
+			_updateFPSThisFrame = true;
 		}
 
 		processInput();
 		update();
 		render();
 
-		if (updateFPSThisFrame)
+		if (_updateFPSThisFrame)
 		{
-			updateFPSText();
+			_updateText();
 		}
 	}
 }
 
+
+/* --->>> Main loop <<<--- */
 void Application::processInput()
 {
-	timer.startTimer("input");
+	_timer.startTimer("input");
 
-	eventManager.checkForEvents();
-	while (!eventManager.isEventQueueEmpty())
+	_eventManager.checkForEvents();
+	while (!_eventManager.isEventQueueEmpty())
 	{
-		switch (eventManager.getLatestEventType())
+		switch (_eventManager.getLatestEventType())
 		{
-			case EventType::eWindowClosed:
-				this->mainLoopCondition = false;
-				break;
+		case EventType::eWindowClosed:
+			_mainLoopCondition = false;
+			break;
 
-			case EventType::eKeyPressed:
-				if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyQ)])
-				{
-					this->wireframeMode = true;
-				}
+		case EventType::eKeyPressed:
+			if (_keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyQ)])
+			{
+				_wireframeMode = true;
+			}
 
-				if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyE)])
-				{
-					this->wireframeMode = false;
-				}
+			if (_keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyE)])
+			{
+				_wireframeMode = false;
+			}
 
-				if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyEscape)])
-				{
-					this->mainLoopCondition = false;
-				}
-				break;
+			if (_keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyEscape)])
+			{
+				_mainLoopCondition = false;
+			}
+			break;
 		}
 	}
 
-	if (this->loopedRender) 
+	if (_loopedRender)
 	{
-		this->gameReference->m_stateMachine.getCurrentState()->processInput(deltaTime, this->keyboard, this->mouse);
+		_gameReference->_stateMachine.getCurrentState()->processInput(_deltaTime, _keyboard, _mouse);
 	}
 
-	timer.stopTimer("input");
-	this->loopedInput = true;
+	_timer.stopTimer("input");
+	_loopedInput = true;
 }
 
 void Application::update()
 {
-	timer.startTimer("update");
+	_timer.startTimer("update");
 
-	if (this->loopedUpdate) 
+	if (_loopedUpdate)
 	{
-		this->gameReference->m_stateMachine.getCurrentState()->update(deltaTime);
+		_gameReference->_stateMachine.getCurrentState()->update(_deltaTime);
 	}
 
-	timer.stopTimer("update");
-	this->loopedUpdate = true;
+	_timer.stopTimer("update");
+	_loopedUpdate = true;
 }
 
 void Application::render()
 {
-	fpsCapCooldownLeft -= deltaTime;
-	if (fpsCapCooldownLeft <= 0.0f)
+	_fpsCapCooldownLeft -= _deltaTime;
+	if (_fpsCapCooldownLeft <= 0.0f)
 	{
-		frameDuration = timer.getCurrentDurationInSeconds("fps");
-		timer.startTimer("fps");
+		_frameDuration = _timer.getCurrentDurationInSeconds("fps");
+		_timer.startTimer("fps");
+		_fpsCapCooldownLeft = _fpsCapCooldown;
+		_timer.startTimer("render");
 
-		fpsCapCooldownLeft = fpsCapCooldown;
-
-		timer.startTimer("render");
-
-		window.clearToColor(0, 0, 0);
+		_window.clearToColor(0, 0, 0);
 
 		// Wireframe mode on
-		if (this->wireframeMode) 
+		if (_wireframeMode)
 		{
-			this->wireframeModeOn(); 
+			_wireframeModeOn();
 		}
-		else 
+		else
 		{
-			this->wireframeModeOff();
-		}
-
-		if (this->loopedRender) 
-		{
-			this->gameReference->m_stateMachine.getCurrentState()->render(renderDeltaTime, this->wireframeMode);
+			_wireframeModeOff();
 		}
 
-		// RENDER TEXT
-#ifndef DIST
-		textShader.useShader();
-		auto projection = glm::ortho(0.0f, static_cast<float>(Config::g_defaultWidth), 0.0f, static_cast<float>(Config::g_defaultHeight));
-		textShader.setMat4("MVP", projection);
-
-		fpsLabel.render(textShader);
-		fpsValueText.render(textShader);
-
-		inputTimeLabel.render(textShader);
-		inputValueText.render(textShader);
-		updateTimeLabel.render(textShader);
-		updateValueText.render(textShader);
-		renderTimeLabel.render(textShader);
-		renderValueText.render(textShader);
-#endif
-
-		window.swapBuffers();	// Render buffer swapping
-		timer.stopTimer("render");
-		this->loopedRender = true;
+		if (_loopedRender)
+		{
+			_gameReference->_stateMachine.getCurrentState()->render(_renderDeltaTime, _wireframeMode);
+		}
+		_drawText();
 	}
 }
 
-void Application::updateFPSText()
+
+/* --->>> Text <<<--- */
+void Application::_initializeText()
+{
+	ResourceManager::getInstance().loadFont("default", "res/Fonts/Segan.ttf", 42);
+	ResourceManager::getInstance().addShaderProgram("text", "Shaders/text.vert", "Shaders/text.frag");
+
+	// FreeType plugin font shaders
+	Shader textVert = Shader::createShaderFromFile("Shaders/text.vert", Shader::Type::eVertex);
+	Shader textFrag = Shader::createShaderFromFile("Shaders/text.frag", Shader::Type::eFragment);
+
+	_textShader.attachShader(textVert);
+	_textShader.attachShader(textFrag);
+	_textShader.linkShaderProgram();
+}
+
+void Application::_updateText()
 {
 #ifndef DIST
-	int32_t fps = static_cast<int32_t>(1.0 / frameDuration);
-	fpsValueText.setText(std::move(std::to_string(fps)));
+	int32_t fps = static_cast<int32_t>(1.0 / _frameDuration);
+	_fpsValueText.setText(std::move(std::to_string(fps)));
 
-	double inputDuration = timer.getMeasuredDurationInMiliseconds("input");
+	double inputDuration = _timer.getMeasuredDurationInMiliseconds("input");
 	std::stringstream streamForInput;
 	streamForInput << std::fixed << std::setprecision(4);
 	streamForInput << inputDuration;
-	inputValueText.setText(streamForInput.str() + "ms");
+	_inputValueText.setText(streamForInput.str() + "ms");
 
-	double updateDuration = timer.getMeasuredDurationInMiliseconds("update");
+	double updateDuration = _timer.getMeasuredDurationInMiliseconds("update");
 	std::stringstream streamForUpdate;
 	streamForUpdate << std::fixed << std::setprecision(4);
 	streamForUpdate << updateDuration;
-	updateValueText.setText(streamForUpdate.str() + "ms");
+	_updateValueText.setText(streamForUpdate.str() + "ms");
 
-	double renderDuration = timer.getMeasuredDurationInMiliseconds("render");
+	double renderDuration = _timer.getMeasuredDurationInMiliseconds("render");
 	std::stringstream streamForRender;
 	streamForRender << std::fixed << std::setprecision(4);
 	streamForRender << renderDuration;
-	renderValueText.setText(streamForRender.str() + "ms");
+	_renderValueText.setText(streamForRender.str() + "ms");
 
-	updateFPSThisFrame = false;
-	timer.startTimer("previousMeasure");
+	_updateFPSThisFrame = false;
+	_timer.startTimer("previousMeasure");
 #endif
 }
 
-void Application::wireframeModeOn() 
+void Application::_drawText()
+{
+#ifndef DIST
+	_textShader.useShader();
+	auto projection = glm::ortho(0.0f, static_cast<float>(Config::g_defaultWidth), 0.0f, static_cast<float>(Config::g_defaultHeight));
+	_textShader.setMat4("MVP", projection);
+
+	_fpsLabel.render(_textShader);
+	_fpsValueText.render(_textShader);
+
+	_inputTimeLabel.render(_textShader);
+	_inputValueText.render(_textShader);
+	_updateTimeLabel.render(_textShader);
+	_updateValueText.render(_textShader);
+	_renderTimeLabel.render(_textShader);
+	_renderValueText.render(_textShader);
+#endif
+	_window.swapBuffers();	// Render buffer swapping
+	_timer.stopTimer("render");
+	_loopedRender = true;
+}
+
+
+/* --->>> Wirefame mode <<<--- */
+void Application::_wireframeModeOn()
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
-void Application::wireframeModeOff() 
+void Application::_wireframeModeOff()
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-void Application::calculateDeltaTime()
+
+/* --->>> Time calculations <<<--- */
+void Application::_calculateDeltaTime()
 {
-	deltaTime = timer.getCurrentDurationInSeconds("deltaTime");
-	timer.startTimer("deltaTime");
+	_deltaTime = _timer.getCurrentDurationInSeconds("deltaTime");
+	_timer.startTimer("deltaTime");
 }
 
-void Application::calculateRenderDeltaTime()
+void Application::_calculateRenderDeltaTime()
 {
-	renderDeltaTime = frameDuration;
+	_renderDeltaTime = _frameDuration;
 }

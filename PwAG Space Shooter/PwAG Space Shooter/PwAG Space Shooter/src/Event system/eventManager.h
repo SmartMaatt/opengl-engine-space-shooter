@@ -6,49 +6,27 @@
 class EventManager
 {
 public:
-#pragma region Inline functions
-	void checkForEvents()
-	{
-		glfwPollEvents();
-	}
+	// Events
+	void checkForEvents();
+	bool isEventQueueEmpty();
+	void clearEventQueue();
+	EventType getLatestEventType();
 
-	bool isEventQueueEmpty()
-	{
-		return eventQueue.empty();
-	}
-
-	void clearEventQueue()
-	{
-		while (!eventQueue.empty())
-		{
-			eventQueue.pop();
-		}
-	}
-
-	EventType getLatestEventType()
-	{
-		// Wait till there is an event to return
-		while (eventQueue.empty());
-
-		auto tmp = eventQueue.front();
-		eventQueue.pop();
-		return tmp;
-	}
-#pragma endregion
-
+	// Window
 	void windowSizeCallback(int width, int height);
 	void windowCloseCallback(bool shouldCloseWindow);
 
+	// Keyboard
 	void keyCallback(int key, int scancode, int action, int mods);
+	void registerKeyboard(Keyboard& keyboard);
 
+	// Mouse
 	void mouseButtonCallback(int button, int action, int mods);
 	void cursorPositionCallback(double x, double y);
-
-	void registerKeyboard(Keyboard& keyboard);
 	void registerMouse(Mouse& mouse);
 
 private:
-	std::queue<EventType> eventQueue;
-	Keyboard* keyboard{};
-	Mouse* mouse{};
+	std::queue<EventType> _eventQueue;
+	Keyboard* _keyboard{};
+	Mouse* _mouse{};
 };

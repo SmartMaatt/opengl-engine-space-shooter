@@ -4,9 +4,11 @@
 class Window
 {
 public:
+	// Constructors / Destructor
 	explicit Window(uint32_t width = Config::g_defaultWidth, uint32_t height = Config::g_defaultHeight, WindowMode mode = Config::g_defaultWindowMode, std::string title = Config::g_defaultWindowTitle);
 	~Window();
 
+	// Inline functions
 #pragma region Inline functions
 	// Clear window to RGB color (0 - 255 values)
 	void clearToColor(uint8_t red, uint8_t green, uint8_t blue) const
@@ -26,35 +28,36 @@ public:
 	// Show rendered things on window
 	void swapBuffers() const
 	{
-		glfwSwapBuffers(glfwWindowPtr);
+		glfwSwapBuffers(_glfwWindowPtr);
 	}
 
 	GLFWwindow*& getGLFWWindow()
 	{
-		return glfwWindowPtr;
+		return _glfwWindowPtr;
 	}
 
 	uint32_t getWidth() const
 	{
-		return width;
+		return _width;
 	}
 
 	uint32_t getHeight() const
 	{
-		return height;
+		return _height;
 	}
 
 	WindowMode getWindowMode() const
 	{
-		return mode;
+		return _mode;
 	}
 
 	const std::string& getTitle() const
 	{
-		return title;
+		return _title;
 	}
 #pragma endregion
 
+	// Event system
 #pragma region Event system
 	void attachEventManager(EventManager& manager);
 
@@ -66,26 +69,25 @@ public:
 #pragma endregion
 
 private:
-	void initialize();
+	// Initialization
+	void _initialize();
+	void _initOpenGL() const;
+	void _createGLFWWindow();
+	void _createWindowedWindow();
+	void _createFullscreenWindow();
+	void _createWindowedFullscreenWindow();
 
-	void initOpenGL() const;
-	void createGLFWWindow();
+	// Configuration
+	void _centerWindow() const;
+	void _createWindowIcon();
 
-	void createWindowedWindow();
-	void createFullscreenWindow();
-	void createWindowedFullscreenWindow();
+	// References
+	GLFWwindow* _glfwWindowPtr{};
+	EventManager* _eventManager{};
 
-	void centerWindow() const;
-	void createWindowIcon();
-
-	GLFWwindow* glfwWindowPtr{};
-
-	uint32_t width;
-	uint32_t height;
-
-	WindowMode mode;
-
-	std::string title;
-
-	EventManager* eventManager{};
+	// Parameters
+	uint32_t _width;
+	uint32_t _height;
+	WindowMode _mode;
+	std::string _title;
 };

@@ -1,13 +1,15 @@
 #include "pch.h"
 #include "attenuation.h"
 
+/* --->>> Constructors / Destructor <<<--- */
 Light::Attenuation::Attenuation(float constant, float linear, float quadratic) :
-constant(constant), linear(linear), quadratic(quadratic)
+	_constant(constant), _linear(linear), _quadratic(quadratic)
 {
 }
 
-void Light::Attenuation::setAttenuationByRange(float range)
+/* --->>> Getters / Setters <<<--- */
+void Light::Attenuation::setAttenuationByRange(float _range)
 {
-	linear = 4.5452f * powf(range, -1.004f);
-	quadratic = 82.445f * powf(range, -2.019f);
+	_linear = 4.5452f * powf(_range, -1.004f);
+	_quadratic = 82.445f * powf(_range, -2.019f);
 }

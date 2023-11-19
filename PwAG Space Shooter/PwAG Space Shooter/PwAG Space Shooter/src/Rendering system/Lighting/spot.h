@@ -7,57 +7,61 @@ namespace Light
 	class Spot : public Light
 	{
 	public:
-		Spot(const glm::vec3& position, const glm::vec3& color, float cutoff);
-		Spot(const glm::vec3& position, const glm::vec3& color, float innerCutoff, float outerCutoff);
+		// Constructors / Destructor
+		Spot(const glm::vec3& _position, const glm::vec3& color, float cutoff);
+		Spot(const glm::vec3& _position, const glm::vec3& color, float _innerCutoff, float _outerCutoff);
 
-	#pragma region Inline functions
-	#pragma region Getters
+		// Getters / Setters
+#pragma region Inline functions
+#pragma region Getters
 		const glm::vec3& getPosition() const
 		{
-			return position;
+			return _position;
 		}
-		
+
 		const Attenuation& getAttenuation() const
 		{
-			return attenuation;
+			return _attenuation;
 		}
 
 		float getRange() const
 		{
-			return range;
+			return _range;
 		}
-	#pragma endregion
-	#pragma region Setters
+#pragma endregion
+
+#pragma region Setters
 		void setPosition(const glm::vec3& position)
 		{
-			this->position = position;
+			_position = position;
 		}
-		
+
 		void setAttenuation(const Attenuation& attenuation)
 		{
-			this->attenuation = attenuation;
+			_attenuation = attenuation;
 		}
 
 		void setRange(float range)
 		{
-			this->range = range;
+			_range = range;
 		}
 
 		void setAttenuationByRange(float range)
 		{
-			this->range = range;
-
-			attenuation.setAttenuationByRange(range);
+			_range = range;
+			_attenuation.setAttenuationByRange(range);
 		}
-	#pragma endregion
-	#pragma endregion
+#pragma endregion
+#pragma endregion
 
 	private:
-		glm::vec3 position;
+		// References
+		Attenuation _attenuation;
 
-		Attenuation attenuation;
-		float range = 50;
-		float innerCutoff; //in deg
-		float outerCutoff; //in deg
+		// Parameters
+		glm::vec3 _position;
+		float _range = 50;
+		float _innerCutoff; // In deg
+		float _outerCutoff; // In deg
 	};
 }

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "mathf.h"
 
-// Randomization
+/* --->>> Randomization <<<--- */
 float Mathf::randVal(float min, float max)
 {
 	static std::mt19937 generator(std::random_device{}());
@@ -25,7 +25,7 @@ glm::vec3 Mathf::randCoordsInSphere(float radius)
 }
 
 
-// Collisions
+/* --->>> Collisions <<<---*/
 bool Mathf::areSpheresCollided(glm::vec3 center1, float rad1, glm::vec3 center2, float rad2)
 {
 	float radSum = rad1 + rad2;
@@ -35,7 +35,7 @@ bool Mathf::areSpheresCollided(glm::vec3 center1, float rad1, glm::vec3 center2,
 }
 
 
-// Vectors
+/* --->>> Vectors <<<---*/
 glm::vec3 Mathf::zeroVec()
 {
 	return glm::vec3(0);

@@ -18,5 +18,9 @@ public:
 	// Destroying
 	void destroy();
 
-	Light::Point* light;
+	// Getters
+	Light::Point* getLight();
+
+private:
+	Light::Point* _light;
 };

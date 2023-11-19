@@ -2,36 +2,39 @@
 #include "gameState.h"
 #include "../Game Objects/spaceLevel.h"
 
+/* --->>> Constructors / Destructor <<<--- */
 GameState::GameState(GameReference gameReference)
 {
-	this->gameReference = gameReference;
+	_gameReference = gameReference;
 }
 
 GameState::~GameState() 
 {
-	delete this->spaceLevel;
+	delete _spaceLevel;
 }
 
+
+/* --->>> Overrides <<<--- */
 void GameState::initialization()
 {
-	this->spaceLevel = new SpaceLevel(this);
-	glfwSetInputMode(this->gameReference->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	this->cursorDisabled = true;
+	_spaceLevel = new SpaceLevel(this);
+	glfwSetInputMode(_gameReference->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	_cursorDisabled = true;
 }
 
 void GameState::processInput(float deltaTime, Keyboard& keyboard, Mouse& mouse)
 {
-	this->spaceLevel->input(deltaTime, gameReference, keyboard, mouse);
+	_spaceLevel->input(deltaTime, _gameReference, keyboard, mouse);
 }
 
 void GameState::update(float deltaTime)
 {
-	this->spaceLevel->update(deltaTime);
+	_spaceLevel->update(deltaTime);
 }
 
 void GameState::render(float deltaTime, bool wireframe)
 {
-	this->spaceLevel->draw(deltaTime, wireframe);
+	_spaceLevel->draw(deltaTime, wireframe);
 }
 
 
@@ -39,11 +42,11 @@ void GameState::render(float deltaTime, bool wireframe)
 void GameState::winLevel()
 {
 	Debug::LogSuccess("You won!");
-	this->gameReference->m_stateMachine.addNewState(StateReference(new GameOverState(this->gameReference, "You won!")));
+	_gameReference->_stateMachine.addNewState(StateReference(new GameOverState(_gameReference, "You won!")));
 }
 
 void GameState::looseLevel()
 {
 	Debug::LogError("You loose!");
-	this->gameReference->m_stateMachine.addNewState(StateReference(new GameOverState(this->gameReference, "You loose!")));
+	_gameReference->_stateMachine.addNewState(StateReference(new GameOverState(_gameReference, "You loose!")));
 }

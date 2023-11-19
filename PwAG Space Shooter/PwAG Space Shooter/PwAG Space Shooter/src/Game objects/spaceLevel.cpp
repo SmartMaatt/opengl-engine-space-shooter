@@ -7,7 +7,7 @@
 #include "../Rendering system/Model/vboIndexer.h"
 #include "../SourceDep/stb_image.h"
 
-/* --->>> Constructors / Destructor <<<--- */ 
+/* --->>> Constructors / Destructor <<<--- */
 SpaceLevel::SpaceLevel(GameState* gameState) :
 	_tmpDefaultFont(std::move(Font("res/Fonts/Segan.ttf", 32))),
 	_healthLabel(20, 50, "Health:", _tmpDefaultFont), _healthValueText(140, 53, "0", _tmpDefaultFont),
@@ -52,13 +52,6 @@ SpaceLevel::~SpaceLevel()
 	{
 		_bullet->destroy();
 	}
-}
-
-
-/* --->>> Getters / Setters <<<--- */
-Player* SpaceLevel::getPlayer()
-{
-	return _player;
 }
 
 
@@ -179,8 +172,8 @@ void SpaceLevel::_initText()
 {
 	// Gui text color
 	_healthLabel.setColor(glm::vec3(1, 1, 1));
-	_healthValueText.setColor(glm::vec3(1, 1, 1));	
-	
+	_healthValueText.setColor(glm::vec3(1, 1, 1));
+
 	_crystalsLabel.setColor(glm::vec3(1, 0, 0));
 	_crystalsValueText.setColor(glm::vec3(1, 0, 0));
 
@@ -219,7 +212,7 @@ void SpaceLevel::_updateMeteors(float deltaTime)
 	{
 		// Update
 		(*meteor)->update(deltaTime);
-		
+
 		// >>> Collisions <<<
 		_collideMeteor(meteor);
 	}
@@ -400,7 +393,7 @@ void SpaceLevel::_setLightUniforms(ShaderLightProgram& shaderProgram)
 		std::string index { lightIndex };
 
 		int objIndex = i - 1;
-		shaderProgram.setLightUniforms(*(_crystals[objIndex]->light), index);
+		shaderProgram.setLightUniforms(*(_crystals[objIndex]->getLight()), index);
 	}
 
 	// Bullet lights
@@ -408,7 +401,7 @@ void SpaceLevel::_setLightUniforms(ShaderLightProgram& shaderProgram)
 	{
 		sprintf_s(lightIndex, 20, "pointLights[%d].", playerLights + _crystals.size());
 		std::string index{ lightIndex };
-		shaderProgram.setLightUniforms(*(_bullet->light), index);
+		shaderProgram.setLightUniforms(*(_bullet->getLight()), index);
 	}
 }
 
@@ -440,11 +433,11 @@ void SpaceLevel::draw(float deltaTime, bool wireframe)
 
 
 /* --->>> GUI <<<--- */
-void SpaceLevel::_drawGui() 
+void SpaceLevel::_drawGui()
 {
 	if (_hudActivated)
 	{
-		_HUD.Draw();
+		_HUD.draw();
 	}
 
 #ifndef DIST

@@ -1,54 +1,57 @@
 #include "pch.h"
 #include "stateMachine.h"
 
-void StateMachine::removeAllStates()
-{
-	while (!m_states.empty())
-	{
-		m_states.pop();
-	}
-}
-
-StateReference& StateMachine::getCurrentState()
-{
-	return this->m_states.top();
-}
-
+/* --->>> States <<<--- */
 void StateMachine::addNewState(StateReference newState)
 {
-	this->isAdded = true;
-	this->m_newState = std::move(newState);
+	_isAdded = true;
+	_newState = std::move(newState);
 }
 
 void StateMachine::changingState()
 {
-	if ((this->isRemoved == true) && !this->m_states.empty())
+	if ((_isRemoved == true) && !_states.empty())
 	{
-		this->m_states.pop();
-		this->isRemoved = false;
-		this->nr_states--;
+		_states.pop();
+		_isRemoved = false;
+		_nrStates--;
 	}
-	if (this->isAdded == true)
+
+	if (_isAdded == true)
 	{
-		if (!this->m_states.empty())
+		if (!_states.empty())
 		{
-			this->m_states.pop();
-			this->nr_states--;
+			_states.pop();
+			_nrStates--;
 		}
-		this->m_states.push(std::move(this->m_newState));
-		this->m_states.top()->initialization();
-		this->isAdded = false;
-		this->nr_states++;
+		_states.push(std::move(_newState));
+		_states.top()->initialization();
+		_isAdded = false;
+		_nrStates++;
 	}
 }
 
 void StateMachine::deleteState()
 {
-	this->isRemoved = true;
+	_isRemoved = true;
+}
+
+void StateMachine::removeAllStates()
+{
+	while (!_states.empty())
+	{
+		_states.pop();
+	}
 }
 
 
+/* --->>> Getters <<<--- */
+StateReference& StateMachine::getCurrentState()
+{
+	return _states.top();
+}
+
 int StateMachine::getNrOfStates() const
 {
-	return this->nr_states;
+	return _nrStates;
 }

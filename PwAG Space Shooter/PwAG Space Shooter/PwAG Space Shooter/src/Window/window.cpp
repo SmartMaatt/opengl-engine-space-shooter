@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "window.h"
 
+/* --->>> GLFW callback functions <<<--- */
 #pragma region GLFW callback functions
 void framebuffer_size_callback(GLFWwindow* window, const int width, const int height)
 {
@@ -49,103 +50,124 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 }
 #pragma endregion
 
+
+/* --->>> Constructors / Destructor <<<--- */
 Window::Window(uint32_t width, uint32_t height, WindowMode mode, std::string title)
-	: width(width), height(height), mode(mode), title(std::move(title))
+	: _width(width), _height(height), _mode(mode), _title(std::move(title))
 {
-	initialize();
+	_initialize();
 }
 
 Window::~Window()
 {
-	if (glfwWindowPtr)
+	if (_glfwWindowPtr)
 	{
-		glfwDestroyWindow(glfwWindowPtr);
-		glfwWindowPtr = nullptr;
+		glfwDestroyWindow(_glfwWindowPtr);
+		_glfwWindowPtr = nullptr;
 	}
 }
 
+
+/* --->>> Event system <<<--- */
 void Window::attachEventManager(EventManager& manager)
 {
-	this->eventManager = &manager;
+	_eventManager = &manager;
+	glfwSetWindowCloseCallback(_glfwWindowPtr, window_close_callback);
+	glfwSetFramebufferSizeCallback(_glfwWindowPtr, framebuffer_size_callback);
+	glfwSetKeyCallback(_glfwWindowPtr, key_callback);
+	glfwSetMouseButtonCallback(_glfwWindowPtr, mouse_button_callback);
+	glfwSetCursorPosCallback(_glfwWindowPtr, cursor_position_callback);
 
-	glfwSetWindowCloseCallback(glfwWindowPtr, window_close_callback);
-	glfwSetFramebufferSizeCallback(glfwWindowPtr, framebuffer_size_callback);
-	glfwSetKeyCallback(glfwWindowPtr, key_callback);
-	glfwSetMouseButtonCallback(glfwWindowPtr, mouse_button_callback);
-	glfwSetCursorPosCallback(glfwWindowPtr, cursor_position_callback);
-
-	glfwSetWindowUserPointer(glfwWindowPtr, reinterpret_cast<void*>(this));
+	glfwSetWindowUserPointer(_glfwWindowPtr, reinterpret_cast<void*>(this));
 }
 
 #pragma region GLFW->Event manager callbacks
 void Window::windowCloseCallback(bool shouldCloseWindow)
 {
-	eventManager->windowCloseCallback(shouldCloseWindow);
+	_eventManager->windowCloseCallback(shouldCloseWindow);
 }
 
 void Window::windowResizeCallback(int width, int height)
 {
-	eventManager->windowSizeCallback(width, height);
+	_eventManager->windowSizeCallback(width, height);
 }
 
 void Window::keyCallback(int key, int scancode, int action, int mods)
 {
-	eventManager->keyCallback(key, scancode, action, mods);
+	_eventManager->keyCallback(key, scancode, action, mods);
 }
 
 void Window::mouseButtonCallback(int button, int action, int mods)
 {
-	eventManager->mouseButtonCallback(button, action, mods);
+	_eventManager->mouseButtonCallback(button, action, mods);
 }
 
 void Window::cursorPositionCallback(double x, double y)
 {
-	eventManager->cursorPositionCallback(x, y);
+	_eventManager->cursorPositionCallback(x, y);
 }
 #pragma endregion
 
-void Window::initialize()
+
+/* --->>> Initialization <<<--- */
+void Window::_initialize()
 {
-	createGLFWWindow();
-	initOpenGL();
+	_createGLFWWindow();
+	_initOpenGL();
 }
 
-void Window::createGLFWWindow()
+void Window::_initOpenGL() const
+{
+	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
+	{
+		Debug::LogError("Failed to initialize OpenGL context");
+		exit;
+	}
+
+	glViewport(0, 0, _width, _height);
+
+	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void Window::_createGLFWWindow()
 {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	switch (mode)
+	switch (_mode)
 	{
-		case WindowMode::eWindowed:
-			createWindowedWindow();
-			break;
-		case WindowMode::eFullscreen:
-			createFullscreenWindow();
-			break;
-		case WindowMode::eWindowFullscreen:
-			createWindowedFullscreenWindow();
-			break;
+	case WindowMode::eWindowed:
+		_createWindowedWindow();
+		break;
+	case WindowMode::eFullscreen:
+		_createFullscreenWindow();
+		break;
+	case WindowMode::eWindowFullscreen:
+		_createWindowedFullscreenWindow();
+		break;
 	}
 
-	glfwMakeContextCurrent(glfwWindowPtr);
-	createWindowIcon();
+	glfwMakeContextCurrent(_glfwWindowPtr);
+	_createWindowIcon();
 }
 
-void Window::createWindowedWindow()
+void Window::_createWindowedWindow()
 {
-	glfwWindowPtr = glfwCreateWindow(width, height, Config::g_defaultWindowTitle, nullptr, nullptr);
-	centerWindow();
+	_glfwWindowPtr = glfwCreateWindow(_width, _height, Config::g_defaultWindowTitle, nullptr, nullptr);
+	_centerWindow();
 }
 
-void Window::createFullscreenWindow()
+void Window::_createFullscreenWindow()
 {
 	const auto monitor = glfwGetPrimaryMonitor();
-	glfwWindowPtr = glfwCreateWindow(width, height, Config::g_defaultWindowTitle, monitor, nullptr);
+	_glfwWindowPtr = glfwCreateWindow(_width, _height, Config::g_defaultWindowTitle, monitor, nullptr);
 }
 
-void Window::createWindowedFullscreenWindow()
+void Window::_createWindowedFullscreenWindow()
 {
 	const auto monitor = glfwGetPrimaryMonitor();
 	const auto videoMode = glfwGetVideoMode(monitor);
@@ -155,11 +177,13 @@ void Window::createWindowedFullscreenWindow()
 	glfwWindowHint(GLFW_BLUE_BITS, videoMode->blueBits);
 	glfwWindowHint(GLFW_REFRESH_RATE, videoMode->refreshRate);
 
-	width = videoMode->width;
-	height = videoMode->height;
+	_width = videoMode->width;
+	_height = videoMode->height;
 }
 
-void Window::centerWindow() const
+
+/* --->>> Configuration <<<--- */
+void Window::_centerWindow() const
 {
 	if (const auto monitor = glfwGetPrimaryMonitor())
 	{
@@ -169,15 +193,14 @@ void Window::centerWindow() const
 			glfwGetMonitorPos(monitor, &monitorX, &monitorY);
 
 			int windowWidth, windowHeight;
-			glfwGetWindowSize(glfwWindowPtr, &windowWidth, &windowHeight);
+			glfwGetWindowSize(_glfwWindowPtr, &windowWidth, &windowHeight);
 
-			glfwSetWindowPos(glfwWindowPtr, monitorX + (videoMode->width - windowWidth) / 2, monitorY + (videoMode->height - windowHeight) / 2);
+			glfwSetWindowPos(_glfwWindowPtr, monitorX + (videoMode->width - windowWidth) / 2, monitorY + (videoMode->height - windowHeight) / 2);
 		}
 	}
-
 }
 
-void Window::createWindowIcon()
+void Window::_createWindowIcon()
 {
 	// Load image
 	int width, height;
@@ -190,22 +213,6 @@ void Window::createWindowIcon()
 	images[0].height = height;
 	images[0].pixels = pixels;
 
-	glfwSetWindowIcon(glfwWindowPtr, 1, images);
-}
-
-void Window::initOpenGL() const
-{
-	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
-	{
-		Debug::LogError("Failed to initialize OpenGL context");
-		exit;
-	}
-
-	glViewport(0, 0, width, height);
-
-	glEnable(GL_DEPTH_TEST);
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glfwSetWindowIcon(_glfwWindowPtr, 1, images);
 }
 

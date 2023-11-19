@@ -8,7 +8,7 @@ public:
 	~Skybox();
 
 	// Drawing
-	void draw(glm::vec3 position, glm::vec3 orientation, glm::vec3 up);
+	void draw(glm::vec3 _position, glm::vec3 orientation, glm::vec3 up);
 
 private:
 	// Initialization

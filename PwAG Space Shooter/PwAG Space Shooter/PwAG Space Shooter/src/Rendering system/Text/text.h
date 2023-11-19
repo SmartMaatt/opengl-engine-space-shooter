@@ -27,7 +27,7 @@ private:
 	int32_t x, y;
 	int32_t width, height;
 
-	glm::vec3 position;
+	glm::vec3 _position;
 	std::string text;
 	const Font* fontPtr;
 	glm::vec3 color;

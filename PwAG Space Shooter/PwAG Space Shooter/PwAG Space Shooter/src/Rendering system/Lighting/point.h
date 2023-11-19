@@ -10,65 +10,67 @@ namespace Light
 	class Point : public Light
 	{
 	public:
+		// Constructors / Destructor
 		Point(const glm::vec3& position, const glm::vec3& color);
 		Point(const Point& light);
-		
-	#pragma region Inline functions
-	#pragma region Getters
+
+		// Getters / Setters
+#pragma region Inline functions
+#pragma region Getters
 		const glm::vec3& getPosition() const
 		{
-			return position;
+			return _position;
 		}
 
 		const Attenuation& getAttenuation() const
 		{
-			return attenuation;
+			return _attenuation;
 		}
 
 		float getRange() const
 		{
-			return range;
+			return _range;
 		}
 
 		const glm::mat4& getLightSpaceMatrix() const
 		{
-			return lightSpaceMatrix[0];
+			return _lightSpaceMatrix[0];
 		}
-	#pragma endregion
+#pragma endregion
 
-	#pragma region Setters
+#pragma region Setters
 		void setPosition(const glm::vec3& position)
 		{
-			this->position = position;
+			_position = position;
 		}
 
 		void setAttenuation(const Attenuation& attenuation)
 		{
-			this->attenuation = attenuation;
+			_attenuation = attenuation;
 		}
 
 		void setRange(float range)
 		{
-			this->range = range;
+			_range = range;
 		}
 
 		void setAttenuationByRange(float range)
 		{
-			this->range = range;
-
-			attenuation.setAttenuationByRange(range);
+			_range = range;
+			_attenuation.setAttenuationByRange(_range);
 		}
-	#pragma endregion
-	#pragma endregion
+#pragma endregion
+#pragma endregion
 
 	private:
-		glm::vec3 position;
+		// References
+		FBO _fbo;
+		Texture _depthMap;
+		Attenuation _attenuation;
 
-		Attenuation attenuation;
-		float range = 15;
-
-		FBO fbo;
-		Texture depthMap;
-		std::array<glm::mat4, 6> lightSpaceMatrix;
+		// Parameters
+		glm::vec3 _position;
+		float _range = 15;
+		std::array<glm::mat4, 6> _lightSpaceMatrix;
 	};
 }

@@ -10,7 +10,7 @@ Player::Player(glm::vec3 startPosition)
 	this->stats = new PlayerStats();
 	this->light = new Light::Point({ 1,0,1 }, { 1,1,1 });
 
-	this->position = startPosition;
+	this->_position = startPosition;
 	this->horizontalAngle = 3.14f;
 	this->verticalAngle = 0.0f;
 	this->initialFoV = 45.0f;
@@ -103,7 +103,7 @@ void Player::processInput(GameReference& gameReference, Keyboard& keyboard, floa
 		this->movementDirection = glm::normalize(this->movementDirection);
 	}
 
-	this->position += this->movementDirection * deltaTime * speed;
+	this->_position += this->movementDirection * deltaTime * speed;
 }
 
 void Player::updateMatricesFromInput()
@@ -117,8 +117,8 @@ void Player::updateMatricesFromInput()
 	);
 
 	viewMatrix = glm::lookAt(
-		position,				// Camera is here
-		position + direction,	// and looks here : at the same position, plus "direction"
+		_position,				// Camera is here
+		_position + direction,	// and looks here : at the same position, plus "direction"
 		up						// Head is up (set to 0,-1,0 to look upside-down)
 	);
 }
@@ -142,17 +142,17 @@ void Player::setCameraUniforms(ShaderProgram* shaderProgram)
 {
 	shaderProgram->setMat4("ViewMatrix", this->viewMatrix);
 	shaderProgram->setMat4("ProjectionMatrix", this->projectionMatrix);
-	shaderProgram->setVec3f("cameraPos", this->position);
+	shaderProgram->setVec3f("cameraPos", this->_position);
 }
 
-void Player::setCameraPosition(glm::vec3 position)
+void Player::setCameraPosition(glm::vec3 _position)
 {
-	this->position = position;
+	this->_position = _position;
 }
 
 glm::vec3 Player::getCameraPosition()
 {
-	return this->position;
+	return this->_position;
 }
 
 glm::mat4 Player::getViewMatrix()

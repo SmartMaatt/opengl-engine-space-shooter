@@ -1,77 +1,117 @@
 #include "pch.h"
 #include "eventManager.h"
 
+/* --->>> Events <<<--- */
+void EventManager::checkForEvents()
+{
+	glfwPollEvents();
+}
+
+bool EventManager::isEventQueueEmpty()
+{
+	return _eventQueue.empty();
+}
+
+void EventManager::clearEventQueue()
+{
+	while (!_eventQueue.empty())
+	{
+		_eventQueue.pop();
+	}
+}
+
+EventType EventManager::getLatestEventType()
+{
+	// Wait till there is an event to return
+	while (_eventQueue.empty());
+
+	auto tmp = _eventQueue.front();
+	_eventQueue.pop();
+	return tmp;
+}
+
+
+/* --->>> Window <<<--- */
 void EventManager::windowSizeCallback(int width, int height)
 {
-	eventQueue.push(EventType::eWindowResized);
+	_eventQueue.push(EventType::eWindowResized);
 }
 
 void EventManager::windowCloseCallback(bool shouldCloseWindow)
 {
 	if (shouldCloseWindow)
 	{
-		eventQueue.push(EventType::eWindowClosed);
+		_eventQueue.push(EventType::eWindowClosed);
 	}
 }
 
+
+/* --->>> Keyboard <<<--- */
 void EventManager::keyCallback(int key, int scancode, int action, int mods)
 {
-	if (this->keyboard)
+	if (_keyboard)
 	{
 		Keyboard::Key _key = Keyboard::convertToKey(key);
 		if (_key > Keyboard::Key::eKeyNone && _key < Keyboard::Key::eKeyLast)
 		{
 			if (action == GLFW_PRESS)
 			{
-				this->eventQueue.emplace(EventType::eKeyPressed);
-				this->keyboard->keyState[static_cast<int>(_key)] = true;
+				_eventQueue.emplace(EventType::eKeyPressed);
+				_keyboard->keyState[static_cast<int>(_key)] = true;
 			}
 			else if (action == GLFW_RELEASE)
 			{
-				this->eventQueue.emplace(EventType::eKeyReleased);
-				this->keyboard->keyState[static_cast<int>(_key)] = false;
+				_eventQueue.emplace(EventType::eKeyReleased);
+				_keyboard->keyState[static_cast<int>(_key)] = false;
 			}
 		}
 	}
 }
 
+void EventManager::registerKeyboard(Keyboard& keyboard)
+{
+	_keyboard = &keyboard;
+}
+
+
+/* --->>> Mouse <<<--- */
 void EventManager::mouseButtonCallback(int button, int action, int mods)
 {
-	if (this->mouse) 
+	if (_mouse)
 	{
-		if (action == GLFW_PRESS) 
+		if (action == GLFW_PRESS)
 		{
-			this->eventQueue.emplace(EventType::eMouseButtonPressed);
+			_eventQueue.emplace(EventType::eMouseButtonPressed);
 			switch (button) {
-				default:
-					break;
-				case GLFW_MOUSE_BUTTON_LEFT:
-					this->mouse->buttonState[static_cast<int>(Mouse::Button::eLeft)] = true;
-					break;
-				case GLFW_MOUSE_BUTTON_MIDDLE:
-					this->mouse->buttonState[static_cast<int>(Mouse::Button::eMiddle)] = true;
-					break;
-				case GLFW_MOUSE_BUTTON_RIGHT:
-					this->mouse->buttonState[static_cast<int>(Mouse::Button::eRight)] = true;
-					break;
+			default:
+				break;
+			case GLFW_MOUSE_BUTTON_LEFT:
+				_mouse->buttonState[static_cast<int>(Mouse::Button::eLeft)] = true;
+				break;
+			case GLFW_MOUSE_BUTTON_MIDDLE:
+				_mouse->buttonState[static_cast<int>(Mouse::Button::eMiddle)] = true;
+				break;
+			case GLFW_MOUSE_BUTTON_RIGHT:
+				_mouse->buttonState[static_cast<int>(Mouse::Button::eRight)] = true;
+				break;
 			}
 		}
-		else if (action == GLFW_RELEASE) 
+		else if (action == GLFW_RELEASE)
 		{
-			this->eventQueue.emplace(EventType::eMouseButtonReleased);
-			switch (button) 
+			_eventQueue.emplace(EventType::eMouseButtonReleased);
+			switch (button)
 			{
-				default:
-					break;
-				case GLFW_MOUSE_BUTTON_LEFT:
-					this->mouse->buttonState[static_cast<int>(Mouse::Button::eLeft)] = false;
-					break;
-				case GLFW_MOUSE_BUTTON_MIDDLE:
-					this->mouse->buttonState[static_cast<int>(Mouse::Button::eMiddle)] = false;
-					break;
-				case GLFW_MOUSE_BUTTON_RIGHT:
-					this->mouse->buttonState[static_cast<int>(Mouse::Button::eRight)] = false;
-					break;
+			default:
+				break;
+			case GLFW_MOUSE_BUTTON_LEFT:
+				_mouse->buttonState[static_cast<int>(Mouse::Button::eLeft)] = false;
+				break;
+			case GLFW_MOUSE_BUTTON_MIDDLE:
+				_mouse->buttonState[static_cast<int>(Mouse::Button::eMiddle)] = false;
+				break;
+			case GLFW_MOUSE_BUTTON_RIGHT:
+				_mouse->buttonState[static_cast<int>(Mouse::Button::eRight)] = false;
+				break;
 			}
 		}
 	}
@@ -79,20 +119,15 @@ void EventManager::mouseButtonCallback(int button, int action, int mods)
 
 void EventManager::cursorPositionCallback(double x, double y)
 {
-	eventQueue.push(EventType::eMouseCursorMoved);
-	if (this->mouse)
+	_eventQueue.push(EventType::eMouseCursorMoved);
+	if (_mouse)
 	{
-		this->mouse->posX = static_cast<uint32_t>(x);
-		this->mouse->posY = static_cast<uint32_t>(y);
+		_mouse->posX = static_cast<uint32_t>(x);
+		_mouse->posY = static_cast<uint32_t>(y);
 	}
-}
-
-void EventManager::registerKeyboard(Keyboard& keyboard)
-{
-	this->keyboard = &keyboard;
 }
 
 void EventManager::registerMouse(Mouse& mouse)
 {
-	this->mouse = &mouse;
+	_mouse = &mouse;
 }

@@ -7,9 +7,11 @@
 class GameState : public ProgramState
 {
 public:
+	// Constructors / Destructor
 	GameState(GameReference gameReference);
 	~GameState();
 
+	// Overrides
 	void initialization() override;
 	void processInput(float deltaTime, Keyboard& keyboard, Mouse& mouse) override;
 	void update(float deltaTime) override;
@@ -20,10 +22,12 @@ public:
 	void looseLevel();
 
 private:
-	SpaceLevel* spaceLevel;
-	GameReference gameReference;
+	// References
+	SpaceLevel* _spaceLevel;
+	GameReference _gameReference;
 
-	int lastMousePosX;
-	int lastMousePosY;
-	bool cursorDisabled;
+	// Parameters
+	int _lastMousePosX;
+	int _lastMousePosY;
+	bool _cursorDisabled;
 };

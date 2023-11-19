@@ -1,79 +1,82 @@
 #include "pch.h"
 #include "gameObject.h"
 
-GameObject::GameObject() 
+/* --->>> Constructors / Destructor <<<--- */
+GameObject::GameObject() {}
+GameObject::GameObject(Material* material, Mesh* mesh)
 {
-
+	_material = material;
+	_mesh = mesh;
 }
 
-GameObject::GameObject(Material* material, Mesh* mesh) 
+GameObject::~GameObject()
 {
-	this->material = material;
-	this->mesh = mesh;
+	if (_material)
+	{
+		delete _material;
+		_material = nullptr;
+	}
+
+	if (_mesh)
+	{
+		delete _mesh;
+		_mesh = nullptr;
+	}
 }
 
-void GameObject::draw(ShaderProgram* shaderProgram) 
+
+/* --->>> Drawing <<<--- */
+void GameObject::draw(ShaderProgram* shaderProgram)
 {
 	// Use shader
 	shaderProgram->useShader();
 
 	// Binding textures
-	this->material->bindTextures();
+	_material->bindTextures();
 
 	// Setting uniforms
-	this->mesh->setMeshUniform(shaderProgram);
-	this->material->setMaterialShaderUniforms(*shaderProgram);
+	_mesh->setMeshUniform(shaderProgram);
+	_material->setMaterialShaderUniforms(*shaderProgram);
 
-	this->mesh->setMatrixModel(
-		this->transformation.objectPosition,
-		this->transformation.objectOrigin,
-		this->transformation.objectRotation,
-		this->transformation.objectScale);
+	_mesh->setMatrixModel(
+		_transformation.objectPosition,
+		_transformation.objectOrigin,
+		_transformation.objectRotation,
+		_transformation.objectScale
+	);
 
 	// Shader per vertex values
-	this->mesh->drawMesh();
+	_mesh->drawMesh();
 }
 
-void GameObject::setPosition(const glm::vec3 position)
+
+/* --->>> Getters / Setters <<<--- */
+void GameObject::setPosition(const glm::vec3 _position)
 {
-	this->transformation.objectPosition = position;
+	_transformation.objectPosition = _position;
 }
 
 void GameObject::setOrigin(const glm::vec3 origin)
 {
-	this->transformation.objectOrigin = origin;
+	_transformation.objectOrigin = origin;
 }
 
 void GameObject::setRotation(const glm::vec3 rotation)
 {
-	this->transformation.objectRotation = rotation;
+	_transformation.objectRotation = rotation;
 }
 
 void GameObject::setScale(const glm::vec3 scale)
 {
-	this->transformation.objectScale = scale;
+	_transformation.objectScale = scale;
 }
 
-glm::vec3 GameObject::getPosition() 
+glm::vec3 GameObject::getPosition()
 {
-	return this->transformation.objectPosition;
+	return _transformation.objectPosition;
 }
 
-glm::vec3 GameObject::getRotation() {
-	return this->transformation.objectRotation;
-}
-
-GameObject::~GameObject()
+glm::vec3 GameObject::getRotation()
 {
-	if (this->material)
-	{
-		delete this->material;
-		this->material = nullptr;
-	}
-
-	if (this->mesh)
-	{
-		delete this->mesh;
-		this->mesh = nullptr;
-	}
+	return _transformation.objectRotation;
 }

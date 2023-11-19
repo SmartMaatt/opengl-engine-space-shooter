@@ -80,7 +80,7 @@ struct Keyboard
 		eKeyBackspace,
 		eKeyEscape,
 		eKeyLeftShift,
-		
+
 		eKeyLast
 	};
 

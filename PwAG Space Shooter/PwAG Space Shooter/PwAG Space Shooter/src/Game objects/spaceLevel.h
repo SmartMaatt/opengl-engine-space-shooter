@@ -34,9 +34,6 @@ public:
 	SpaceLevel(GameState* gameState);
 	~SpaceLevel();
 
-	// Getters / Setters
-	Player* getPlayer();
-
 	// Input
 	void input(float deltaTime, GameReference gameReference, Keyboard& keyboard, Mouse& mouse);
 

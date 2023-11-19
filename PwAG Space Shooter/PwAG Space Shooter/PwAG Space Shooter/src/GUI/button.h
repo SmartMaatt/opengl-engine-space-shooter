@@ -4,12 +4,20 @@
 class Button
 {
 public:
-	Button(const std::string& text, const glm::vec2& position, const glm::vec3& color);
+	// Constructors / Destructor
+	Button(const std::string& text, const glm::vec2& _position, const glm::vec3& color);
 
+	// Update
+	void update(const Mouse& mouse);
+
+	// Drawing
+	void draw();
+
+	// Getters / Setters
 	void setEnabled(bool enabled);
 	bool isEnabled() const;
 
-	void setPosition(const glm::vec2& position);
+	void setPosition(const glm::vec2& _position);
 	const glm::vec2& getPosition() const;
 
 	void setColor(const glm::vec3& color);
@@ -18,22 +26,21 @@ public:
 	void setText(const std::string& text);
 	const std::string& getText() const;
 
-	void update(const Mouse& mouse);
-	void draw();
-
 	void setAction(std::function<void(void)> action);
 
 private:
-	glm::vec2 position{};
-	glm::vec2 size{};
-	glm::vec3 color{};
+	// Parameters
+	glm::vec2 _position{};
+	glm::vec2 _size{};
+	glm::vec3 _color{};
+	bool _enabled = true;
 
-	bool enabled = true;
+	// Rendering
+	const ShaderProgram& _shaderProgram;
+	Text _text;
 
-	const ShaderProgram& shaderRef;
-	Text text;
-
-	std::function<void(void)> action =
+	// Actions
+	std::function<void(void)> _action =
 		[]()
 	{};
 };

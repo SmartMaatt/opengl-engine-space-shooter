@@ -21,10 +21,8 @@
 #include <cassert>
 #include <random>
 
-
-// additional dependencies
+// Additional dependencies
 #include "glad/glad.h"
-
 #include "GLFW/glfw3.h"
 
 #include "GLM/include/glm.hpp"
@@ -35,9 +33,10 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-// this project
+// This project
 #include "../Core/config.h"
 #include "../Window/windowMode.h"
+
 #include "../Rendering system/Shader/shaderProgram.h"
 #include "../Rendering system/Shader/shaderLightProgram.h"
 #include "../Rendering system/OpenGL Objects/vao.h"
@@ -60,5 +59,4 @@
 
 #include "../GUI/button.h"
 #include "../GUI/sprite.h"
-
 #endif

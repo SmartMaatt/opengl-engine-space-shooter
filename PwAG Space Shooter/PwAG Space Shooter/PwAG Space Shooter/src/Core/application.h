@@ -21,9 +21,9 @@ class Application
 	friend void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 
 public:
+	// Constructors / Destructor
 	Application();
 	~Application();
-
 	void run();
 
 	// Main loop
@@ -32,57 +32,63 @@ public:
 	void render();
 
 private:
-	void updateFPSText();
+	// Text
+	void _initializeText();
+	void _updateText();
+	void _drawText();
 
-	void wireframeModeOn();
-	void wireframeModeOff();
+	// Wireframe mode
+	void _wireframeModeOn();
+	void _wireframeModeOff();
 
-	void calculateDeltaTime();
-	void calculateRenderDeltaTime();
+	// Time calculations
+	void _calculateDeltaTime();
+	void _calculateRenderDeltaTime();
 
 	// References
-	Window window;
+	Window _window;
+	EventManager _eventManager;
+	Keyboard _keyboard;
+	Mouse _mouse;
 
-	EventManager eventManager;
-	Keyboard keyboard;
-	Mouse mouse;
+	// Text rendering
+	Font _tmpDefaultFont;
+	ShaderProgram _textShader;
 
-	Font tmpDefaultFont;
-	ShaderProgram textShader;
-
-	GameReference gameReference = std::make_shared<GameAssets>(); //state machine here
+	// State machine
+	GameReference _gameReference = std::make_shared<GameAssets>();
 
 	// Time related
-	double deltaTime = 0.0f;
-	double renderDeltaTime = 0.0f;
+	double _deltaTime = 0.0f;
+	double _renderDeltaTime = 0.0f;
 
-	uint32_t fpsCap = 240;
-	double fpsCapCooldown; //in seconds
-	double fpsCapCooldownLeft;
-	double frameDuration = 0.0f;
-	Timer timer;
+	uint32_t _fpsCap = 240;
+	double _fpsCapCooldown;					// In seconds
+	double _fpsCapCooldownLeft;
+	double _frameDuration = 0.0f;
+	Timer _timer;
 
-	double fpsMeasureCooldown = 0.5; //in seconds
-	double fpsMeasureCooldownLeft = 0.0f;
-	bool updateFPSThisFrame = false;
+	double _fpsMeasureCooldown = 0.5;		// In seconds
+	double _fpsMeasureCooldownLeft = 0.0f;
+	bool _updateFPSThisFrame = false;
 
 	// Info labels
-	Text fpsLabel;
-	Text fpsValueText;
+	Text _fpsLabel;
+	Text _fpsValueText;
 
-	Text inputTimeLabel;
-	Text inputValueText;
+	Text _inputTimeLabel;
+	Text _inputValueText;
 
-	Text updateTimeLabel;
-	Text updateValueText;
+	Text _updateTimeLabel;
+	Text _updateValueText;
 
-	Text renderTimeLabel;
-	Text renderValueText;
+	Text _renderTimeLabel;
+	Text _renderValueText;
 
 	// States
-	bool mainLoopCondition = true;
-	bool wireframeMode = false;
-	bool loopedInput = false;
-	bool loopedRender = false;
-	bool loopedUpdate = false;
+	bool _mainLoopCondition = true;
+	bool _wireframeMode = false;
+	bool _loopedInput = false;
+	bool _loopedRender = false;
+	bool _loopedUpdate = false;
 };

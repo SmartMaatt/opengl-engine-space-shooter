@@ -8,35 +8,32 @@ class ResourceManager
 public:
 	static ResourceManager& getInstance()
 	{
-		return instance;
+		return _instance;
 	}
+
+	// Constructors / Destructor
 	ResourceManager(const ResourceManager&) = delete;
 	ResourceManager& operator=(const ResourceManager&) = delete;
 
+	// Texture
 	void loadTexture(const std::string& resourceName, const std::string& textureFilePath, Texture::Type type);
-	const Texture& getTexture(const std::string& resourceName) const
-	{
-		return textures.at(resourceName);
-	}
+	const Texture& getTexture(const std::string& resourceName) const;
 
+	// Font
 	void loadFont(const std::string& resourceName, const std::string& fontFilePath, uint32_t size);
-	const Font& getFont(const std::string& resourceName)
-	{
-		return fonts.at(resourceName);
-	}
+	const Font& getFont(const std::string& resourceName);
 
+	// Shader
 	void addShaderProgram(const std::string& resourceName, const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath);
 	void addShaderProgram(const std::string& resourceName, const std::string& vertexShaderFilePath, const std::string& geometryShaderFilePath, const std::string& fragmentShaderFilePath);
-	const ShaderProgram& getShader(const std::string& resourceName)
-	{
-		return shaders.at(resourceName);
-	}
+	const ShaderProgram& getShader(const std::string& resourceName);
+
 private:
 	ResourceManager() = default;
-	static ResourceManager instance;
+	static ResourceManager _instance;
 
-	std::unordered_map<std::string, Texture> textures;
-	std::unordered_map<std::string, Font> fonts;
-	std::unordered_map<std::string, ShaderProgram> shaders;
+	std::unordered_map<std::string, Texture> _textures;
+	std::unordered_map<std::string, Font> _fonts;
+	std::unordered_map<std::string, ShaderProgram> _shaders;
 };
 

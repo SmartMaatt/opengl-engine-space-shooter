@@ -22,7 +22,7 @@ public:
 	std::string getName();
 
 	// Position
-	void setPosition(const glm::vec3 position);
+	void setPosition(const glm::vec3 _position);
 	glm::vec3 getPosition();
 	void setOrigin(const glm::vec3 origin);
 
@@ -47,10 +47,12 @@ public:
 	float getColliderRadius();
 
 protected:
-	GameObject* gameObj = nullptr;
-	std::string name = "";
-	glm::vec3 direction = glm::vec3(0.0f);
+	// References
+	GameObject* _gameObj = nullptr;
 
-	float speed = 0;
-	float colRad = 0;
+	// Parameters
+	std::string _name = "";
+	glm::vec3 _direction = glm::vec3(0.0f);
+	float _speed = 0;
+	float _colRad = 0;
 };

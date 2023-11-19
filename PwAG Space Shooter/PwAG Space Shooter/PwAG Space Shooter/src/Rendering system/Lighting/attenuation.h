@@ -5,46 +5,49 @@ namespace Light
 	class Attenuation
 	{
 	public:
+		// Constructors / Destructor
 		Attenuation() = default;
 		Attenuation(float constant, float linear, float quadratic);
 
-		void setAttenuationByRange(float range);
+		// Getters / Setters
+		void setAttenuationByRange(float _range);
 
-	#pragma region Inline functions
+#pragma region Inline functions
 		float getConstant() const
 		{
-			return constant;
+			return _constant;
 		}
 
 		float getLinear() const
 		{
-			return linear;
+			return _linear;
 		}
 
 		float getQuadratic() const
 		{
-			return quadratic;
+			return _quadratic;
 		}
 
 		void setConstant(float constant)
 		{
-			this->constant = constant;
+			_constant = constant;
 		}
 
 		void setLinear(float linear)
 		{
-			this->linear = linear;
+			_linear = linear;
 		}
 
 		void setQuadratic(float quadratic)
 		{
-			this->quadratic = quadratic;
+			_quadratic = quadratic;
 		}
-	#pragma endregion
+#pragma endregion
 
 	private:
-		float constant = 1.0f;
-		float linear = 0.09f;
-		float quadratic = 0.032f;
+		// Parameters
+		float _constant = 1.0f;
+		float _linear = 0.09f;
+		float _quadratic = 0.032f;
 	};
 }

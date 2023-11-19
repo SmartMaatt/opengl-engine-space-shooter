@@ -5,6 +5,7 @@
 class Mathf
 {
 public:
+	// Constructors / Destructor
 	Mathf() = delete;
 
 	// Randomization

@@ -3,124 +3,125 @@
 #include "entity.h"
 #include <string>
 
-// Constructors / Destructor
+/* --->>> Constructors / Destructor <<<--- */
 Entity::Entity(GameObject* gameObj, std::string name)
 {
-	this->gameObj = gameObj;
+	_gameObj = gameObj;
 	setName(name);
 }
 
 Entity::~Entity()
 {
-	delete this->gameObj;
+	Debug::Log("Destroyed entity " + _name);
+	delete _gameObj;
 }
 
 
-// Update
+/* --->>> Update <<<--- */
 void Entity::update(float deltaTime)
 {
 }
 
 
-// Drawing
+/* --->>> Drawing <<<--- */
 void Entity::draw(ShaderProgram* shaderProgram)
 {
-	this->gameObj->draw(shaderProgram);
+	_gameObj->draw(shaderProgram);
 }
 
 
-// Destroying
+/* --->>> Destroying <<<--- */
 void Entity::destroy()
 {
 	delete this;
 }
 
 
-// Naming
+/* --->>> Naming <<<--- */
 void Entity::setName(std::string name)
 {
-	this->name = name;
+	_name = name;
 }
 
 std::string Entity::getName()
 {
-	return this->name;
+	return _name;
 }
 
 
-// Position
-void Entity::setPosition(const glm::vec3 position)
+/* --->>> Position <<<--- */
+void Entity::setPosition(const glm::vec3 _position)
 {
-	this->gameObj->setPosition(position);
+	_gameObj->setPosition(_position);
 }
 
 glm::vec3 Entity::getPosition()
 {
-	return this->gameObj->getPosition();
+	return _gameObj->getPosition();
 }
 
 void Entity::setOrigin(const glm::vec3 origin)
 {
-	this->gameObj->setOrigin(origin);
+	_gameObj->setOrigin(origin);
 }
 
 
-// Rotation
+/* --->>> Rotation <<<--- */
 void Entity::setRotation(const glm::vec3 rotation)
 {
-	this->gameObj->setRotation(rotation);
+	_gameObj->setRotation(rotation);
 }
 
 glm::vec3 Entity::getRotation()
 {
-	return this->gameObj->getRotation();
+	return _gameObj->getRotation();
 }
 
 
-// Scale
+/* --->>> Scale <<<--- */
 void Entity::setScale(const glm::vec3 scale)
 {
-	this->gameObj->setScale(scale);
+	_gameObj->setScale(scale);
 }
 
 
-// Direction
+/* --->>> Direction <<<---*/
 void Entity::setDirection(glm::vec3 direction)
 {
-	this->direction = direction;
+	_direction = direction;
 }
 
 glm::vec3 Entity::getDirection()
 {
-	return this->direction;
+	return _direction;
 }
 
 void Entity::moveWithDirection(float deltaTime)
 {
-	glm::vec3 newPosition = getPosition() + (deltaTime * speed * direction);
+	glm::vec3 newPosition = getPosition() + (deltaTime * _speed * _direction);
 	setPosition(newPosition);
 }
 
 
-// Speed
+/* --->>> Speed <<<--- */
 void Entity::setSpeed(float speed)
 {
-	this->speed = speed;
+	_speed = speed;
 }
 
 float Entity::getSpeed()
 {
-	return this->speed;
+	return _speed;
 }
 
 
-// Collision
+/* --->>> Collision <<<--- */
 void Entity::setColliderRadius(float colRad)
 {
-	this->colRad = colRad;
+	_colRad = colRad;
 }
 
 float Entity::getColliderRadius()
 {
-	return this->colRad;
+	return _colRad;
 }

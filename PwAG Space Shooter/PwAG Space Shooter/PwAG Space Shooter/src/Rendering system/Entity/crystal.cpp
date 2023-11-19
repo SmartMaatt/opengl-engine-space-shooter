@@ -4,7 +4,7 @@
 #include "crystal.h"
 #include <string>
 
-// Constructors / Destructor
+/* --->>> Constructors / Destructor <<<--- */
 Crystal::Crystal(GameObject* gameObj, std::string name, float worldRadius) : Entity(gameObj, name)
 {
 	// Rotation
@@ -19,14 +19,14 @@ Crystal::Crystal(GameObject* gameObj, std::string name, float worldRadius) : Ent
 	setColliderRadius(0.5f);
 
 	// Light
-	light = new Light::Point(getPosition(), { 1,0,0 });
+	_light = new Light::Point(getPosition(), { 1,0,0 });
 }
 
 Crystal::~Crystal()
 {
 }
 
-// Update
+/* --->>> Update <<<--- */
 void Crystal::update(float deltaTime)
 {
 	Entity::update(deltaTime);
@@ -36,14 +36,20 @@ void Crystal::update(float deltaTime)
 	setRotation(newRotation);
 }
 
-// Drawing
+/* --->>> Drawing <<<--- */
 void Crystal::draw(ShaderProgram* shaderProgram)
 {
 	Entity::draw(shaderProgram);
 }
 
-// Destroying
+/* --->>> Destroying <<<--- */
 void Crystal::destroy()
 {
 	delete this;
+}
+
+/* --->>> Getters <<<--- */
+Light::Point* Crystal::getLight()
+{
+	return _light;
 }

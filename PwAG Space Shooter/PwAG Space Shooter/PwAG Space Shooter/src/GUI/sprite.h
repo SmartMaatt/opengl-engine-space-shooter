@@ -4,29 +4,33 @@
 class Sprite
 {
 public:
+	// Constructors / Destructor
 	Sprite(const std::string& path, int width, int height, int xCenter, int yCenter, bool alpha);
 	~Sprite();
 
-	void Draw();
+	// Drawing
+	void draw();
 
 private:
+	// Initialization
+	void _initShaderProgram();
+	void _initMeshData();
+	void _initTexture();
 
-	void InitShaderProgram();
-	void InitMeshData();
-	void InitTexture();
-	void InitSprite();
+	// Shader
+	const std::string& _spriteVertShader = "Shaders/sprite.vert";
+	const std::string& _spriteFragShader = "Shaders/sprite.frag";
+	ShaderProgram _spriteProgram;
 
-	const std::string& spriteVertShader = "Shaders/sprite.vert";
-	const std::string& spriteFragShader = "Shaders/sprite.frag";
-	ShaderProgram spriteProgram;
+	// Buffers
+	unsigned int _VBO, _VAO, _EBO;
+	unsigned int _texture;
 
-	unsigned int VBO, VAO, EBO;
-	unsigned int texture;
-
-	const std::string& path;
-	int width = 0;
-	int height = 0;
-	int xCenter = 0;
-	int yCenter = 0;
-	bool alpha = false;
+	// Parameters
+	const std::string& _path;
+	int _width = 0;
+	int _height = 0;
+	int _xCenter = 0;
+	int _yCenter = 0;
+	bool _alpha = false;
 };

@@ -8,12 +8,16 @@
 class GameObject
 {
 public:
+	// Constructors / Destructor
 	GameObject();
 	GameObject(Material* material, Mesh* mesh);
+	~GameObject();
 
+	// Drawing
 	void draw(ShaderProgram* shaderProgram);
 
-	void setPosition(const glm::vec3 position);
+	// Getters / Setters
+	void setPosition(const glm::vec3 _position);
 	void setOrigin(const glm::vec3 origin);
 	void setRotation(const glm::vec3 rotation);
 	void setScale(const glm::vec3 scale);
@@ -21,10 +25,8 @@ public:
 	glm::vec3 getPosition();
 	glm::vec3 getRotation();
 
-	~GameObject();
-
 private:
-	TransformationOBJ transformation;
-	Material* material;
-	Mesh* mesh;
+	TransformationOBJ _transformation;
+	Material* _material;
+	Mesh* _mesh;
 };

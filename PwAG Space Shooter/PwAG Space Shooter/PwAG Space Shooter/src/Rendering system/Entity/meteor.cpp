@@ -4,7 +4,7 @@
 #include "meteor.h"
 #include <string>
 
-// Constructors / Destructor
+/* --->>> Constructors / Destructor <<<--- */
 Meteor::Meteor(GameObject* gameObj, std::string name, float worldRadius) : Entity(gameObj, name)
 {
 	// Position
@@ -24,7 +24,7 @@ Meteor::~Meteor()
 {
 }
 
-// Update
+/* --->>> Update <<<--- */
 void Meteor::update(float deltaTime)
 {
 	Entity::update(deltaTime);
@@ -33,25 +33,25 @@ void Meteor::update(float deltaTime)
 	moveWithDirection(deltaTime);
 }
 
-// Drawing
+/* --->>> Drawing <<<--- */
 void Meteor::draw(ShaderProgram* shaderProgram)
 {
 	Entity::draw(shaderProgram);
 }
 
-// Destroying
+/* --->>> Destroying <<<--- */
 void Meteor::destroy()
 {
 	delete this;
 }
 
-// Collision
+/* --->>> Collision <<<--- */
 void Meteor::changeDirectionOnCollision()
 {
 	glm::vec3 noise = glm::vec3(Mathf::randVal(-0.1f, 0.1f), Mathf::randVal(-0.1f, 0.1f), Mathf::randVal(-0.1f, 0.1f));
 	glm::vec3 newDir = getDirection() * glm::vec3(-1) + noise;
 	setDirection(glm::clamp(newDir, glm::vec3(-1), glm::vec3(1)));
 
-	glm::vec3 position = getPosition() + getDirection() * 0.05f;
-	setPosition(position);
+	glm::vec3 _position = getPosition() + getDirection() * 0.05f;
+	setPosition(_position);
 }

@@ -1,92 +1,91 @@
 #include "pch.h"
 #include "button.h"
 
-Button::Button(const std::string& text, const glm::vec2& position, const glm::vec3& color)
-	: text(position.x, Config::g_defaultHeight - position.y, text, ResourceManager::getInstance().getFont("default")), shaderRef(ResourceManager::getInstance().getShader("text")), position(position), color(color)
+/* --->>> Constructors / Destructor <<<--- */
+Button::Button(const std::string& text, const glm::vec2& _position, const glm::vec3& color)
+	: _text(_position.x, Config::g_defaultHeight - _position.y, text, ResourceManager::getInstance().getFont("default")), _shaderProgram(ResourceManager::getInstance().getShader("text")), _position(_position), _color(color)
 {
-	this->size = { this->text.width, this->text.height };
+	_size = { _text.width, _text.height };
 }
 
-void Button::setEnabled(bool enabled)
-{
-	this->enabled = enabled;
-}
 
-bool Button::isEnabled() const
-{
-	return this->enabled;
-}
-
-void Button::setPosition(const glm::vec2& position)
-{
-	this->position = position;
-	this->text.setPosition(position);
-}
-
-const glm::vec2& Button::getPosition() const
-{
-	return this->position;
-}
-
-void Button::setColor(const glm::vec3& color)
-{
-	this->color = color;
-	this->text.setColor(color);
-}
-
-const glm::vec3& Button::getColor() const
-{
-	return this->color;
-}
-
-void Button::setText(const std::string& text)
-{
-	this->text.setText(text);
-	this->size = { this->text.width, this->text.height };
-}
-
-const std::string& Button::getText() const
-{
-	return this->text.getText();
-}
-
+/* --->>> Update <<<--- */
 void Button::update(const Mouse& mouse)
 {
-	if (enabled &&
-		mouse.posX > this->position.x
-		&&
-		mouse.posX < this->position.x + this->size.x
-
-		&&
-
-		mouse.posY > this->position.y
-		&&
-		mouse.posY < this->position.y + this->size.y
-		)
+	if (_enabled &&
+		mouse.posX > _position.x && mouse.posX < _position.x + _size.x &&
+		mouse.posY > _position.y && mouse.posY < _position.y + _size.y)
 	{
-		this->text.color = this->color * 1.5f;
+		_text.color = _color * 1.5f;
 		if (mouse.buttonState[static_cast<int>(Mouse::Button::eLeft)])
 		{
-			action();
+			_action();
 		}
 	}
 	else
 	{
-		this->text.color = this->color;
+		_text.color = _color;
 	}
 }
 
+
+/* --->>> Drawing <<<--- */
 void Button::draw()
 {
 #ifndef DIST
-	shaderRef.useShader();
-	auto projection = glm::ortho(0.0f, static_cast<float>(Config::g_defaultWidth), 0.0f, static_cast<float>(Config::g_defaultHeight));
-	shaderRef.setMat4("MVP", projection);
-	this->text.render(this->shaderRef);
+	_shaderProgram.useShader();
+	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(Config::g_defaultWidth), 0.0f, static_cast<float>(Config::g_defaultHeight));
+	_shaderProgram.setMat4("MVP", projection);
+	_text.render(_shaderProgram);
 #endif
+}
+
+
+/* --->>> Getters / Setters <<<--- */
+void Button::setEnabled(bool enabled)
+{
+	_enabled = enabled;
+}
+
+bool Button::isEnabled() const
+{
+	return _enabled;
+}
+
+void Button::setPosition(const glm::vec2& position)
+{
+	_position = position;
+	_text.setPosition(position);
+}
+
+const glm::vec2& Button::getPosition() const
+{
+	return _position;
+}
+
+void Button::setColor(const glm::vec3& color)
+{
+	_color = color;
+	_text.setColor(color);
+}
+
+const glm::vec3& Button::getColor() const
+{
+	return _color;
+}
+
+void Button::setText(const std::string& text)
+{
+	_text.setText(text);
+	_size = { _text.width, _text.height };
+}
+
+const std::string& Button::getText() const
+{
+	return _text.getText();
 }
 
 void Button::setAction(std::function<void(void)> action)
 {
-	this->action = std::move(action);
+	_action = std::move(action);
 }

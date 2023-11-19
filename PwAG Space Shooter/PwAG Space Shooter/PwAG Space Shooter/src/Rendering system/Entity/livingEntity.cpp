@@ -4,50 +4,50 @@
 #include "livingEntity.h"
 #include <string>
 
-// Constructors / Destructor
+/* --->>> Constructors / Destructor <<<--- */
 LivingEntity::LivingEntity(GameObject* gameObj, std::string name, float lifeSpan) : Entity(gameObj, name)
 {
-	this->lifeSpan = lifeSpan;
+	_lifeSpan = lifeSpan;
 }
 
 LivingEntity::~LivingEntity()
 {
 }
 
-// Update
+/* --->>> Update <<<--- */
 void LivingEntity::update(float deltaTime)
 {
 	Entity::update(deltaTime);
 
 	// Aging
-	calcAge(deltaTime);
+	_calcAge(deltaTime);
 	if (isDead())
 	{
-		Debug::Log("Object " + name + " aged to death!");
+		Debug::Log("Object " + _name + " aged to death!");
 		// Has to be killed by external manager
 	}
 }
 
-// Drawing
+/* --->>> Drawing <<<--- */
 void LivingEntity::draw(ShaderProgram* shaderProgram)
 {
 	Entity::draw(shaderProgram);
 }
 
-// Destroying;
+/* --->>> Destroying <<<--- */
 void LivingEntity::destroy()
 {
 	delete this;
 }
 
-// Life span
+/* --->>> Life span <<<--- */
 bool LivingEntity::isDead()
 {
-	return this->dead;
+	return _dead;
 }
 
-void LivingEntity::calcAge(float deltaTime)
+void LivingEntity::_calcAge(float deltaTime)
 {
-	age += deltaTime;
-	dead = age > lifeSpan;
+	_age += deltaTime;
+	_dead = _age > _lifeSpan;
 }

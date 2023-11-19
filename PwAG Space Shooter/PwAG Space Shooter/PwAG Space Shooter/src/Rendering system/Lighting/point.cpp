@@ -2,54 +2,55 @@
 #include "point.h"
 #include "../../Game Objects/spaceLevel.h"
 
+/* --->>> Constructors / Destructor <<<--- */
 Light::Point::Point(const glm::vec3& position, const glm::vec3& color) :
-Light(color), position(position), fbo(), depthMap(Texture::createDepthTexture())
+	Light(color), _position(position), _fbo(), _depthMap(Texture::createDepthTexture())
 {
 	setColor(color);
-	attenuation.setAttenuationByRange(range);
+	_attenuation.setAttenuationByRange(_range);
 
-	fbo.bind();
-	fbo.setDepthAttachment(this->depthMap);
-	fbo.drawBufferNone();
-	fbo.readBufferNone();
-	fbo.unbind();
+	_fbo.bind();
+	_fbo.setDepthAttachment(_depthMap);
+	_fbo.drawBufferNone();
+	_fbo.readBufferNone();
+	_fbo.unbind();
 
-	glm::mat4 lightProjection =	glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
-	this->position = position;
+	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
+	_position = position;
 
-	lightSpaceMatrix =
+	_lightSpaceMatrix =
 	{
-		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
-		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
-		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
-		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
-		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
-		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f))
+		lightProjection * glm::lookAt(_position, _position + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(_position, _position + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(_position, _position + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(_position, _position + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(_position, _position + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(_position, _position + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f))
 	};
 }
 
 Light::Point::Point(const Point& light) :
-Light(light.getColor()), position(light.getPosition()), fbo(), depthMap(Texture::createDepthTexture())
+	Light(light.getColor()), _position(light.getPosition()), _fbo(), _depthMap(Texture::createDepthTexture())
 {
-	setColor(color);
-	attenuation.setAttenuationByRange(range);
+	setColor(_color);
+	_attenuation.setAttenuationByRange(_range);
 
-	fbo.bind();
-	fbo.setDepthAttachment(this->depthMap);
-	fbo.drawBufferNone();
-	fbo.readBufferNone();
-	fbo.unbind();
+	_fbo.bind();
+	_fbo.setDepthAttachment(_depthMap);
+	_fbo.drawBufferNone();
+	_fbo.readBufferNone();
+	_fbo.unbind();
 
 	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
-	this->position = position;
+	_position = light.getPosition();
 
-	lightSpaceMatrix =
+	_lightSpaceMatrix =
 	{
-		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
-		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
-		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
-		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
-		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
-		lightProjection * glm::lookAt(this->position, this->position + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f))
+		lightProjection * glm::lookAt(_position, _position + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(_position, _position + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(_position, _position + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(_position, _position + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(_position, _position + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
+		lightProjection * glm::lookAt(_position, _position + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f))
 	};
 }

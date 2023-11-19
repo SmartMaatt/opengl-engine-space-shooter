@@ -1,44 +1,62 @@
 #include "pch.h"
 #include "sprite.h"
 
-Sprite::Sprite(const std::string& path, int width, int height, int xCenter, int yCenter, bool alpha)
-	: path(path)
+/* --->>> Constructors / Destructor <<<--- */
+Sprite::Sprite(const std::string& path, int width, int height, int xCenter, int yCenter, bool alpha) : _path(path)
 {
-	this->width = width;
-	this->height = height;
-	this->xCenter = xCenter;
-	this->yCenter = Config::g_defaultHeight - yCenter;
-	this->alpha = alpha;
+	_width = width;
+	_height = height;
+	_xCenter = xCenter;
+	_yCenter = Config::g_defaultHeight - yCenter;
+	_alpha = alpha;
 
-	InitShaderProgram();
-	InitMeshData();
-	InitTexture();
+	_initShaderProgram();
+	_initMeshData();
+	_initTexture();
 }
 
 Sprite::~Sprite()
 {
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+	glDeleteVertexArrays(1, &_VAO);
+	glDeleteBuffers(1, &_VBO);
+	glDeleteBuffers(1, &_EBO);
 }
 
-void Sprite::InitShaderProgram()
-{
-	Shader spriteVert = Shader::createShaderFromFile(spriteVertShader, Shader::Type::eVertex);
-	Shader spriteFrag = Shader::createShaderFromFile(spriteFragShader, Shader::Type::eFragment);
 
-	spriteProgram.attachShader(spriteVert);
-	spriteProgram.attachShader(spriteFrag);
-	spriteProgram.linkShaderProgram();
+/* --->>> Drawing <<<--- */
+void Sprite::draw()
+{
+	glDisable(GL_DEPTH_TEST);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _texture);
+	_spriteProgram.useShader();
+
+	glBindVertexArray(_VAO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+	glEnable(GL_DEPTH_TEST);
 }
 
-void Sprite::InitMeshData()
-{
-	float normXCenter = (float)xCenter / (float)Config::g_defaultWidth;
-	float normYCenter = (float)yCenter / (float)Config::g_defaultHeight;
 
-	float normWidth = (float)width / (float)Config::g_defaultWidth;
-	float normHeight = (float)height / (float)Config::g_defaultHeight;
+/* --->>> Initialization <<<--- */
+void Sprite::_initShaderProgram()
+{
+	Shader spriteVert = Shader::createShaderFromFile(_spriteVertShader, Shader::Type::eVertex);
+	Shader spriteFrag = Shader::createShaderFromFile(_spriteFragShader, Shader::Type::eFragment);
+
+	_spriteProgram.attachShader(spriteVert);
+	_spriteProgram.attachShader(spriteFrag);
+	_spriteProgram.linkShaderProgram();
+}
+
+void Sprite::_initMeshData()
+{
+	float normXCenter = (float)_xCenter / (float)Config::g_defaultWidth;
+	float normYCenter = (float)_yCenter / (float)Config::g_defaultHeight;
+
+	float normWidth = (float)_width / (float)Config::g_defaultWidth;
+	float normHeight = (float)_height / (float)Config::g_defaultHeight;
 
 	float upperRightX = 2 * (normXCenter + (normWidth / 2)) - 1;
 	float upperRightY = 2 * (normYCenter + (normHeight / 2)) - 1;
@@ -65,16 +83,16 @@ void Sprite::InitMeshData()
 		1, 2, 3  // Second triangle
 	};
 
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
+	glGenVertexArrays(1, &_VAO);
+	glGenBuffers(1, &_VBO);
+	glGenBuffers(1, &_EBO);
 
-	glBindVertexArray(VAO);
+	glBindVertexArray(_VAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// Position attribute
@@ -90,12 +108,12 @@ void Sprite::InitMeshData()
 	glEnableVertexAttribArray(2);
 }
 
-void Sprite::InitTexture()
+void Sprite::_initTexture()
 {
 	stbi_set_flip_vertically_on_load(true);
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	
+	glGenTextures(1, &_texture);
+	glBindTexture(GL_TEXTURE_2D, _texture);
+
 	// Set the texture wrapping parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -106,10 +124,10 @@ void Sprite::InitTexture()
 
 	// Load image, create texture and generate mipmaps
 	int width, height, nrChannels;
-	unsigned char* data = stbi_load(this->path.c_str(), &width, &height, &nrChannels, 0);
+	unsigned char* data = stbi_load(_path.c_str(), &width, &height, &nrChannels, 0);
 	if (data)
 	{
-		if (alpha)
+		if (_alpha)
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		else
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -120,18 +138,4 @@ void Sprite::InitTexture()
 		Debug::LogError("Failed to load texture");
 	}
 	stbi_image_free(data);
-}
-
-void Sprite::Draw()
-{
-	glDisable(GL_DEPTH_TEST);
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	spriteProgram.useShader();
-
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-	glEnable(GL_DEPTH_TEST);
 }

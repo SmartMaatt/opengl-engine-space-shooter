@@ -22,11 +22,11 @@ public:
 	bool isDead();
 
 protected:
-	float lifeSpan = 0;
-	float age = 0.0f;
-
-	bool dead = false;
+	// Age parameters
+	float _lifeSpan = 0;
+	float _age = 0.0f;
+	bool _dead = false;
 
 private:
-	void calcAge(float deltaTime);
+	void _calcAge(float deltaTime);
 };

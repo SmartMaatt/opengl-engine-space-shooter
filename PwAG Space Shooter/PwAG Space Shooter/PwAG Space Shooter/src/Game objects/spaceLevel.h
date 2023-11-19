@@ -53,6 +53,7 @@ private:
 	void updateOutcomes();
 
 	// Collisions
+	void collidePlayer();
 	void collideMeteor(std::vector<Meteor*>::iterator& meteor);
 	void collideCrystal(std::vector<Crystal*>::iterator& crystal);
 

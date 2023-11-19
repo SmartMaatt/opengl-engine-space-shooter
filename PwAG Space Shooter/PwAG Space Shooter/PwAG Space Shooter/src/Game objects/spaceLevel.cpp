@@ -198,19 +198,11 @@ void SpaceLevel::update(float deltaTime)
 
 void SpaceLevel::updatePlayer(float deltaTime)
 {
-	player->update(deltaTime);
-
-	// Square border holder ;)
-	glm::vec3 playerPos = this->player->getCameraPosition();
-	if (playerPos.x > this->worldRadius) { this->player->setCameraPosition(glm::vec3(this->worldRadius, playerPos.y, playerPos.z)); }
-	if (playerPos.y > this->worldRadius) { this->player->setCameraPosition(glm::vec3(playerPos.x, this->worldRadius, playerPos.z)); }
-	if (playerPos.z > this->worldRadius) { this->player->setCameraPosition(glm::vec3(playerPos.x, playerPos.y, this->worldRadius)); }
-	if (playerPos.x < -this->worldRadius) { this->player->setCameraPosition(glm::vec3(-this->worldRadius, playerPos.y, playerPos.z)); }
-	if (playerPos.y < -this->worldRadius) { this->player->setCameraPosition(glm::vec3(playerPos.x, -this->worldRadius, playerPos.z)); }
-	if (playerPos.z < -this->worldRadius) { this->player->setCameraPosition(glm::vec3(playerPos.x, playerPos.y, -this->worldRadius)); }
-
-	// Player stats
+	this->player->update(deltaTime);
 	this->player->getStats()->reloadBullet(deltaTime);
+
+	// >>> Collisions <<<
+	collidePlayer();
 }
 
 void SpaceLevel::updateMeteors(float deltaTime)
@@ -314,6 +306,20 @@ void SpaceLevel::updateOutcomes()
 
 
 /* --->>> Collisions <<<--- */
+void SpaceLevel::collidePlayer()
+{
+	// Player <-> World border
+	glm::vec3 playerPos = this->player->getCameraPosition();
+	glm::vec3 sphereCenter = glm::vec3(0, 0, 0);
+
+	float distanceFromCenter = glm::distance(playerPos, sphereCenter);
+
+	if (distanceFromCenter > this->worldRadius) {
+		glm::vec3 newPosition = sphereCenter + ((playerPos - sphereCenter) / distanceFromCenter) * this->worldRadius;
+		this->player->setCameraPosition(newPosition);
+	}
+}
+
 void SpaceLevel::collideMeteor(std::vector<Meteor*>::iterator& meteor)
 {
 	// Meteor <-> World border

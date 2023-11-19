@@ -60,32 +60,50 @@ void Player::processInput(GameReference& gameReference, Keyboard& keyboard, floa
 		cos(horizontalAngle - 3.14f / 2.0f)
 	);
 
+	// Normalization of direction vector
+	if (glm::length(this->direction) > 0) {
+		this->direction = glm::normalize(this->direction);
+	}
+
+	// Normalization of right vector
+	if (glm::length(this->right) > 0) {
+		this->right = glm::normalize(this->right);
+	}
+
 	// Up vector
-	this->up = glm::cross(right, direction);
+	this->up = glm::cross(this->right, this->direction);
+	this->movementDirection = glm::vec3(0);
 
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyW)]) {
-		this->position += direction * deltaTime * speed;
+		this->movementDirection += direction;
 	}
 
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyS)]) {
-		this->position -= direction * deltaTime * speed;
+		this->movementDirection -= direction;
 	}
 
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyA)]) {
-		this->position -= right * deltaTime * speed;
+		this->movementDirection -= right;
 	}
 
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyD)]) {
-		this->position += right * deltaTime * speed;
+		this->movementDirection += right;
 	}
 
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeySpace)]) {
-		this->position += up * deltaTime * speed;
+		this->movementDirection += up;
 	}
 
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyLeftShift)]) {
-		this->position -= up * deltaTime * speed;
+		this->movementDirection -= up;
 	}
+
+	// Normalization of movement vector
+	if (glm::length(this->movementDirection) > 0) {
+		this->movementDirection = glm::normalize(this->movementDirection);
+	}
+
+	this->position += this->movementDirection * deltaTime * speed;
 }
 
 void Player::updateMatricesFromInput()

@@ -4,26 +4,30 @@
 class PlayerStats
 {
 public:
+	// Constructors / Destructor
 	PlayerStats();
+	~PlayerStats();
 
+	// Health
 	int getHitPoints();
 	int getMaxHitPoints();
 	void takeDamage(int damage);
 	void checkHitPoints();
 	bool checkSafeTime(float deltaTime);
 
+	// Shooting
 	void shoot();
 	void reloadBullet(float deltaTime);
 	bool canIShoot();
 	float getReloadMaxTime();
 	float getReloadTime();
 
+	// Points
 	int getPoints();
 	void addPoint();
 
+	// Collisions
 	float getPlayerRadius();
-
-	~PlayerStats();
 
 private:
 	int hitPoints;

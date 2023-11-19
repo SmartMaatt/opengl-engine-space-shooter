@@ -1,12 +1,19 @@
 #include "pch.h"
 #include "PlayerStats.h"
 
+/* --->>> Constructors / Destructor <<<--- */
 PlayerStats::PlayerStats()
 {
 	hitPoints = maxHitPoints;
 	timeAfterLastHit = safeTimeAfterHit;
 }
 
+PlayerStats::~PlayerStats()
+{
+}
+
+
+/* --->>> Health <<<--- */
 int PlayerStats::getHitPoints()
 {
 	return hitPoints;
@@ -19,11 +26,6 @@ int PlayerStats::getMaxHitPoints()
 
 void PlayerStats::takeDamage(int damage)
 {
-	/*if (!checkSafeTime(deltaTime))
-	{
-		return;
-	}*/
-
 	hitPoints -= damage;
 	checkHitPoints();
 }
@@ -54,6 +56,8 @@ void PlayerStats::checkHitPoints()
 	}
 }
 
+
+/* --->>> Shooting <<<--- */
 void PlayerStats::shoot()
 {
 	if (canShoot)
@@ -93,6 +97,8 @@ float PlayerStats::getReloadTime()
 	return this->reloadTime;
 }
 
+
+/* --->>> Points <<<--- */
 int PlayerStats::getPoints()
 {
 	return points;
@@ -103,12 +109,9 @@ void PlayerStats::addPoint()
 	points++;
 }
 
-float  PlayerStats::getPlayerRadius()
+
+/* --->>> Collisions <<<--- */
+float PlayerStats::getPlayerRadius()
 {
 	return playerRadius;
-}
-
-PlayerStats::~PlayerStats()
-{
-
 }

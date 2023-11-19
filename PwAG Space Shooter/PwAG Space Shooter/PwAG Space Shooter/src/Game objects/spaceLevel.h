@@ -8,6 +8,7 @@
 #include "../Rendering system/Entity/crystal.h"
 #include "../Rendering system/Entity/bullet.h"
 #include "../Rendering system/Model/indexedDataOBJ.h"
+#include "../State machine/gameState.h"
 
 class SpaceLevel
 {
@@ -15,15 +16,26 @@ public:
 	int meteorsInstances = 40;
 	int crystalsInstances = 5;
 	float worldRadius = 10;
+	glm::vec3 startPosition = glm::vec3(0, 0.5f, 0);
 
-	Player* player;
-	PlayerStats* playerStats;
+	// Constructors / Destructor
+	SpaceLevel(GameState* gameState);
+	~SpaceLevel();
 
-	glm::vec3 startPosition;
-	glm::vec3 endPosition;
+	// Getters / Setters
+	Player* getPlayer();
 
+	// Input
+	void input(float deltaTime, GameReference gameReference, Keyboard& keyboard, Mouse& mouse);
+
+	// Update
+	void update(float deltaTime);
+
+	// Render
+	void draw(float deltaTime, bool wireframe);
+
+private:
 	// Initialization
-	SpaceLevel();
 	void initLevel();
 	void initMatrixMVP();
 	void initLevelShaders();
@@ -32,34 +44,32 @@ public:
 	void initText();
 
 	// Update
-	void updateLevel(float deltaTime);
-
 	void updatePlayer(float deltaTime);
 	void updateMeteors(float deltaTime);
-	void collideMeteor(std::vector<Meteor*>::iterator& meteor);
 	void updateCrystals(float deltaTime);
-	void collideCrystal(std::vector<Crystal*>::iterator& crystal);
 	void updateBullet(float deltaTime);
 	void updateLightShaders();
-	void updateTextValues();
+	void updateGuiTexts();
+	void updateOutcomes();
 
-	// Render
-	void drawLevel(float deltaTime, bool wireframe);
+	// Collisions
+	void collideMeteor(std::vector<Meteor*>::iterator& meteor);
+	void collideCrystal(std::vector<Crystal*>::iterator& crystal);
+
+	// Lights
+	void setLightUniforms(ShaderProgram& shader);
+
+	// GUI
 	void drawGui();
 	void ToggleHUD();
 
 	// Shooting
 	void shootBullet();
-
-	// Deserialization
-	virtual ~SpaceLevel();
-
-private:
-	void setLightUniforms(ShaderProgram& shader);
 	Bullet* spawnBullet();
 
 	// Instances
-	std::vector<Light::Point> pointLights;
+	GameState* gameState;
+	Player* player;
 	std::vector<Meteor*> meteors;
 	std::vector<Crystal*> crystals;
 	Bullet* bullet;
@@ -82,7 +92,7 @@ private:
 	Mesh* crystalMeshPrefab;
 	Mesh* bulletMeshPrefab;
 
-	// Text related
+	// GUI
 	Font tmpDefaultFont;
 	ShaderProgram textShader;
 

@@ -1,55 +1,49 @@
 #include "pch.h"
 #include "gameState.h"
+#include "../Game Objects/spaceLevel.h"
 
 GameState::GameState(GameReference gameReference)
 {
 	this->gameReference = gameReference;
 }
 
-GameState::~GameState() {}
+GameState::~GameState() 
+{
+	delete this->spaceLevel;
+}
 
 void GameState::initialization()
 {
-	this->spaceLevel = new SpaceLevel();
+	this->spaceLevel = new SpaceLevel(this);
 	glfwSetInputMode(this->gameReference->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	this->cursorDisabled = true;
 }
 
 void GameState::processInput(float deltaTime, Keyboard& keyboard, Mouse& mouse)
 {
-	this->spaceLevel->player->updateInput(gameReference, keyboard, mouse, deltaTime);
-
-	// Shooting
-	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyF)])
-	{
-		this->spaceLevel->shootBullet();
-	}
-
-	// Activating HUD
-	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyH)])
-	{
-		this->spaceLevel->ToggleHUD();
-	}
+	this->spaceLevel->input(deltaTime, gameReference, keyboard, mouse);
 }
 
 void GameState::update(float deltaTime)
 {
-	this->spaceLevel->updateLevel(deltaTime);
-
-	if (this->spaceLevel->crystalsInstances == this->spaceLevel->playerStats->getPoints())
-	{
-		std::cout << "You won!" << std::endl;
-		this->gameReference->m_stateMachine.addNewState(StateReference(new GameOverState(this->gameReference, "You won!")));
-	}
-
-	if (this->spaceLevel->playerStats->getHitPoints() == 0)
-	{
-		std::cout << "You loose!" << std::endl;
-		this->gameReference->m_stateMachine.addNewState(StateReference(new GameOverState(this->gameReference, "You loose!")));
-	}
+	this->spaceLevel->update(deltaTime);
 }
 
 void GameState::render(float deltaTime, bool wireframe)
 {
-	this->spaceLevel->drawLevel(deltaTime, wireframe);
+	this->spaceLevel->draw(deltaTime, wireframe);
+}
+
+
+/* --->>> Outcomes <<<--- */
+void GameState::winLevel()
+{
+	std::cout << "You won!" << std::endl;
+	this->gameReference->m_stateMachine.addNewState(StateReference(new GameOverState(this->gameReference, "You won!")));
+}
+
+void GameState::looseLevel()
+{
+	std::cout << "You loose!" << std::endl;
+	this->gameReference->m_stateMachine.addNewState(StateReference(new GameOverState(this->gameReference, "You loose!")));
 }

@@ -39,6 +39,7 @@
 #include "../Core/config.h"
 #include "../Window/windowMode.h"
 #include "../Rendering system/Shader/shaderProgram.h"
+#include "../Rendering system/Shader/shaderLightProgram.h"
 #include "../Rendering system/OpenGL Objects/vao.h"
 #include "../Rendering system/OpenGL Objects/vbo.h"
 #include "../Rendering system/OpenGL Objects/ebo.h"

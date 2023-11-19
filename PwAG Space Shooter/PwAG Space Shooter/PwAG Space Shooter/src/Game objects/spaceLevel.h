@@ -57,7 +57,7 @@ private:
 	void collideCrystal(std::vector<Crystal*>::iterator& crystal);
 
 	// Lights
-	void setLightUniforms(ShaderProgram& shader);
+	void setLightUniforms(ShaderLightProgram& shader);
 
 	// GUI
 	void drawGui();
@@ -75,7 +75,7 @@ private:
 	Bullet* bullet;
 
 	// Shaders
-	ShaderProgram* shaderProgram;
+	ShaderLightProgram* shaderProgram;
 	Shader vertexShader;
 	Shader fragmentShader;
 

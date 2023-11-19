@@ -1,6 +1,7 @@
 #pragma once
 #include "light.h"
 #include "attenuation.h"
+#include "../OpenGL Objects/fbo.h"
 
 class SpaceLevel;
 
@@ -34,6 +35,7 @@ namespace Light
 			return lightSpaceMatrix[0];
 		}
 	#pragma endregion
+
 	#pragma region Setters
 		void setPosition(const glm::vec3& position)
 		{

@@ -3,7 +3,7 @@
 #include "../../Game Objects/spaceLevel.h"
 
 Light::Point::Point(const glm::vec3& position, const glm::vec3& color) :
-Light(color), position(position), depthMap(Texture::createDepthTexture())
+Light(color), position(position), fbo(), depthMap(Texture::createDepthTexture())
 {
 	setColor(color);
 	attenuation.setAttenuationByRange(range);
@@ -29,7 +29,7 @@ Light(color), position(position), depthMap(Texture::createDepthTexture())
 }
 
 Light::Point::Point(const Point& light) :
-Light(light.getColor()), position(light.getPosition()), depthMap(Texture::createDepthTexture())
+Light(light.getColor()), position(light.getPosition()), fbo(), depthMap(Texture::createDepthTexture())
 {
 	setColor(color);
 	attenuation.setAttenuationByRange(range);

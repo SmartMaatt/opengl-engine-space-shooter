@@ -31,7 +31,7 @@ public:
 	void setVec4f(const std::string& name, const glm::vec4& vector) const;
 	void setMat4(const std::string& name, const glm::mat4& matrix) const;
 
-private:
+protected:
 	GLint getUniformLocation(const std::string& name) const;
 
 	GLuint shaderProgram = glCreateProgram();

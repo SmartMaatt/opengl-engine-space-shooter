@@ -146,7 +146,7 @@ void SpaceLevel::initLevelShaders()
 	this->fragmentShader = Shader::createShaderFromFile("Shaders/map.frag", Shader::Type::eFragment);
 	this->vertexShader = Shader::createShaderFromFile("Shaders/map.vert", Shader::Type::eVertex);
 
-	this->shaderProgram = new ShaderProgram();
+	this->shaderProgram = new ShaderLightProgram();
 	this->shaderProgram->attachShader(this->fragmentShader);
 	this->shaderProgram->attachShader(this->vertexShader);
 	this->shaderProgram->linkShaderProgram();
@@ -365,54 +365,36 @@ void SpaceLevel::collideCrystal(std::vector<Crystal*>::iterator& crystal)
 
 
 /* --->>> Lights <<<--- */
-void SpaceLevel::setLightUniforms(ShaderProgram& shader)
+void SpaceLevel::setLightUniforms(ShaderLightProgram& shaderProgram)
 {
-	int includeBullet = 0;
-	if (bullet) { includeBullet = 1; }
+	int playerLights = 1;
+	int bulletLights = 0;
+	if (bullet) { bulletLights = 1; }
 
-	shader.setInt("pointLightsCount", static_cast<int>(1 + crystals.size() + includeBullet));
+	shaderProgram.setNumberOfLights(playerLights + crystals.size() + bulletLights);
 	char lightIndex[20];
 
 	// Default lights
 	sprintf_s(lightIndex, 20, "pointLights[%d].", 0);
 	std::string index { lightIndex };
-	shader.setVec3f(index + "position",		player->getLight()->getPosition());
-	shader.setVec3f(index + "diffuse",		player->getLight()->getDiffuse());
-	shader.setVec3f(index + "specular",		player->getLight()->getSpecular());
-
-	shader.setFloat(index + "constant",		player->getLight()->getAttenuation().getConstant());
-	shader.setFloat(index + "linear",		player->getLight()->getAttenuation().getLinear());
-	shader.setFloat(index + "quadratic",	player->getLight()->getAttenuation().getQuadratic());
+	shaderProgram.setLightUniforms(*(player->getLight()), index);
 
 	// Crystals lights
-	for (int i = 1; i < crystals.size() + 1; i++)
+	for (int i = playerLights; i < crystals.size() + playerLights; i++)
 	{
 		sprintf_s(lightIndex, 20, "pointLights[%d].", i);
-		std::string index{ lightIndex };
+		std::string index { lightIndex };
+
 		int objIndex = i - 1;
-
-		shader.setVec3f(index + "position", crystals[objIndex]->light->getPosition());
-		shader.setVec3f(index + "diffuse", crystals[objIndex]->light->getDiffuse());
-		shader.setVec3f(index + "specular", crystals[objIndex]->light->getSpecular());
-
-		shader.setFloat(index + "constant", crystals[objIndex]->light->getAttenuation().getConstant());
-		shader.setFloat(index + "linear", crystals[objIndex]->light->getAttenuation().getLinear());
-		shader.setFloat(index + "quadratic", crystals[objIndex]->light->getAttenuation().getQuadratic());
+		shaderProgram.setLightUniforms(*(crystals[objIndex]->light), index);
 	}
 
 	// Bullet lights
 	if (bullet && !bullet->isDead())
 	{
-		sprintf_s(lightIndex, 20, "pointLights[%d].", 1 + crystals.size());
+		sprintf_s(lightIndex, 20, "pointLights[%d].", playerLights + crystals.size());
 		std::string index{ lightIndex };
-
-		shader.setVec3f(index + "position", bullet->light->getPosition());
-		shader.setVec3f(index + "diffuse", bullet->light->getDiffuse());
-		shader.setVec3f(index + "specular", bullet->light->getSpecular());
-
-		shader.setFloat(index + "constant", bullet->light->getAttenuation().getConstant());
-		shader.setFloat(index + "linear", bullet->light->getAttenuation().getLinear());
-		shader.setFloat(index + "quadratic", bullet->light->getAttenuation().getQuadratic());
+		shaderProgram.setLightUniforms(*(bullet->light), index);
 	}
 }
 

@@ -26,7 +26,7 @@ public:
 
 	~FBO()
 	{
-		if(id != 0)
+		if (id != 0)
 		{
 			glDeleteFramebuffers(1, &id);
 			id = 0;
@@ -36,7 +36,7 @@ public:
 	FBO& operator=(const FBO&) = delete;
 	FBO& operator=(FBO&& other) noexcept
 	{
-		if(this != &other)
+		if (this != &other)
 		{
 			id = other.id;
 			other.id = 0;
@@ -122,6 +122,6 @@ public:
 	}
 
 private:
-	GLuint id {};
+	GLuint id{};
 };
 

@@ -261,6 +261,9 @@
     <ClCompile Include="src\Rendering system\Entity\livingEntity.cpp">
       <Filter>Pliki źródłowe\Rendering system\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering system\Shader\shaderLightProgram.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Event system\eventManager.h">
@@ -418,6 +421,9 @@
     </ClInclude>
     <ClInclude Include="src\Rendering system\Entity\livingEntity.h">
       <Filter>Pliki nagłówkowe\Rendering system\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Shader\shaderLightProgram.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

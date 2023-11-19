@@ -170,6 +170,11 @@ glm::vec3 Player::getDirection()
 	return this->direction;
 }
 
+glm::vec3 Player::getUp()
+{
+	return this->up;
+}
+
 PlayerStats* Player::getStats()
 {
 	return this->stats;

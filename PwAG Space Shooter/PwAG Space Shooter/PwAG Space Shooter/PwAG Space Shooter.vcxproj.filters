@@ -130,6 +130,12 @@
     <Filter Include="Pliki źródłowe\Static">
       <UniqueIdentifier>{f100cfe1-7e50-4427-97d6-abce25648b05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\Rendering system\Skybox">
+      <UniqueIdentifier>{121106fd-c766-464d-bf2b-8a1b01103b0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Rendering system\Skybox">
+      <UniqueIdentifier>{3f181aa2-d080-4cbe-8a20-918e98bcea8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Event system\eventManager.cpp">
@@ -263,6 +269,9 @@
     </ClCompile>
     <ClCompile Include="src\Rendering system\Shader\shaderLightProgram.cpp">
       <Filter>Pliki źródłowe\Rendering system\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Skybox\skybox.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Skybox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -424,6 +433,9 @@
     </ClInclude>
     <ClInclude Include="src\Rendering system\Shader\shaderLightProgram.h">
       <Filter>Pliki nagłówkowe\Rendering system\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Skybox\skybox.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Skybox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

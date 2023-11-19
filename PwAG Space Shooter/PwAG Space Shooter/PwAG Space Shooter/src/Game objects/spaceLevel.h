@@ -9,6 +9,7 @@
 #include "../Rendering system/Entity/bullet.h"
 #include "../Rendering system/Model/indexedDataOBJ.h"
 #include "../State machine/gameState.h"
+#include "../Rendering system/Skybox/skybox.h"
 
 class SpaceLevel
 {
@@ -17,6 +18,17 @@ public:
 	int crystalsInstances = 5;
 	float worldRadius = 10;
 	glm::vec3 startPosition = glm::vec3(0, 0.5f, 0);
+
+	// Skybox cubemaps
+	std::string facesCubemap[6] =
+	{
+		"res/Textures/Skybox/right.png",
+		"res/Textures/Skybox/left.png",
+		"res/Textures/Skybox/top.png",
+		"res/Textures/Skybox/bottom.png",
+		"res/Textures/Skybox/front.png",
+		"res/Textures/Skybox/back.png"
+	};
 
 	// Constructors / Destructor
 	SpaceLevel(GameState* gameState);
@@ -36,75 +48,76 @@ public:
 
 private:
 	// Initialization
-	void initLevel();
-	void initMatrixMVP();
-	void initLevelShaders();
-	void initLevelMaterials();
-	void initObjModels();
-	void initText();
+	void _initLevel();
+	void _initMatrixMVP();
+	void _initLevelShaders();
+	void _initLevelMaterials();
+	void _initObjModels();
+	void _initText();
 
 	// Update
-	void updatePlayer(float deltaTime);
-	void updateMeteors(float deltaTime);
-	void updateCrystals(float deltaTime);
-	void updateBullet(float deltaTime);
-	void updateLightShaders();
-	void updateGuiTexts();
-	void updateOutcomes();
+	void _updatePlayer(float deltaTime);
+	void _updateMeteors(float deltaTime);
+	void _updateCrystals(float deltaTime);
+	void _updateBullet(float deltaTime);
+	void _updateLightShaders();
+	void _updateGuiTexts();
+	void _updateOutcomes();
 
 	// Collisions
-	void collidePlayer();
-	void collideMeteor(std::vector<Meteor*>::iterator& meteor);
-	void collideCrystal(std::vector<Crystal*>::iterator& crystal);
+	void _collidePlayer();
+	void _collideMeteor(std::vector<Meteor*>::iterator& meteor);
+	void _collideCrystal(std::vector<Crystal*>::iterator& crystal);
 
 	// Lights
-	void setLightUniforms(ShaderLightProgram& shader);
+	void _setLightUniforms(ShaderLightProgram& shader);
 
 	// GUI
-	void drawGui();
-	void ToggleHUD();
+	void _drawGui();
+	void _toggleHUD();
 
 	// Shooting
-	void shootBullet();
-	Bullet* spawnBullet();
+	void _shootBullet();
+	Bullet* _spawnBullet();
 
 	// Instances
-	GameState* gameState;
-	Player* player;
-	std::vector<Meteor*> meteors;
-	std::vector<Crystal*> crystals;
-	Bullet* bullet;
+	GameState* _gameState;
+	Skybox* _skybox;
+	Player* _player;
+	std::vector<Meteor*> _meteors;
+	std::vector<Crystal*> _crystals;
+	Bullet* _bullet;
 
 	// Shaders
-	ShaderLightProgram* shaderProgram;
-	Shader vertexShader;
-	Shader fragmentShader;
+	ShaderLightProgram* _shaderProgram;
+	Shader _vertexShader;
+	Shader _fragmentShader;
 
 	// Textures
-	std::vector<Texture*> textures;
+	std::vector<Texture*> _textures;
 
 	// Materials
-	Material* meteorMaterialPrefab;
-	Material* crystalMaterialPrefab;
-	Material* bulletMaterialPrefab;
+	Material* _meteorMaterialPrefab;
+	Material* _crystalMaterialPrefab;
+	Material* _bulletMaterialPrefab;
 
 	// Meshes
-	Mesh* meteorMeshPrefab;
-	Mesh* crystalMeshPrefab;
-	Mesh* bulletMeshPrefab;
+	Mesh* _meteorMeshPrefab;
+	Mesh* _crystalMeshPrefab;
+	Mesh* _bulletMeshPrefab;
 
 	// GUI
-	Font tmpDefaultFont;
-	ShaderProgram textShader;
+	Font _tmpDefaultFont;
+	ShaderProgram* _textShader;
 
-	Text healthLabel;
-	Text healthValueText;
-	Text crystalsLabel;
-	Text crystalsValueText;
-	Text bulletLabel;
-	Text bulletValueText;
+	Text _healthLabel;
+	Text _healthValueText;
+	Text _crystalsLabel;
+	Text _crystalsValueText;
+	Text _bulletLabel;
+	Text _bulletValueText;
 
-	Sprite HUD;
-	bool hudActivated = true;
-	int hudChangeLatch = 0;
+	Sprite _HUD;
+	bool _hudActivated = true;
+	int _hudChangeLatch = 0;
 };

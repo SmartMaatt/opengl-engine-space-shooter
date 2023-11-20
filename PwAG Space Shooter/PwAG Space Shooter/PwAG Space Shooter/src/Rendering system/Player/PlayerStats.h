@@ -30,17 +30,17 @@ public:
 	float getPlayerRadius();
 
 private:
-	int hitPoints;
-	int maxHitPoints = 100;
-	float safeTimeAfterHit = 2.0f;
-	float timeAfterLastHit;
+	int _hitPoints;
+	int _maxHitPoints = 100;
+	float _safeTimeAfterHit = 2.0f;
+	float _timeAfterLastHit;
 
-	float reloadMaxTime = 8.0f;
-	float reloadTime = 0.0f;
-	bool canShoot = true;
+	float _reloadMaxTime = 8.0f;
+	float _reloadTime = 0.0f;
+	bool _canShoot = true;
 
-	int points = 0;
+	int _points = 0;
 
-	bool alreadyShoot = false;
-	float playerRadius = 0.3f;
+	bool _alreadyShoot = false;
+	float _playerRadius = 0.3f;
 };

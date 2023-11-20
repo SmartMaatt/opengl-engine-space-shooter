@@ -57,28 +57,30 @@ public:
 	static Texture createTexture_OIT_reveal();
 #pragma endregion
 
+	// Constructors / Destructor
 	Texture(const Texture&) = delete;
 	Texture(Texture&&) noexcept;
 	~Texture();
 
+	// Operators
 	Texture& operator=(const Texture&) = delete;
 	Texture& operator=(Texture&&) noexcept;
 
+	// Binding
 	void bindTexture(unsigned int unit) const;
 	void unbindTexture() const;
 
+	// Getters
 	int getTextureWidth() const;
 	int getTextureHeight() const;
 
-
 private:
-	GLuint texture{};
-	BitMapFile bmp;
-
-	Texture::Type textureType;
-
 	Texture(Texture::Type type);
-	Texture::BitMapFile* readBmpImage(const std::string& filePath);
+	Texture::BitMapFile* _readBmpImage(const std::string& filePath);
+	void _initializeTexture();
 
-	void initializeTexture();
+	// Parameters
+	GLuint _texture{};
+	BitMapFile _bmp;
+	Texture::Type _textureType;
 };

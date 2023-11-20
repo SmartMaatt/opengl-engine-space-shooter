@@ -19,14 +19,8 @@
     <Filter Include="Pliki nagłówkowe\Event system">
       <UniqueIdentifier>{4bd5ef3d-3d02-41ae-b69c-5498ed49a006}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki nagłówkowe\Game objects">
-      <UniqueIdentifier>{67129e89-c506-4ff1-a78b-02f2372c2b84}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Pliki źródłowe\Event system">
       <UniqueIdentifier>{492e95c8-49a4-4be7-837f-0bc4c1572114}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pliki źródłowe\Game objects">
-      <UniqueIdentifier>{0bbe108f-f353-4a16-ba5b-47bbacca10ee}</UniqueIdentifier>
     </Filter>
     <Filter Include="Pliki nagłówkowe\GUI">
       <UniqueIdentifier>{d3067f98-1919-441f-b9ab-1e4c2027cde1}</UniqueIdentifier>
@@ -136,16 +130,16 @@
     <Filter Include="Pliki źródłowe\Rendering system\Skybox">
       <UniqueIdentifier>{3f181aa2-d080-4cbe-8a20-918e98bcea8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki źródłowe\Rendering system\Space level">
+      <UniqueIdentifier>{0bbe108f-f353-4a16-ba5b-47bbacca10ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Rendering system\Space level">
+      <UniqueIdentifier>{67129e89-c506-4ff1-a78b-02f2372c2b84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Event system\eventManager.cpp">
       <Filter>Pliki źródłowe\Event system</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game Objects\gameObject.cpp">
-      <Filter>Pliki źródłowe\Game objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game Objects\spaceLevel.cpp">
-      <Filter>Pliki źródłowe\Game objects</Filter>
     </ClCompile>
     <ClCompile Include="src\GUI\button.cpp">
       <Filter>Pliki źródłowe\GUI</Filter>
@@ -169,9 +163,6 @@
       <Filter>Pliki źródłowe\Rendering system\Model</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering system\Model\mesh.cpp">
-      <Filter>Pliki źródłowe\Rendering system\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Rendering system\Model\transformationOBJ.cpp">
       <Filter>Pliki źródłowe\Rendering system\Model</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering system\OpenGL Objects\ebo.cpp">
@@ -276,6 +267,15 @@
     <ClCompile Include="src\Static\debug.cpp">
       <Filter>Pliki źródłowe\Static</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering system\Model\transformationOBJ.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Space level\spaceLevel.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Space level</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering system\Model\gameObject.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Event system\eventManager.h">
@@ -289,12 +289,6 @@
     </ClInclude>
     <ClInclude Include="src\Event system\eventType.h">
       <Filter>Pliki nagłówkowe\Event system</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game Objects\gameObject.h">
-      <Filter>Pliki nagłówkowe\Game objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game Objects\spaceLevel.h">
-      <Filter>Pliki nagłówkowe\Game objects</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\button.h">
       <Filter>Pliki nagłówkowe\GUI</Filter>
@@ -321,9 +315,6 @@
       <Filter>Pliki nagłówkowe\Rendering system\Model</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering system\Model\objReader.h">
-      <Filter>Pliki nagłówkowe\Rendering system\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Rendering system\Model\transformationOBJ.h">
       <Filter>Pliki nagłówkowe\Rendering system\Model</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering system\OpenGL Objects\vbo.h">
@@ -442,6 +433,15 @@
     </ClInclude>
     <ClInclude Include="src\Static\debug.h">
       <Filter>Pliki nagłówkowe\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Model\transformationOBJ.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Space level\spaceLevel.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Space level</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Model\gameObject.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

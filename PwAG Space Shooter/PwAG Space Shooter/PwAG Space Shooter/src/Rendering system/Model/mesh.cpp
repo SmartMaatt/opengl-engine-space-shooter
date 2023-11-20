@@ -2,116 +2,135 @@
 #include "mesh.h"
 #include "vboIndexer.h"
 
-Mesh::Mesh() 
+/* --->>> Constructors / Destructor <<<--- */
+Mesh::Mesh()
 {
 }
 
 Mesh::Mesh(DataOBJ meshData, glm::vec3 offset)
 {
-	this->meshData = meshData;
-	this->indexedData = indexVBO_TBN(meshData);
-	this->offset = offset;
+	_meshData = meshData;
+	_indexedData = ObjectDataIndexer::indexVBO_TBN(meshData);
+	_offset = offset;
 
-	for (unsigned int i = 0; i < indexedData.vertices.size(); i++)
+	for (unsigned int i = 0; i < _indexedData.vertices.size(); i++)
 	{
-		offsets.push_back(offset);
+		_offsets.push_back(_offset);
 	}
-	initBuffers();
+	_initBuffers();
 }
 
 Mesh::Mesh(Mesh& src)
 {
-	this->meshData = src.getMeshData();
-	this->indexedData = src.getIndexedMeshData();
-	this->offset = offset;
+	_meshData = src.getMeshData();
+	_indexedData = src.getIndexedMeshData();
+	_offset = src.getOffset();
 
-	for (unsigned int i = 0; i < indexedData.vertices.size(); i++)
+	for (unsigned int i = 0; i < _indexedData.vertices.size(); i++)
 	{
-		offsets.push_back(offset);
+		_offsets.push_back(_offset);
 	}
-	initBuffers();
+	_initBuffers();
 }
 
-void Mesh::initBuffers()
+Mesh::~Mesh()
 {
-	glGenVertexArrays(1, &vertexArrayID);
-	glBindVertexArray(vertexArrayID);
+	glDeleteBuffers(1, &_verticesBuffer);
+	glDeleteBuffers(1, &_colorsBuffer);
+	glDeleteBuffers(1, &_normalsBuffer);
+	glDeleteBuffers(1, &_tangentBuffer);
+	glDeleteBuffers(1, &_bitangentBuffer);
+	glDeleteBuffers(1, &_uvsBuffer);
+	glDeleteBuffers(1, &_offsetBuffer);
 
-	glGenBuffers(1, &verticesBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, verticesBuffer);
-	glBufferData(GL_ARRAY_BUFFER, indexedData.vertices.size() * sizeof(glm::vec3), &(indexedData.vertices[0]), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &colorsBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, colorsBuffer);
-	glBufferData(GL_ARRAY_BUFFER, indexedData.colors.size() * sizeof(glm::vec3), &(indexedData.colors[0]), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &normalsBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
-	glBufferData(GL_ARRAY_BUFFER, indexedData.normals.size() * sizeof(glm::vec3), &(indexedData.normals[0]), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &tangentBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, tangentBuffer);
-	glBufferData(GL_ARRAY_BUFFER, indexedData.tangents.size() * sizeof(glm::vec3), &(indexedData.tangents[0]), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &bitangentBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, bitangentBuffer);
-	glBufferData(GL_ARRAY_BUFFER, indexedData.bittangents.size() * sizeof(glm::vec3), &(indexedData.bittangents[0]), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &uvsBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, uvsBuffer);
-	glBufferData(GL_ARRAY_BUFFER, indexedData.uvs.size() * sizeof(glm::vec2), &(indexedData.uvs[0]), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &offsetBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, offsetBuffer);
-	glBufferData(GL_ARRAY_BUFFER, offsets.size() * sizeof(glm::vec3), &offsets[0], GL_STATIC_DRAW);
-
-	glGenBuffers(1, &elementBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexedData.indices.size() * sizeof(unsigned short), &indexedData.indices[0], GL_STATIC_DRAW);
+	glDeleteBuffers(1, &_elementBuffer);
+	glDeleteVertexArrays(1, &_vertexArrayID);
 }
 
+
+/* --->>> Initialization <<<--- */
+void Mesh::_initBuffers()
+{
+	glGenVertexArrays(1, &_vertexArrayID);
+	glBindVertexArray(_vertexArrayID);
+
+	glGenBuffers(1, &_verticesBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _verticesBuffer);
+	glBufferData(GL_ARRAY_BUFFER, _indexedData.vertices.size() * sizeof(glm::vec3), &(_indexedData.vertices[0]), GL_STATIC_DRAW);
+
+	glGenBuffers(1, &_colorsBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _colorsBuffer);
+	glBufferData(GL_ARRAY_BUFFER, _indexedData.colors.size() * sizeof(glm::vec3), &(_indexedData.colors[0]), GL_STATIC_DRAW);
+
+	glGenBuffers(1, &_normalsBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _normalsBuffer);
+	glBufferData(GL_ARRAY_BUFFER, _indexedData.normals.size() * sizeof(glm::vec3), &(_indexedData.normals[0]), GL_STATIC_DRAW);
+
+	glGenBuffers(1, &_tangentBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _tangentBuffer);
+	glBufferData(GL_ARRAY_BUFFER, _indexedData.tangents.size() * sizeof(glm::vec3), &(_indexedData.tangents[0]), GL_STATIC_DRAW);
+
+	glGenBuffers(1, &_bitangentBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _bitangentBuffer);
+	glBufferData(GL_ARRAY_BUFFER, _indexedData.bittangents.size() * sizeof(glm::vec3), &(_indexedData.bittangents[0]), GL_STATIC_DRAW);
+
+	glGenBuffers(1, &_uvsBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _uvsBuffer);
+	glBufferData(GL_ARRAY_BUFFER, _indexedData.uvs.size() * sizeof(glm::vec2), &(_indexedData.uvs[0]), GL_STATIC_DRAW);
+
+	glGenBuffers(1, &_offsetBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _offsetBuffer);
+	glBufferData(GL_ARRAY_BUFFER, _offsets.size() * sizeof(glm::vec3), &_offsets[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &_elementBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indexedData.indices.size() * sizeof(unsigned short), &_indexedData.indices[0], GL_STATIC_DRAW);
+}
+
+
+/* --->>> Drawing <<<--- */
 void Mesh::drawMesh()
 {
-	glBindVertexArray(vertexArrayID);
+	glBindVertexArray(_vertexArrayID);
 
 	// Vertices
 	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, verticesBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _verticesBuffer);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	// Colors
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, colorsBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _colorsBuffer);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	// Normals
 	glEnableVertexAttribArray(2);
-	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _normalsBuffer);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	// Tangents
 	glEnableVertexAttribArray(3);
-	glBindBuffer(GL_ARRAY_BUFFER, tangentBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _tangentBuffer);
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	// Bitangents
 	glEnableVertexAttribArray(4);
-	glBindBuffer(GL_ARRAY_BUFFER, bitangentBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _bitangentBuffer);
 	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	// Uvs
 	glEnableVertexAttribArray(5);
-	glBindBuffer(GL_ARRAY_BUFFER, uvsBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _uvsBuffer);
 	glVertexAttribPointer(5, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	// Offset
 	glEnableVertexAttribArray(6);
-	glBindBuffer(GL_ARRAY_BUFFER, offsetBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _offsetBuffer);
 	glVertexAttribPointer(6, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	// Index buffer
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
-	glDrawElements(GL_TRIANGLES, indexedData.indices.size(), GL_UNSIGNED_SHORT, (void*)0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBuffer);
+	glDrawElements(GL_TRIANGLES, _indexedData.indices.size(), GL_UNSIGNED_SHORT, (void*)0);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
@@ -123,51 +142,36 @@ void Mesh::drawMesh()
 }
 
 
-// Uniforms
-void Mesh::setMeshUniform(ShaderProgram* shaderProgram) 
+/* --->>> Uniforms <<<--- */
+void Mesh::setMeshUniform(ShaderProgram* shaderProgram)
 {
-	shaderProgram->setMat4("ModelMatrix", matrixModel);
+	shaderProgram->setMat4("ModelMatrix", _matrixModel);
 }
 
-void Mesh::setMatrixModel(glm::vec3 _position, glm::vec3 origin, glm::vec3 rotation, glm::vec3 scale)
+void Mesh::setMatrixModel(glm::vec3 position, glm::vec3 origin, glm::vec3 rotation, glm::vec3 scale)
 {
-	this->matrixModel = glm::mat4(1.f);
-	this->matrixModel = glm::translate(this->matrixModel, origin);
-	this->matrixModel = glm::rotate(this->matrixModel, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
-	this->matrixModel = glm::rotate(this->matrixModel, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
-	this->matrixModel = glm::rotate(this->matrixModel, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
-	this->matrixModel = glm::translate(this->matrixModel, _position - origin);
-	this->matrixModel = glm::scale(this->matrixModel, scale);
+	_matrixModel = glm::mat4(1.f);
+	_matrixModel = glm::translate(_matrixModel, origin);
+	_matrixModel = glm::rotate(_matrixModel, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
+	_matrixModel = glm::rotate(_matrixModel, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
+	_matrixModel = glm::rotate(_matrixModel, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
+	_matrixModel = glm::translate(_matrixModel, position - origin);
+	_matrixModel = glm::scale(_matrixModel, scale);
 }
 
 
-// Getters
+/* --->>> Getters <<<--- */
 glm::vec3 Mesh::getOffset()
 {
-	return this->offset;
+	return _offset;
 }
 
 DataOBJ Mesh::getMeshData()
 {
-	return this->meshData;
+	return _meshData;
 }
 
 IndexedDataOBJ Mesh::getIndexedMeshData()
 {
-	return this->indexedData;
-}
-
-
-Mesh::~Mesh() 
-{
-	glDeleteBuffers(1, &verticesBuffer);
-	glDeleteBuffers(1, &colorsBuffer);
-	glDeleteBuffers(1, &normalsBuffer);
-	glDeleteBuffers(1, &tangentBuffer);
-	glDeleteBuffers(1, &bitangentBuffer);
-	glDeleteBuffers(1, &uvsBuffer);
-	glDeleteBuffers(1, &offsetBuffer);
-
-	glDeleteBuffers(1, &elementBuffer);
-	glDeleteVertexArrays(1, &vertexArrayID);
+	return _indexedData;
 }

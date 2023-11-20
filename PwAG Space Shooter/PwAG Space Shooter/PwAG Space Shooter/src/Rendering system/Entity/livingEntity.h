@@ -1,6 +1,6 @@
 #pragma once
 #include "entity.h"
-#include "../../Game objects/gameObject.h"
+#include "../Rendering system/Model/gameObject.h"
 
 class LivingEntity : public Entity
 {

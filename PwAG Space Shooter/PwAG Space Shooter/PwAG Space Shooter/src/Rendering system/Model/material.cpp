@@ -2,9 +2,9 @@
 #include "material.h"
 #include <stdexcept>
 
+/* --->>> Constructors / Destructor <<<--- */
 Material::Material() 
 {
-
 }
 
 Material::Material(Texture* mainTexture, Texture* specular, Texture* normalMap, int diffuseLerp, int normalLerp, glm::vec3 ambientLight)
@@ -19,8 +19,12 @@ Material::Material(Material& src)
 	setUniformValues(src.GetDiffuseLerp(), src.GetNormalLerp(), src.GetAmpientLight());
 }
 
+Material::~Material()
+{
+}
 
-// Setters
+
+/* --->>> Setters <<<--- */
 void Material::setTextures(Texture* mainTexture, Texture* specular, Texture* normalMap)
 {
 	if (mainTexture == nullptr)
@@ -29,63 +33,63 @@ void Material::setTextures(Texture* mainTexture, Texture* specular, Texture* nor
 		return;
 	}
 
-	this->mainTexture = mainTexture;
-	this->specularTexture = specular;
-	this->normalMap = normalMap;
+	_mainTexture = mainTexture;
+	_specularTexture = specular;
+	_normalMap = normalMap;
 }
 
 void Material::setUniformValues(int diffuseLerp, int normalLerp, glm::vec3 ambientLight)
 {
-	this->diffuseLerp = diffuseLerp;
-	this->normalLerp = normalLerp;
-	this->ambientLight = ambientLight;
+	_diffuseLerp = diffuseLerp;
+	_normalLerp = normalLerp;
+	_ambientLight = ambientLight;
 }
 
 
-// Getters
+/* --->>> Getters <<<--- */
 int Material::GetDiffuseLerp()
 {
-	return this->diffuseLerp;
+	return _diffuseLerp;
 }
 
 int Material::GetNormalLerp()
 {
-	return this->normalLerp;
+	return _normalLerp;
 }
 
 glm::vec3 Material::GetAmpientLight()
 {
-	return this->ambientLight;
+	return _ambientLight;
 }
 
 Texture* Material::GetMainTexture()
 {
-	return this->mainTexture;
+	return _mainTexture;
 }
 
 Texture* Material::GetSpecularTexture()
 {
-	return this->specularTexture;
+	return _specularTexture;
 }
 
 Texture* Material::GetNormalMap()
 {
-	return this->normalMap;
+	return _normalMap;
 }
 
 
-// Drawing methods
+/* --->>> Drawing <<<--- */
 void Material::bindTextures()
 {
-	this->mainTexture->bindTexture(0);
-	if (this->specularTexture)
+	_mainTexture->bindTexture(0);
+	if (_specularTexture)
 	{
-		this->specularTexture->bindTexture(1);
+		_specularTexture->bindTexture(1);
 	}
 
-	if (this->normalMap)
+	if (_normalMap)
 	{
-		this->normalMap->bindTexture(2);
+		_normalMap->bindTexture(2);
 	}
 }
 
@@ -93,9 +97,5 @@ void Material::setMaterialShaderUniforms(ShaderProgram& shaderProgram)
 {
 	shaderProgram.setInt("diffuse", 0);
 	shaderProgram.setInt("normalMap", 1);
-	shaderProgram.setVec3f("ambientLight", this->ambientLight);
-}
-
-Material::~Material()
-{
+	shaderProgram.setVec3f("ambientLight", _ambientLight);
 }

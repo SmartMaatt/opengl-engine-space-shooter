@@ -7,33 +7,33 @@ Player::Player() {}
 
 Player::Player(glm::vec3 startPosition)
 {
-	this->stats = new PlayerStats();
-	this->light = new Light::Point({ 1,0,1 }, { 1,1,1 });
+	_stats = new PlayerStats();
+	_light = new Light::Point({ 1,0,1 }, { 1,1,1 });
 
-	this->_position = startPosition;
-	this->horizontalAngle = 3.14f;
-	this->verticalAngle = 0.0f;
-	this->initialFoV = 45.0f;
+	_position = startPosition;
+	_horizontalAngle = 3.14f;
+	_verticalAngle = 0.0f;
+	_initialFoV = 45.0f;
 
-	this->speed = 3.0f;
-	this->mouseSpeed = 0.0005f;
+	_speed = 3.0f;
+	_mouseSpeed = 0.0005f;
 }
 
-Player::~Player() 
+Player::~Player()
 {
-	delete this->stats;
-	delete this->light;
+	delete _stats;
+	delete _light;
 }
 
 
 /* --->>> Input <<<--- */
 void Player::input(GameReference& gameReference, Keyboard& keyboard, float deltaTime)
 {
-	processInput(gameReference, keyboard, deltaTime);
-	updateMatricesFromInput();
+	_processInput(gameReference, keyboard, deltaTime);
+	_updateMatricesFromInput();
 }
 
-void Player::processInput(GameReference& gameReference, Keyboard& keyboard, float deltaTime)
+void Player::_processInput(GameReference& gameReference, Keyboard& keyboard, float deltaTime)
 {
 	// Get mouse position
 	double xpos, ypos;
@@ -43,83 +43,83 @@ void Player::processInput(GameReference& gameReference, Keyboard& keyboard, floa
 	glfwSetCursorPos(gameReference->window, Config::g_defaultWidth / 2, Config::g_defaultHeight / 2);
 
 	// Compute new orientation
-	horizontalAngle += mouseSpeed * float(Config::g_defaultWidth / 2 - xpos);
-	verticalAngle += mouseSpeed * float(Config::g_defaultHeight / 2 - ypos);
+	_horizontalAngle += _mouseSpeed * float(Config::g_defaultWidth / 2 - xpos);
+	_verticalAngle += _mouseSpeed * float(Config::g_defaultHeight / 2 - ypos);
 
 	// Direction : Spherical coordinates to Cartesian coordinates conversion
-	this->direction = glm::vec3(
-		cos(verticalAngle) * sin(horizontalAngle),
-		sin(verticalAngle),
-		cos(verticalAngle) * cos(horizontalAngle)
+	_direction = glm::vec3(
+		cos(_verticalAngle) * sin(_horizontalAngle),
+		sin(_verticalAngle),
+		cos(_verticalAngle) * cos(_horizontalAngle)
 	);
 
 	// Right vector
-	this->right = glm::vec3(
-		sin(horizontalAngle - 3.14f / 2.0f),
+	_right = glm::vec3(
+		sin(_horizontalAngle - 3.14f / 2.0f),
 		0,
-		cos(horizontalAngle - 3.14f / 2.0f)
+		cos(_horizontalAngle - 3.14f / 2.0f)
 	);
 
 	// Normalization of direction vector
-	if (glm::length(this->direction) > 0) {
-		this->direction = glm::normalize(this->direction);
+	if (glm::length(_direction) > 0) {
+		_direction = glm::normalize(_direction);
 	}
 
 	// Normalization of right vector
-	if (glm::length(this->right) > 0) {
-		this->right = glm::normalize(this->right);
+	if (glm::length(_right) > 0) {
+		_right = glm::normalize(_right);
 	}
 
 	// Up vector
-	this->up = glm::cross(this->right, this->direction);
-	this->movementDirection = glm::vec3(0);
+	_up = glm::cross(_right, _direction);
+	_movementDirection = glm::vec3(0);
 
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyW)]) {
-		this->movementDirection += direction;
+		_movementDirection += _direction;
 	}
 
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyS)]) {
-		this->movementDirection -= direction;
+		_movementDirection -= _direction;
 	}
 
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyA)]) {
-		this->movementDirection -= right;
+		_movementDirection -= _right;
 	}
 
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyD)]) {
-		this->movementDirection += right;
+		_movementDirection += _right;
 	}
 
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeySpace)]) {
-		this->movementDirection += up;
+		_movementDirection += _up;
 	}
 
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyLeftShift)]) {
-		this->movementDirection -= up;
+		_movementDirection -= _up;
 	}
 
 	// Normalization of movement vector
-	if (glm::length(this->movementDirection) > 0) {
-		this->movementDirection = glm::normalize(this->movementDirection);
+	if (glm::length(_movementDirection) > 0) {
+		_movementDirection = glm::normalize(_movementDirection);
 	}
 
-	this->_position += this->movementDirection * deltaTime * speed;
+	_position += _movementDirection * deltaTime * _speed;
 }
 
-void Player::updateMatricesFromInput()
+void Player::_updateMatricesFromInput()
 {
-	float FoV = initialFoV;
-	projectionMatrix = glm::perspective(
+	float FoV = _initialFoV;
+	_projectionMatrix = glm::perspective(
 		glm::radians(FoV),
 		(float)Config::g_defaultWidth / (float)Config::g_defaultHeight,
 		0.1f,
 		100.0f
 	);
 
-	viewMatrix = glm::lookAt(
+	_viewMatrix = glm::lookAt(
 		_position,				// Camera is here
-		_position + direction,	// and looks here : at the same position, plus "direction"
-		up						// Head is up (set to 0,-1,0 to look upside-down)
+		_position + _direction,	// and looks here : at the same position, plus "direction"
+		_up						// Head is up (set to 0,-1,0 to look upside-down)
 	);
 }
 
@@ -127,12 +127,12 @@ void Player::updateMatricesFromInput()
 /* --->>> Update <<<--- */
 void Player::update(float deltaTime)
 {
-	updateLight();
+	_updateLight();
 }
 
-void Player::updateLight()
+void Player::_updateLight()
 {
-	light->setPosition(this->getCameraPosition());
+	_light->setPosition(getCameraPosition());
 }
 
 
@@ -140,47 +140,47 @@ void Player::updateLight()
 // Insert camera properties to outer shaders
 void Player::setCameraUniforms(ShaderProgram* shaderProgram)
 {
-	shaderProgram->setMat4("ViewMatrix", this->viewMatrix);
-	shaderProgram->setMat4("ProjectionMatrix", this->projectionMatrix);
-	shaderProgram->setVec3f("cameraPos", this->_position);
+	shaderProgram->setMat4("ViewMatrix", _viewMatrix);
+	shaderProgram->setMat4("ProjectionMatrix", _projectionMatrix);
+	shaderProgram->setVec3f("cameraPos", _position);
 }
 
 void Player::setCameraPosition(glm::vec3 _position)
 {
-	this->_position = _position;
+	_position = _position;
 }
 
 glm::vec3 Player::getCameraPosition()
 {
-	return this->_position;
+	return _position;
 }
 
 glm::mat4 Player::getViewMatrix()
 {
-	return this->viewMatrix;
+	return _viewMatrix;
 }
 
 glm::mat4 Player::getProjectionMatrix()
 {
-	return this->projectionMatrix;
+	return _projectionMatrix;
 }
 
 glm::vec3 Player::getDirection()
 {
-	return this->direction;
+	return _direction;
 }
 
 glm::vec3 Player::getUp()
 {
-	return this->up;
+	return _up;
 }
 
 PlayerStats* Player::getStats()
 {
-	return this->stats;
+	return _stats;
 }
 
 Light::Point* Player::getLight()
 {
-	return this->light;
+	return _light;
 }

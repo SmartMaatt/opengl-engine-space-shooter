@@ -7,25 +7,25 @@ public:
 #pragma region Constructors, destructor, assign operators
 	VBO()
 	{
-		glGenBuffers(1, &id);
+		glGenBuffers(1, &_id);
 	}
 
 	VBO(const VBO&) = delete;
 	VBO(VBO&& other) noexcept
 	{
-		auto tmp = id;
-		id = other.id;
-		other.id = tmp;
+		auto tmp = _id;
+		_id = other._id;
+		other._id = tmp;
 	}
 
 	VBO& operator=(const VBO&) = delete;
 	VBO& operator=(VBO&& other) noexcept
 	{
-		if(this != &other)
+		if (this != &other)
 		{
-			auto tmp = id;
-			id = other.id;
-			other.id = tmp;
+			auto tmp = _id;
+			_id = other._id;
+			other._id = tmp;
 		}
 
 		return *this;
@@ -33,16 +33,16 @@ public:
 
 	~VBO()
 	{
-		if(id != 0)
+		if (_id != 0)
 		{
-			glDeleteBuffers(1, &id);
+			glDeleteBuffers(1, &_id);
 		}
 	}
 #pragma endregion
 
 	void bind()
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, id);
+		glBindBuffer(GL_ARRAY_BUFFER, _id);
 	}
 
 	void unbind()
@@ -67,6 +67,6 @@ public:
 	}
 
 private:
-	GLuint id = 0;
+	GLuint _id = 0;
 };
 

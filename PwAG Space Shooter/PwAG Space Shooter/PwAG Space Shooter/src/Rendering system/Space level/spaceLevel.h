@@ -1,5 +1,5 @@
 #pragma once
-#include "gameObject.h"
+#include "../Rendering system/Model/gameObject.h"
 #include "../Rendering system/Player/player.h"
 #include "../Rendering system/Player/PlayerStats.h"
 #include "../Rendering system/Lighting/point.h"

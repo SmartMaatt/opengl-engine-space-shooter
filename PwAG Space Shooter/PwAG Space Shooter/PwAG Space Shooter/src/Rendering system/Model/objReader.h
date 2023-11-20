@@ -1,7 +1,7 @@
 #pragma once
 #include "dataOBJ.h"
 
-DataOBJ readObj(const std::string& objPathName, glm::vec3 color = glm::vec3(1.0, 0.0, 0.0)) 
+DataOBJ readObj(const std::string& objPathName, glm::vec3 color = glm::vec3(1.0, 0.0, 0.0))
 {
 	std::vector<unsigned int> vertexIndices;
 	std::vector<unsigned int> uvIndices;
@@ -30,55 +30,55 @@ DataOBJ readObj(const std::string& objPathName, glm::vec3 color = glm::vec3(1.0,
 		ss.str(singleline);
 		ss >> dataType;
 
-		if (dataType == "v") 
+		if (dataType == "v")
 		{
 			glm::vec3 vertices{};
 			ss >> vertices.x >> vertices.y >> vertices.z;
 			tempVertices.push_back(vertices);
 		}
-		else if (dataType == "vt") 
+		else if (dataType == "vt")
 		{
 			glm::vec2 textCoords{};
 			ss >> textCoords.x >> textCoords.y;
 			tempUvs.push_back(textCoords);
 		}
-		else if (dataType == "vn") 
+		else if (dataType == "vn")
 		{
 			glm::vec3 normals{};
 			ss >> normals.x >> normals.y >> normals.z;
 			tempNormals.push_back(normals);
 		}
-		else if (dataType == "f") 
+		else if (dataType == "f")
 		{
 			int i = 0;
 			int index = 0;
-			while (ss >> index) 
+			while (ss >> index)
 			{
-				switch (i) 
+				switch (i)
 				{
-					case 0:
-						vertexIndices.push_back(index);
-						break;
-					case 1:
-						uvIndices.push_back(index);
-						break;
-					case 2:
-						normalIndices.push_back(index);
-						break;
+				case 0:
+					vertexIndices.push_back(index);
+					break;
+				case 1:
+					uvIndices.push_back(index);
+					break;
+				case 2:
+					normalIndices.push_back(index);
+					break;
 				}
 
-				if (ss.peek() == '/') 
+				if (ss.peek() == '/')
 				{
 					ss.ignore(1, '/');
 					i++;
 				}
-				else if (ss.peek() == ' ') 
+				else if (ss.peek() == ' ')
 				{
 					ss.ignore(1, ' ');
 					i++;
 				}
 
-				if (i > 2) 
+				if (i > 2)
 				{
 					i = 0;
 				}
@@ -87,9 +87,9 @@ DataOBJ readObj(const std::string& objPathName, glm::vec3 color = glm::vec3(1.0,
 	}
 
 	objFile.close();
-	DataOBJ objData {};
+	DataOBJ objData{};
 
-	for (unsigned int i = 0; i < vertexIndices.size(); i++) 
+	for (unsigned int i = 0; i < vertexIndices.size(); i++)
 	{
 		// Get the indices of its attributes
 		unsigned int vertexIndex = vertexIndices[i];

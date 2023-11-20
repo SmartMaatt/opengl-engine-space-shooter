@@ -5,7 +5,7 @@ class Button
 {
 public:
 	// Constructors / Destructor
-	Button(const std::string& text, const glm::vec2& _position, const glm::vec3& color);
+	Button(const std::string& text, const glm::vec2& position, const glm::vec3& color);
 
 	// Update
 	void update(const Mouse& mouse);
@@ -17,7 +17,7 @@ public:
 	void setEnabled(bool enabled);
 	bool isEnabled() const;
 
-	void setPosition(const glm::vec2& _position);
+	void setPosition(const glm::vec2& position);
 	const glm::vec2& getPosition() const;
 
 	void setColor(const glm::vec3& color);

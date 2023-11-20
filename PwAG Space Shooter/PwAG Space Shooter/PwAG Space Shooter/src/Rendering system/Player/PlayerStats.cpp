@@ -4,8 +4,8 @@
 /* --->>> Constructors / Destructor <<<--- */
 PlayerStats::PlayerStats()
 {
-	hitPoints = maxHitPoints;
-	timeAfterLastHit = safeTimeAfterHit;
+	_hitPoints = _maxHitPoints;
+	_timeAfterLastHit = _safeTimeAfterHit;
 }
 
 PlayerStats::~PlayerStats()
@@ -16,43 +16,43 @@ PlayerStats::~PlayerStats()
 /* --->>> Health <<<--- */
 int PlayerStats::getHitPoints()
 {
-	return hitPoints;
+	return _hitPoints;
 }
 
 int PlayerStats::getMaxHitPoints()
 {
-	return maxHitPoints;
+	return _maxHitPoints;
 }
 
 void PlayerStats::takeDamage(int damage)
 {
-	hitPoints -= damage;
+	_hitPoints -= damage;
 	checkHitPoints();
 }
 
 bool PlayerStats::checkSafeTime(float deltaTime)
 {
-	if (safeTimeAfterHit <= timeAfterLastHit)
+	if (_safeTimeAfterHit <= _timeAfterLastHit)
 	{
 		return true;
 	}
 	else
 	{
-		timeAfterLastHit += deltaTime;
+		_timeAfterLastHit += deltaTime;
 		return false;
 	}
 }
 
 void PlayerStats::checkHitPoints()
 {
-	if (hitPoints > maxHitPoints)
+	if (_hitPoints > _maxHitPoints)
 	{
-		hitPoints = maxHitPoints;
+		_hitPoints = _maxHitPoints;
 	}
 
-	if (hitPoints < 0)
+	if (_hitPoints < 0)
 	{
-		hitPoints = 0;
+		_hitPoints = 0;
 	}
 }
 
@@ -60,58 +60,58 @@ void PlayerStats::checkHitPoints()
 /* --->>> Shooting <<<--- */
 void PlayerStats::shoot()
 {
-	if (canShoot)
+	if (_canShoot)
 	{
-		canShoot = false;
-		reloadTime = 0.0f;
+		_canShoot = false;
+		_reloadTime = 0.0f;
 	}
 }
 
 void PlayerStats::reloadBullet(float deltaTime)
 {
-	if (!canShoot)
+	if (!_canShoot)
 	{
-		if (reloadTime < reloadMaxTime)
+		if (_reloadTime < _reloadMaxTime)
 		{
-			reloadTime += deltaTime;
+			_reloadTime += deltaTime;
 		}
 		else
 		{
-			canShoot = true;
+			_canShoot = true;
 		}
 	}
 }
 
 bool PlayerStats::canIShoot()
 {
-	return this->canShoot;
+	return _canShoot;
 }
 
 float PlayerStats::getReloadMaxTime()
 {
-	return this->reloadMaxTime;
+	return _reloadMaxTime;
 }
 
 float PlayerStats::getReloadTime()
 {
-	return this->reloadTime;
+	return _reloadTime;
 }
 
 
 /* --->>> Points <<<--- */
 int PlayerStats::getPoints()
 {
-	return points;
+	return _points;
 }
 
 void PlayerStats::addPoint()
 {
-	points++;
+	_points++;
 }
 
 
 /* --->>> Collisions <<<--- */
 float PlayerStats::getPlayerRadius()
 {
-	return playerRadius;
+	return _playerRadius;
 }

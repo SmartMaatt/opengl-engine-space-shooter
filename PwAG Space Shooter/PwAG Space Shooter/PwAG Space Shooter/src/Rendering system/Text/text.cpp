@@ -1,103 +1,107 @@
 #include "pch.h"
 #include "text.h"
 
+/* --->>> Constructors / Destructor <<<--- */
 Text::Text(int32_t x, int32_t y, std::string text, const Font& font, const glm::vec3& color) :
-	x(x), y(y), text(std::move(text)), fontPtr(&font), color(color)
+	_x(x), _y(y), _text(std::move(text)), _fontPtr(&font), _color(color)
 {
-	setForNewText();
+	_setForNewText();
 }
 
+/* --->>> Drawing <<<--- */
 void Text::render(const ShaderProgram& shader)
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, fontPtr->atlasTextureID);
-	shader.setVec3f("textColor", color);
+	glBindTexture(GL_TEXTURE_2D, _fontPtr->atlasTextureID);
+	shader.setVec3f("textColor", _color);
 
-	for (auto i = 0; i < text.size(); ++i)
+	for (auto i = 0; i < _text.size(); ++i)
 	{
-		VAOs[i].bind();
+		_VAOs[i].bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+
+/* --->>> Setters <<<--- */
 void Text::setText(std::string newText)
 {
-	text = std::move(newText);
-	setForNewText();
+	_text = std::move(newText);
+	_setForNewText();
 }
 
 const std::string& Text::getText() const
 {
-	return text;
+	return _text;
 }
 
 void Text::setColor(const glm::vec3& newColor)
 {
-	color = newColor;
+	_color = newColor;
 }
 
 const glm::vec3& Text::getColor() const
 {
-	return color;
+	return _color;
 }
 
 void Text::setPosition(const glm::vec2& newPosition)
 {
-	this->x = newPosition.x;
-	this->y = newPosition.y;
+	_x = newPosition.x;
+	_y = newPosition.y;
 
-	this->setForNewText();
+	_setForNewText();
 }
 
 glm::vec2 Text::getPosition() const
 {
-	return glm::vec2(this->x, this->y);
+	return glm::vec2(_x, _y);
 }
 
-void Text::setForNewText()
+void Text::_setForNewText()
 {
-	VBOs.clear();
-	VAOs.clear();
+	_VBOs.clear();
+	_VAOs.clear();
 
-	VAOs.reserve(this->text.size());
-	VBOs.reserve(this->text.size());
+	_VAOs.reserve(_text.size());
+	_VBOs.reserve(_text.size());
 
-	float xPos = static_cast<float>(x);
-	float yPos = static_cast<float>(y);
+	float xPos = static_cast<float>(_x);
+	float yPos = static_cast<float>(_y);
 
-	for (const auto charInText : this->text)
+	for (const auto charInText : _text)
 	{
-		const Font::Character& character = fontPtr->characters.at(charInText);
+		const Font::Character& character = _fontPtr->characters.at(charInText);
 
 		float width = static_cast<float>(character.size.x);
 		float height = static_cast<float>(character.size.y);
 
-		this->width += character.size.x + character.bearing.x;
-		this->height = std::max(this->height, static_cast<int32_t>(height));
+		_width += character.size.x + character.bearing.x;
+		_height = std::max(_height, static_cast<int32_t>(height));
 	}
 
-	for (const auto charInText : this->text)
+	for (const auto charInText : _text)
 	{
-		const Font::Character& character = fontPtr->characters.at(charInText);
+		const Font::Character& character = _fontPtr->characters.at(charInText);
 
 		float width = static_cast<float>(character.size.x);
 		float height = static_cast<float>(character.size.y);
 
 		float x1 = xPos + character.bearing.x;
-		float y1 = yPos + character.bearing.y - this->height;
+		float y1 = yPos + character.bearing.y - _height;
 
 		float x2 = x1 + width;
 		float y2 = y1 - height;
 
 		float vertices[] = {
-			x1,			y1,				character.atlasOffset.x / fontPtr->atlasSize.x,											0,
-			x2,			y1,				character.atlasOffset.x / fontPtr->atlasSize.x + width / fontPtr->atlasSize.x,			0,
-			x1,			y2,				character.atlasOffset.x / fontPtr->atlasSize.x,											height / fontPtr->atlasSize.y,
+			x1,			y1,				character.atlasOffset.x / _fontPtr->atlasSize.x,											0,
+			x2,			y1,				character.atlasOffset.x / _fontPtr->atlasSize.x + width / _fontPtr->atlasSize.x,			0,
+			x1,			y2,				character.atlasOffset.x / _fontPtr->atlasSize.x,											height / _fontPtr->atlasSize.y,
 
 			//x2,			y1,				character.atlasOffset.x / fontPtr->atlasSize.x + width / fontPtr->atlasSize.x,			0,
 			//x1,			y2,				character.atlasOffset.x / fontPtr->atlasSize.x,											height / fontPtr->atlasSize.y,
-			x2,			y2,				character.atlasOffset.x / fontPtr->atlasSize.x + width / fontPtr->atlasSize.x,			height / fontPtr->atlasSize.y
+			x2,			y2,				character.atlasOffset.x / _fontPtr->atlasSize.x + width / _fontPtr->atlasSize.x,			height / _fontPtr->atlasSize.y
 		};
 
 		unsigned int indices[] = {
@@ -105,26 +109,26 @@ void Text::setForNewText()
 			1, 2, 3
 		};
 
-		VAOs.emplace_back();
-		VAOs.back().bind();
+		_VAOs.emplace_back();
+		_VAOs.back().bind();
 
-		VBOs.emplace_back();
-		VBOs.back().bind();
+		_VBOs.emplace_back();
+		_VBOs.back().bind();
 
-		VBOs.back().bufferData(vertices, sizeof(vertices), GL_DYNAMIC_DRAW);
+		_VBOs.back().bufferData(vertices, sizeof(vertices), GL_DYNAMIC_DRAW);
 
-		EBOs.emplace_back();
-		EBOs.back().bind();
+		_EBOs.emplace_back();
+		_EBOs.back().bind();
 
-		EBOs.back().bufferData(indices, sizeof(indices), GL_DYNAMIC_DRAW);
-		VBOs.back().setAttributesPointers(0, 4, GL_FLOAT, 4 * sizeof(float), nullptr);
+		_EBOs.back().bufferData(indices, sizeof(indices), GL_DYNAMIC_DRAW);
+		_VBOs.back().setAttributesPointers(0, 4, GL_FLOAT, 4 * sizeof(float), nullptr);
 
-		VBOs.back().unbind();
-		VAOs.back().unbind();
+		_VBOs.back().unbind();
+		_VAOs.back().unbind();
 
 		xPos += character.advance.x;
 		yPos += character.advance.y;
 
-		this->width = xPos - x;
+		_width = xPos - _x;
 	}
 }

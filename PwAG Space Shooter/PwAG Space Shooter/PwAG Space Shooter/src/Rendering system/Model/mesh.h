@@ -5,10 +5,13 @@
 class Mesh
 {
 public:
+	// Constructors / Destructor
 	Mesh();
-	Mesh(DataOBJ objData, glm::vec3 offset);
+	Mesh(DataOBJ objData, glm::vec3 _offset);
 	Mesh(Mesh& src);
+	virtual ~Mesh();
 
+	// Drawing
 	void drawMesh();
 
 	// Uniforms
@@ -20,28 +23,29 @@ public:
 	DataOBJ getMeshData();
 	IndexedDataOBJ getIndexedMeshData();
 
-	virtual ~Mesh();
-
 private:
-	void initBuffers();
+	// Initialization
+	void _initBuffers();
 
-	DataOBJ meshData;
-	IndexedDataOBJ indexedData;
+	// References
+	DataOBJ _meshData;
+	IndexedDataOBJ _indexedData;
 
-	glm::vec3 offset;
-	std::vector<glm::vec3> offsets;
+	// Parameters
+	glm::vec3 _offset;
+	std::vector<glm::vec3> _offsets;
+	glm::mat4 _matrixModel;
 
-	glm::mat4 matrixModel;
+	// Buffers
+	GLuint _vertexArrayID;
+	GLuint _elementBuffer;
 
-	GLuint vertexArrayID;
-	GLuint elementBuffer;
-
-	GLuint verticesBuffer;
-	GLuint colorsBuffer;
-	GLuint normalsBuffer;
-	GLuint tangentBuffer;
-	GLuint bitangentBuffer;
-	GLuint uvsBuffer;
-	GLuint offsetBuffer;
+	GLuint _verticesBuffer;
+	GLuint _colorsBuffer;
+	GLuint _normalsBuffer;
+	GLuint _tangentBuffer;
+	GLuint _bitangentBuffer;
+	GLuint _uvsBuffer;
+	GLuint _offsetBuffer;
 };
 

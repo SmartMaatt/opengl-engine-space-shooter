@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Game objects/gameObject.h"
+#include "../Rendering system/Model/gameObject.h"
 
 class Entity 
 {

@@ -10,7 +10,6 @@ public:
 	Font(const Font&) = delete;
 	Font(Font&&);
 	~Font();
-		//glDeleteTextures(1, &atlasTextureID);
 	Font& operator=(const Font&) = delete;
 
 private:

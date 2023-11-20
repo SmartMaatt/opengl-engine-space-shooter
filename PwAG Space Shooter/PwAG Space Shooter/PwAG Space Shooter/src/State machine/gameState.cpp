@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "gameState.h"
-#include "../Game Objects/spaceLevel.h"
+#include "../Rendering system/Space level/spaceLevel.h"
 
 /* --->>> Constructors / Destructor <<<--- */
 GameState::GameState(GameReference gameReference)

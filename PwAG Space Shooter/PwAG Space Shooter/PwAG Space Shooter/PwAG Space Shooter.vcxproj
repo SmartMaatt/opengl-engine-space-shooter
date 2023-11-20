@@ -144,15 +144,18 @@
     <ClCompile Include="src\Rendering system\Entity\entity.cpp" />
     <ClCompile Include="src\Rendering system\Entity\livingEntity.cpp" />
     <ClCompile Include="src\Rendering system\Entity\meteor.cpp" />
+    <ClCompile Include="src\Rendering system\Model\gameObject.cpp" />
     <ClCompile Include="src\Rendering system\Model\indexedDataOBJ.cpp" />
     <ClCompile Include="src\Rendering system\Model\material.cpp" />
     <ClCompile Include="src\GUI\button.cpp" />
+    <ClCompile Include="src\Rendering system\Model\transformationOBJ.cpp" />
     <ClCompile Include="src\Rendering system\Model\vboIndexer.cpp" />
     <ClCompile Include="src\Rendering system\OpenGL Objects\fbo.cpp" />
     <ClCompile Include="src\Rendering system\Player\player.cpp" />
     <ClCompile Include="src\Rendering system\Player\PlayerStats.cpp" />
     <ClCompile Include="src\Rendering system\Shader\shaderLightProgram.cpp" />
     <ClCompile Include="src\Rendering system\Skybox\skybox.cpp" />
+    <ClCompile Include="src\Rendering system\Space level\spaceLevel.cpp" />
     <ClCompile Include="src\State machine\gameOverState.cpp" />
     <ClCompile Include="src\State machine\gameState.cpp" />
     <ClCompile Include="src\State machine\menuState.cpp" />
@@ -166,10 +169,7 @@
     <ClCompile Include="src\Rendering system\Lighting\point.cpp" />
     <ClCompile Include="src\Rendering system\OpenGL Objects\ebo.cpp" />
     <ClCompile Include="src\Rendering system\Model\dataOBJ.cpp" />
-    <ClCompile Include="src\Rendering system\Model\transformationOBJ.cpp" />
     <ClCompile Include="src\Rendering system\Text\font.cpp" />
-    <ClCompile Include="src\Game Objects\gameObject.cpp" />
-    <ClCompile Include="src\Game Objects\spaceLevel.cpp" />
     <ClCompile Include="src\Rendering system\Model\mesh.cpp" />
     <ClCompile Include="src\Rendering system\Shader\shaderProgram.cpp" />
     <ClCompile Include="src\Rendering system\Shader\shader.cpp" />
@@ -204,15 +204,18 @@
     <ClInclude Include="src\Rendering system\Entity\entity.h" />
     <ClInclude Include="src\Rendering system\Entity\livingEntity.h" />
     <ClInclude Include="src\Rendering system\Entity\meteor.h" />
+    <ClInclude Include="src\Rendering system\Model\gameObject.h" />
     <ClInclude Include="src\Rendering system\Model\indexedDataOBJ.h" />
     <ClInclude Include="src\Rendering system\Model\material.h" />
     <ClInclude Include="src\GUI\button.h" />
+    <ClInclude Include="src\Rendering system\Model\transformationOBJ.h" />
     <ClInclude Include="src\Rendering system\Model\vboIndexer.h" />
     <ClInclude Include="src\Rendering system\OpenGL Objects\fbo.h" />
     <ClInclude Include="src\Rendering system\Player\player.h" />
     <ClInclude Include="src\Rendering system\Player\PlayerStats.h" />
     <ClInclude Include="src\Rendering system\Shader\shaderLightProgram.h" />
     <ClInclude Include="src\Rendering system\Skybox\skybox.h" />
+    <ClInclude Include="src\Rendering system\Space level\spaceLevel.h" />
     <ClInclude Include="src\Rendering system\Texture\stb_image.h" />
     <ClInclude Include="src\State machine\gameAssets.h" />
     <ClInclude Include="src\State machine\gameOverState.h" />
@@ -230,8 +233,6 @@
     <ClInclude Include="src\Rendering system\Model\dataOBJ.h" />
     <ClInclude Include="src\Rendering system\OpenGL Objects\ebo.h" />
     <ClInclude Include="src\Rendering system\Text\font.h" />
-    <ClInclude Include="src\Game Objects\gameObject.h" />
-    <ClInclude Include="src\Game Objects\spaceLevel.h" />
     <ClInclude Include="src\Rendering system\Model\mesh.h" />
     <ClInclude Include="src\Rendering system\Model\objReader.h" />
     <ClInclude Include="src\Rendering system\Shader\shaderProgram.h" />
@@ -248,7 +249,6 @@
     <ClInclude Include="src\Rendering system\Texture\texture.h" />
     <ClInclude Include="src\Rendering system\OpenGL Objects\vao.h" />
     <ClInclude Include="src\Rendering system\OpenGL Objects\vbo.h" />
-    <ClInclude Include="src\Rendering system\Model\transformationOBJ.h" />
     <ClInclude Include="src\Utilities\timer.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "point.h"
-#include "../../Game Objects/spaceLevel.h"
+#include "../Rendering system/Space level/spaceLevel.h"
 
 /* --->>> Constructors / Destructor <<<--- */
 Light::Point::Point(const glm::vec3& position, const glm::vec3& color) :

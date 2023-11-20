@@ -8,22 +8,26 @@
 class ShaderProgram
 {
 public:
+	// Constructors / Destructor
 	ShaderProgram() = default;
 	ShaderProgram(const ShaderProgram&) = delete;
 	ShaderProgram(ShaderProgram&&) noexcept;
 	~ShaderProgram();
 
+	// Operators
 	ShaderProgram& operator=(const ShaderProgram&) = delete;
 	ShaderProgram& operator=(ShaderProgram&&) noexcept;
 
+	// Linking
 	void attachShader(const Shader& shader);
 	bool linkShaderProgram();
 
 	void useShader() const
 	{
-		glUseProgram(shaderProgram);
+		glUseProgram(_shaderProgram);
 	}
 
+	// Setters
 	void setInt(const std::string& name, int value) const;
 	void setFloat(const std::string& name, float value) const;
 	void setVec2f(const std::string& name, const glm::vec2& vector) const;
@@ -32,9 +36,10 @@ public:
 	void setMat4(const std::string& name, const glm::mat4& matrix) const;
 
 protected:
-	GLint getUniformLocation(const std::string& name) const;
+	// Getters
+	GLint _getUniformLocation(const std::string& name) const;
 
-	GLuint shaderProgram = glCreateProgram();
-	mutable std::unordered_map<std::string, GLint> uniformLocation;
+	GLuint _shaderProgram = glCreateProgram();
+	mutable std::unordered_map<std::string, GLint> _uniformLocation;
 };
 

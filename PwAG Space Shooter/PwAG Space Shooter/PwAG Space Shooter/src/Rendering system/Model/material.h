@@ -3,13 +3,15 @@
 class Material
 {
 public:
+	// Constructors / Destructor
 	Material();
-	Material(Texture* mainTexture, Texture* specular, Texture* normalMap, int diffuseLerp, int normalLerp, glm::vec3 ambientLight);
+	Material(Texture* _mainTexture, Texture* specular, Texture* _normalMap, int _diffuseLerp, int _normalLerp, glm::vec3 _ambientLight);
 	Material(Material& src);
+	virtual ~Material();
 
 	// Setters
-	void setTextures(Texture* texture, Texture* specular, Texture* normalMap);
-	void setUniformValues(int diffuseLerp, int normalLerp, glm::vec3 ambientLight);
+	void setTextures(Texture* texture, Texture* specular, Texture* _normalMap);
+	void setUniformValues(int _diffuseLerp, int _normalLerp, glm::vec3 _ambientLight);
 
 	// Getters
 	int GetDiffuseLerp();
@@ -20,20 +22,18 @@ public:
 	Texture* GetSpecularTexture();
 	Texture* GetNormalMap();
 
-	// Drawing methods
+	// Drawing
 	void bindTextures();
 	void setMaterialShaderUniforms(ShaderProgram& shaderProgram);
 
-	virtual ~Material();
-
 private:
 	// Uniforms
-	int diffuseLerp;
-	int normalLerp;
-	glm::vec3 ambientLight = glm::vec3(0.1f, 0.1f, 0.1f);
+	int _diffuseLerp;
+	int _normalLerp;
+	glm::vec3 _ambientLight = glm::vec3(0.1f, 0.1f, 0.1f);
 
 	// Textures
-	Texture* mainTexture;
-	Texture* specularTexture;
-	Texture* normalMap;
+	Texture* _mainTexture;
+	Texture* _specularTexture;
+	Texture* _normalMap;
 };

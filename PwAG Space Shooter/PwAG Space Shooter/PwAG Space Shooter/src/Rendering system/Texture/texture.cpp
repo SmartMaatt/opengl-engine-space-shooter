@@ -4,12 +4,13 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../SourceDep/stb_image.h"
 
+/* --->>> BitMapFile <<<--- */
 #pragma region BitMapFile
 Texture::BitMapFile::BitMapFile() = default;
 
 Texture::BitMapFile::BitMapFile(const std::string& filePath)
 {
-	this->loadFromFile(filePath);
+	loadFromFile(filePath);
 }
 
 Texture::BitMapFile::BitMapFile(BitMapFile&& other) noexcept
@@ -53,17 +54,19 @@ void Texture::BitMapFile::loadFromFile(const std::string& filePath)
 }
 #pragma endregion
 
+
+/* --->>> Constructors / Destructor <<<--- */
 Texture::Texture(Texture::Type type)
-	: textureType(type)
+	: _textureType(type)
 {
-	glGenTextures(1, &this->texture);
+	glGenTextures(1, &_texture);
 }
 
 Texture Texture::createTextureFromFile(const std::string& textureFilePath, Texture::Type textureType)
 {
 	Texture toReturn{ textureType };
-	toReturn.bmp.loadFromFile(textureFilePath);
-	toReturn.initializeTexture();
+	toReturn._bmp.loadFromFile(textureFilePath);
+	toReturn._initializeTexture();
 
 	return toReturn;
 }
@@ -71,7 +74,7 @@ Texture Texture::createTextureFromFile(const std::string& textureFilePath, Textu
 Texture Texture::createDepthTexture()
 {
 	Texture toReturn{ Texture::Type::DEPTH };
-	toReturn.initializeTexture();
+	toReturn._initializeTexture();
 
 	return toReturn;
 }
@@ -79,7 +82,7 @@ Texture Texture::createDepthTexture()
 Texture Texture::createTextureForPositionBuffer()
 {
 	Texture toReturn{ Texture::Type::G_BUFFER_POSITION };
-	toReturn.initializeTexture();
+	toReturn._initializeTexture();
 
 	return toReturn;
 }
@@ -87,7 +90,7 @@ Texture Texture::createTextureForPositionBuffer()
 Texture Texture::createTextureForNormalBuffer()
 {
 	Texture toReturn{ Texture::Type::G_BUFFER_NORMAL };
-	toReturn.initializeTexture();
+	toReturn._initializeTexture();
 
 	return toReturn;
 }
@@ -95,7 +98,7 @@ Texture Texture::createTextureForNormalBuffer()
 Texture Texture::createTextureForAlbedoBuffer()
 {
 	Texture toReturn{ Texture::Type::G_BUFFER_ALBEDO };
-	toReturn.initializeTexture();
+	toReturn._initializeTexture();
 
 	return toReturn;
 }
@@ -103,7 +106,7 @@ Texture Texture::createTextureForAlbedoBuffer()
 Texture Texture::createTexture_OIT_opaque()
 {
 	Texture toReturn(Texture::Type::OIT_OPAQUE);
-	toReturn.initializeTexture();
+	toReturn._initializeTexture();
 
 	return toReturn;
 }
@@ -111,7 +114,7 @@ Texture Texture::createTexture_OIT_opaque()
 Texture Texture::createTexture_OIT_depth()
 {
 	Texture toReturn(Texture::Type::OIT_DEPTH);
-	toReturn.initializeTexture();
+	toReturn._initializeTexture();
 
 	return toReturn;
 }
@@ -119,7 +122,7 @@ Texture Texture::createTexture_OIT_depth()
 Texture Texture::createTexture_OIT_accum()
 {
 	Texture toReturn(Texture::Type::OIT_ACCUM);
-	toReturn.initializeTexture();
+	toReturn._initializeTexture();
 
 	return toReturn;
 }
@@ -127,96 +130,97 @@ Texture Texture::createTexture_OIT_accum()
 Texture Texture::createTexture_OIT_reveal()
 {
 	Texture toReturn(Texture::Type::OIT_REVEAL);
-	toReturn.initializeTexture();
+	toReturn._initializeTexture();
 
 	return toReturn;
 }
 
 Texture::Texture(Texture&& other) noexcept
-	: textureType(other.textureType), bmp(std::move(other.bmp))
+	: _textureType(other._textureType), _bmp(std::move(other._bmp))
 {
-	texture = other.texture;
-	other.texture = 0;
+	_texture = other._texture;
+	other._texture = 0;
 }
 
 Texture::~Texture()
 {
-	glDeleteTextures(1, &this->texture);
+	glDeleteTextures(1, &_texture);
 }
 
+
+/* --->>> Operators <<<--- */
 Texture& Texture::operator=(Texture&& other) noexcept
 {
 	if (this != &other)
 	{
-		texture = other.texture;
-		other.texture = 0;
+		_texture = other._texture;
+		other._texture = 0;
 
-		bmp = std::move(other.bmp);
+		_bmp = std::move(other._bmp);
 
-		textureType = other.textureType;
+		_textureType = other._textureType;
 	}
 
 	return *this;
 }
 
-void Texture::initializeTexture()
+void Texture::_initializeTexture()
 {
+	glBindTexture(GL_TEXTURE_2D, _texture);
 
-	glBindTexture(GL_TEXTURE_2D, this->texture);
-
-	if (this->textureType == Texture::Type::DEPTH)
+	if (_textureType == Texture::Type::DEPTH)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, this->bmp.sizeX, this->bmp.sizeY, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, _bmp.sizeX, _bmp.sizeY, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
-	else if (this->textureType == Texture::Type::G_BUFFER_POSITION || this->textureType == Texture::Type::G_BUFFER_NORMAL || this->textureType == Texture::Type::G_BUFFER_ALBEDO)
+	else if (_textureType == Texture::Type::G_BUFFER_POSITION || _textureType == Texture::Type::G_BUFFER_NORMAL || _textureType == Texture::Type::G_BUFFER_ALBEDO)
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		if (this->textureType == Texture::Type::G_BUFFER_POSITION)
+		if (_textureType == Texture::Type::G_BUFFER_POSITION)
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, Config::g_defaultWidth, Config::g_defaultHeight, 0, GL_RGB, GL_FLOAT, nullptr);
 		}
-		else if (this->textureType == Texture::Type::G_BUFFER_NORMAL)
+		else if (_textureType == Texture::Type::G_BUFFER_NORMAL)
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, Config::g_defaultWidth, Config::g_defaultHeight, 0, GL_RGB, GL_FLOAT, nullptr);
 		}
-		else if (this->textureType == Texture::Type::G_BUFFER_ALBEDO)
+		else if (_textureType == Texture::Type::G_BUFFER_ALBEDO)
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Config::g_defaultWidth, Config::g_defaultHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 		}
 	}
-	else if (this->textureType >= Texture::Type::OIT_OPAQUE && this->textureType <= Texture::Type::OIT_REVEAL)
+	else if (_textureType >= Texture::Type::OIT_OPAQUE && _textureType <= Texture::Type::OIT_REVEAL)
 	{
-		if (this->textureType == Texture::Type::OIT_OPAQUE)
+		if (_textureType == Texture::Type::OIT_OPAQUE)
 		{
-			glBindTexture(GL_TEXTURE_2D, this->texture);
+			glBindTexture(GL_TEXTURE_2D, _texture);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, Config::g_defaultWidth, Config::g_defaultHeight, 0, GL_RGBA, GL_HALF_FLOAT, nullptr);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
-		else if (this->textureType == Texture::Type::OIT_DEPTH)
+		else if (_textureType == Texture::Type::OIT_DEPTH)
 		{
-			glBindTexture(GL_TEXTURE_2D, this->texture);
+			glBindTexture(GL_TEXTURE_2D, _texture);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, Config::g_defaultWidth, Config::g_defaultHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
-		else if (this->textureType == Texture::Type::OIT_ACCUM)
+		else if (_textureType == Texture::Type::OIT_ACCUM)
 		{
-			glBindTexture(GL_TEXTURE_2D, this->texture);
+			glBindTexture(GL_TEXTURE_2D, _texture);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, Config::g_defaultWidth, Config::g_defaultHeight, 0, GL_RGBA, GL_HALF_FLOAT, nullptr);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		}
 		else
 		{
-			glBindTexture(GL_TEXTURE_2D, this->texture);
+			glBindTexture(GL_TEXTURE_2D, _texture);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, Config::g_defaultWidth, Config::g_defaultHeight, 0, GL_RED, GL_FLOAT, NULL);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -231,38 +235,38 @@ void Texture::initializeTexture()
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		if (this->textureType == Texture::Type::NORMAL_MAP)
+		if (_textureType == Texture::Type::NORMAL_MAP)
 		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->bmp.sizeX, this->bmp.sizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->bmp.data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _bmp.sizeX, _bmp.sizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, _bmp.data);
 		}
-		else if (this->textureType == Texture::Type::BMP)
+		else if (_textureType == Texture::Type::BMP)
 		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->bmp.sizeX, this->bmp.sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, this->bmp.data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _bmp.sizeX, _bmp.sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, _bmp.data);
 		}
-		else if (this->textureType == Texture::Type::PNG)
+		else if (_textureType == Texture::Type::PNG)
 		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->bmp.sizeX, this->bmp.sizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->bmp.data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _bmp.sizeX, _bmp.sizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, _bmp.data);
 		}
-		else if (this->textureType == Texture::Type::SPECULAR)
+		else if (_textureType == Texture::Type::SPECULAR)
 		{
 			GLenum format;
-			if (bmp.nrChannels == 1)
+			if (_bmp.nrChannels == 1)
 			{
 				format = GL_RED;
 			}
-			else if (bmp.nrChannels == 3)
+			else if (_bmp.nrChannels == 3)
 			{
 				format = GL_RGB;
 			}
-			else if (bmp.nrChannels == 4)
+			else if (_bmp.nrChannels == 4)
 			{
 				format = GL_RGBA;
 			}
-			glTexImage2D(GL_TEXTURE_2D, 0, format, this->bmp.sizeX, this->bmp.sizeY, 0, format, GL_UNSIGNED_BYTE, this->bmp.data);
+			glTexImage2D(GL_TEXTURE_2D, 0, format, _bmp.sizeX, _bmp.sizeY, 0, format, GL_UNSIGNED_BYTE, _bmp.data);
 		}
 		else
 		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->bmp.sizeX, this->bmp.sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, this->bmp.data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _bmp.sizeX, _bmp.sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, _bmp.data);
 		}
 
 		glGenerateMipmap(GL_TEXTURE_2D);
@@ -271,7 +275,7 @@ void Texture::initializeTexture()
 
 // Routine to read a bitmap file. 
 // Works only for uncompressed bmp files of 24-bit color. !!!
-Texture::BitMapFile* Texture::readBmpImage(const std::string& filePath)
+Texture::BitMapFile* Texture::_readBmpImage(const std::string& filePath)
 {
 	BitMapFile* bmp = new BitMapFile;
 	unsigned int size, offset, headerSize;
@@ -311,12 +315,14 @@ Texture::BitMapFile* Texture::readBmpImage(const std::string& filePath)
 	return bmp;
 }
 
+
+/* --->>> Binding <<<--- */
 void Texture::bindTexture(unsigned int unit) const
 {
 	assert(unit >= 0 && unit <= 31);
 
 	glActiveTexture(GL_TEXTURE0 + unit);
-	glBindTexture(GL_TEXTURE_2D, this->texture);
+	glBindTexture(GL_TEXTURE_2D, _texture);
 }
 
 void Texture::unbindTexture() const
@@ -324,12 +330,14 @@ void Texture::unbindTexture() const
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+
+/* --->>> Getters <<<--- */
 int Texture::getTextureWidth() const
 {
-	return this->bmp.sizeX;
+	return _bmp.sizeX;
 }
 
 int Texture::getTextureHeight() const
 {
-	return this->bmp.sizeY;
+	return _bmp.sizeY;
 }

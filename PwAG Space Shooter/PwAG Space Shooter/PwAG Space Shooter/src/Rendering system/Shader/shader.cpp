@@ -1,55 +1,60 @@
 ﻿#include "pch.h"
 #include "shader.h"
 
-Shader::Shader(Type type) : type(type)
+/* --->>> Constructors / Destructor <<<--- */
+Shader::Shader(Type type) : _type(type)
 {
 	switch (type)
 	{
-		case Shader::Type::eVertex:
-			shaderID = glCreateShader(GL_VERTEX_SHADER);
-			break;
-		case Shader::Type::eFragment:
-			shaderID = glCreateShader(GL_FRAGMENT_SHADER);
-			break;
-		case Shader::Type::eGeometry:
-			shaderID = glCreateShader(GL_GEOMETRY_SHADER);
-			break;
+	case Shader::Type::eVertex:
+		_shaderID = glCreateShader(GL_VERTEX_SHADER);
+		break;
+	case Shader::Type::eFragment:
+		_shaderID = glCreateShader(GL_FRAGMENT_SHADER);
+		break;
+	case Shader::Type::eGeometry:
+		_shaderID = glCreateShader(GL_GEOMETRY_SHADER);
+		break;
 	}
 }
 
 Shader::Shader(Shader&& other) noexcept
-	: type(other.type)
+	: _type(other._type)
 {
-	this->shaderID = other.shaderID;
-	other.shaderID = 0;
+	_shaderID = other._shaderID;
+	other._shaderID = 0;
 }
 
 Shader::~Shader()
 {
-	if (shaderID)
+	if (_shaderID)
 	{
-		glDeleteShader(shaderID);
+		glDeleteShader(_shaderID);
 	}
 }
 
+
+/* --->>> Operators <<<--- */
 Shader& Shader::operator=(Shader&& other) noexcept
 {
 	if (this != &other)
 	{
-		this->type = other.type;
+		_type = other._type;
 
-		this->shaderID = other.shaderID;
-		other.shaderID = 0;
+		_shaderID = other._shaderID;
+		other._shaderID = 0;
 	}
 
 	return *this;
 }
 
+
+/* --->>> Initialization <<<--- */
 Shader Shader::createShaderFromSourceCode(const std::string& sourceCode, Type type)
 {
 	Shader shader{ type };
-	shader.setSourceCode(sourceCode);
-	shader.compile();
+	shader._setSourceCode(sourceCode);
+	shader._compile();
 
 	return shader;
 }
@@ -58,14 +63,16 @@ Shader Shader::createShaderFromFile(const std::string& filePath, Type type)
 {
 	Shader shader{ type };
 
-	std::string sourceCode = loadShaderSourceCodeFromFile(filePath);
-	shader.setSourceCode(sourceCode);
-	shader.compile();
+	std::string sourceCode = _loadShaderSourceCodeFromFile(filePath);
+	shader._setSourceCode(sourceCode);
+	shader._compile();
 
 	return shader;
 }
 
-std::string Shader::loadShaderSourceCodeFromFile(const std::string& filePath)
+
+/* --->>> Private <<<--- */
+std::string Shader::_loadShaderSourceCodeFromFile(const std::string& filePath)
 {
 	std::ifstream file(filePath);
 	if (file.is_open())
@@ -85,23 +92,23 @@ std::string Shader::loadShaderSourceCodeFromFile(const std::string& filePath)
 	return std::string();
 }
 
-void Shader::setSourceCode(const std::string& sourceCode)
+void Shader::_setSourceCode(const std::string& sourceCode)
 {
 	const char* code = sourceCode.c_str();
-	glShaderSource(shaderID, 1, &code, nullptr);
+	glShaderSource(_shaderID, 1, &code, nullptr);
 }
 
-void Shader::compile()
+void Shader::_compile()
 {
-	glCompileShader(this->shaderID);
+	glCompileShader(_shaderID);
 
 	int success;
-	glGetShaderiv(this->shaderID, GL_COMPILE_STATUS, &success);
+	glGetShaderiv(_shaderID, GL_COMPILE_STATUS, &success);
 
 	if (!success)
 	{
 		char infoLog[1024];
-		glGetShaderInfoLog(this->shaderID, 512, nullptr, infoLog);
+		glGetShaderInfoLog(_shaderID, 512, nullptr, infoLog);
 		Debug::LogError(infoLog);
 		//TODO - some exception?
 	}

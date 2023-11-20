@@ -2,10 +2,10 @@
 #include "button.h"
 
 /* --->>> Constructors / Destructor <<<--- */
-Button::Button(const std::string& text, const glm::vec2& _position, const glm::vec3& color)
-	: _text(_position.x, Config::g_defaultHeight - _position.y, text, ResourceManager::getInstance().getFont("default")), _shaderProgram(ResourceManager::getInstance().getShader("text")), _position(_position), _color(color)
+Button::Button(const std::string& text, const glm::vec2& position, const glm::vec3& color)
+	: _text(position.x, Config::g_defaultHeight - position.y, text, ResourceManager::getInstance().getFont("default")), _shaderProgram(ResourceManager::getInstance().getShader("text")), _position(position), _color(color)
 {
-	_size = { _text.width, _text.height };
+	_size = { _text._width, _text._height };
 }
 
 
@@ -16,7 +16,7 @@ void Button::update(const Mouse& mouse)
 		mouse.posX > _position.x && mouse.posX < _position.x + _size.x &&
 		mouse.posY > _position.y && mouse.posY < _position.y + _size.y)
 	{
-		_text.color = _color * 1.5f;
+		_text._color = _color * 1.5f;
 		if (mouse.buttonState[static_cast<int>(Mouse::Button::eLeft)])
 		{
 			_action();
@@ -24,7 +24,7 @@ void Button::update(const Mouse& mouse)
 	}
 	else
 	{
-		_text.color = _color;
+		_text._color = _color;
 	}
 }
 
@@ -77,7 +77,7 @@ const glm::vec3& Button::getColor() const
 void Button::setText(const std::string& text)
 {
 	_text.setText(text);
-	_size = { _text.width, _text.height };
+	_size = { _text._width, _text._height };
 }
 
 const std::string& Button::getText() const

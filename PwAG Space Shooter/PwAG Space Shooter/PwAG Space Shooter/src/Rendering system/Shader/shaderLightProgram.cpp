@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "ShaderLightProgram.h"
 
+/* --->>> Setters <<<--- */
 void ShaderLightProgram::setNumberOfLights(int numberOfLights)
 {
 	setInt("pointLightsCount", static_cast<int>(numberOfLights));

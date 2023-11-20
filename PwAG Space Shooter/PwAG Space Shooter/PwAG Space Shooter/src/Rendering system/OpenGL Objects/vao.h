@@ -7,25 +7,25 @@ public:
 #pragma region Constructors, destructor, assign operators
 	VAO()
 	{
-		glGenVertexArrays(1, &id);
+		glGenVertexArrays(1, &_id);
 	}
-	
+
 	VAO(const VAO&) = delete;
 	VAO(VAO&& other) noexcept
 	{
-		auto tmp = id;
-		id = other.id;
-		other.id = tmp;
+		auto tmp = _id;
+		_id = other._id;
+		other._id = tmp;
 	}
-	
+
 	VAO& operator=(const VAO& other) = delete;
 	VAO& operator=(VAO&& other) noexcept
 	{
-		if(this != &other)
+		if (this != &other)
 		{
-			auto tmp = id;
-			id = other.id;
-			other.id = tmp;
+			auto tmp = _id;
+			_id = other._id;
+			other._id = tmp;
 		}
 
 		return *this;
@@ -33,16 +33,16 @@ public:
 
 	~VAO()
 	{
-		if(id != -1)
+		if (_id != -1)
 		{
-			glDeleteVertexArrays(1, &id);
+			glDeleteVertexArrays(1, &_id);
 		}
 	}
 #pragma endregion
 
 	void bind()
 	{
-		glBindVertexArray(id);
+		glBindVertexArray(_id);
 	}
 
 	void unbind()
@@ -51,5 +51,5 @@ public:
 	}
 
 private:
-	GLuint id = 0;
+	GLuint _id = 0;
 };

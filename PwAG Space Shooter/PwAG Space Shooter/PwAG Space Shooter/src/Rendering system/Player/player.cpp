@@ -145,9 +145,9 @@ void Player::setCameraUniforms(ShaderProgram* shaderProgram)
 	shaderProgram->setVec3f("cameraPos", _position);
 }
 
-void Player::setCameraPosition(glm::vec3 _position)
+void Player::setCameraPosition(glm::vec3 position)
 {
-	_position = _position;
+	_position = position;
 }
 
 glm::vec3 Player::getCameraPosition()

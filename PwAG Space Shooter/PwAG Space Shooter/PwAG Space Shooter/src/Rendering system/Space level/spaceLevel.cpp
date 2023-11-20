@@ -139,8 +139,8 @@ void SpaceLevel::_initObjModels()
 void SpaceLevel::_initLevelShaders()
 {
 	// Main shader
-	_fragmentShader = Shader::createShaderFromFile("Shaders/map.frag", Shader::Type::eFragment);
-	_vertexShader = Shader::createShaderFromFile("Shaders/map.vert", Shader::Type::eVertex);
+	_fragmentShader = Shader::createShaderFromFile("shaders/map.frag", Shader::Type::eFragment);
+	_vertexShader = Shader::createShaderFromFile("shaders/map.vert", Shader::Type::eVertex);
 
 	_shaderProgram = new ShaderLightProgram();
 	_shaderProgram->attachShader(_fragmentShader);
@@ -153,8 +153,8 @@ void SpaceLevel::_initLevelShaders()
 	_skybox = new Skybox(facesCubemap);
 
 	// Gui shader
-	Shader textVert = Shader::createShaderFromFile("Shaders/text.vert", Shader::Type::eVertex);
-	Shader textFrag = Shader::createShaderFromFile("Shaders/text.frag", Shader::Type::eFragment);
+	Shader textVert = Shader::createShaderFromFile("shaders/text.vert", Shader::Type::eVertex);
+	Shader textFrag = Shader::createShaderFromFile("shaders/text.frag", Shader::Type::eFragment);
 
 	_textShader = new ShaderProgram();
 	_textShader->attachShader(textVert);

@@ -58,8 +58,8 @@ Skybox::~Skybox()
 /* --->>> Initialization <<<--- */
 void Skybox::InitializeShader()
 {
-	_fragShader = Shader::createShaderFromFile("Shaders/skybox.frag", Shader::Type::eFragment);
-	_vertShader = Shader::createShaderFromFile("Shaders/skybox.vert", Shader::Type::eVertex);
+	_fragShader = Shader::createShaderFromFile("shaders/skybox.frag", Shader::Type::eFragment);
+	_vertShader = Shader::createShaderFromFile("shaders/skybox.vert", Shader::Type::eVertex);
 
 	_shaderProgram = new ShaderProgram();
 	_shaderProgram->attachShader(_fragShader);

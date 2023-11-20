@@ -154,11 +154,11 @@ void Application::render()
 void Application::_initializeText()
 {
 	ResourceManager::getInstance().loadFont("default", "res/Fonts/Segan.ttf", 42);
-	ResourceManager::getInstance().addShaderProgram("text", "Shaders/text.vert", "Shaders/text.frag");
+	ResourceManager::getInstance().addShaderProgram("text", "shaders/text.vert", "shaders/text.frag");
 
 	// FreeType plugin font shaders
-	Shader textVert = Shader::createShaderFromFile("Shaders/text.vert", Shader::Type::eVertex);
-	Shader textFrag = Shader::createShaderFromFile("Shaders/text.frag", Shader::Type::eFragment);
+	Shader textVert = Shader::createShaderFromFile("shaders/text.vert", Shader::Type::eVertex);
+	Shader textFrag = Shader::createShaderFromFile("shaders/text.frag", Shader::Type::eFragment);
 
 	_textShader.attachShader(textVert);
 	_textShader.attachShader(textFrag);

@@ -18,8 +18,8 @@ private:
 	void _initTexture();
 
 	// Shader
-	const std::string& _spriteVertShader = "Shaders/sprite.vert";
-	const std::string& _spriteFragShader = "Shaders/sprite.frag";
+	const std::string& _spriteVertShader = "shaders/sprite.vert";
+	const std::string& _spriteFragShader = "shaders/sprite.frag";
 	ShaderProgram _spriteProgram;
 
 	// Buffers

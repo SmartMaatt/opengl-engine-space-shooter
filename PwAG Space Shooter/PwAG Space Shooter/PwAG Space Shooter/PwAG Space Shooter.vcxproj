@@ -254,6 +254,10 @@
   <ItemGroup>
     <None Include="Shaders\map.frag" />
     <None Include="Shaders\map.vert" />
+    <None Include="shaders\skybox.frag" />
+    <None Include="shaders\skybox.vert" />
+    <None Include="shaders\sprite.frag" />
+    <None Include="shaders\sprite.vert" />
     <None Include="Shaders\text.frag" />
     <None Include="Shaders\text.vert" />
   </ItemGroup>

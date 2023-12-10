@@ -59,4 +59,6 @@
 
 #include "../GUI/button.h"
 #include "../GUI/sprite.h"
+
+#include "../SourceDep/json.hpp"
 #endif

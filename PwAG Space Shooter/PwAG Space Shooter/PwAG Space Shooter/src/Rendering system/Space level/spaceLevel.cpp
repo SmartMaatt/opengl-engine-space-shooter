@@ -15,6 +15,9 @@ SpaceLevel::SpaceLevel(GameState* gameState) :
 	_bulletLabel(20, 130, "Bullet:", _tmpDefaultFont), _bulletValueText(140, 130, "0", _tmpDefaultFont),
 	_HUD("res/Textures/HUD.png", 1600, 900, 800, 450, true)
 {
+	levelFileReader = SpaceLevelFileReader();
+	levelFileReader.loadFile();
+	//levelInfo = levelFileReader.getLevelInfo();
 	_gameState = gameState;
 	_initLevel();
 }
@@ -107,7 +110,7 @@ void SpaceLevel::_initLevelMaterials()
 void SpaceLevel::_initObjModels()
 {
 	// Loading data from obj
-	DataOBJ meteorMeshData = readObj("res/Models/asteroid.obj");
+	DataOBJ meteorMeshData = readObj("res/Models/suzanne.obj");
 	DataOBJ crystalMeshData = readObj("res/Models/crystal.obj");
 	DataOBJ bulletMeshData = readObj("res/Models/sphere.obj");
 

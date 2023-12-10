@@ -12,6 +12,7 @@ Meteor::Meteor(GameObject* gameObj, std::string name, float worldRadius) : Entit
 
 	// Scale
 	float size = Mathf::randVal(0.1f, 0.75f);
+	//float size = 0.01f;
 	setScale(glm::vec3(size, size, size));
 	setColliderRadius(size);
 

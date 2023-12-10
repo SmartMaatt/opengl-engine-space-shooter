@@ -10,6 +10,7 @@
 #include "../Rendering system/Model/indexedDataOBJ.h"
 #include "../State machine/gameState.h"
 #include "../Rendering system/Skybox/skybox.h"
+#include "../Rendering system/Space level/spaceLevelFileReader.h"
 
 class SpaceLevel
 {
@@ -17,7 +18,10 @@ public:
 	int meteorsInstances = 40;
 	int crystalsInstances = 5;
 	float worldRadius = 10;
+	//std::vector<GameLevel> levelInfo;
 	glm::vec3 startPosition = glm::vec3(0, 0.5f, 0);
+
+	SpaceLevelFileReader levelFileReader;
 
 	// Skybox cubemaps
 	std::string facesCubemap[6] =

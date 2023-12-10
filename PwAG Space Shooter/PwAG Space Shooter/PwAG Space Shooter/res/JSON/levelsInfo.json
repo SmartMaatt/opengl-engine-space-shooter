@@ -1,0 +1,54 @@
+{
+    "levels": [
+        {
+            "level": 1,
+            "enemies": 10,
+            "bullet_shoot_interval": {
+                "min": 1.5,
+                "max": 2.5
+            },
+            "player_shoot_timeout": 0.5,
+            "medkits": 3
+        },
+        {
+            "level": 2,
+            "enemies": 15,
+            "bullet_shoot_interval": {
+                "min": 1.2,
+                "max": 2.2
+            },
+            "player_shoot_timeout": 0.4,
+            "medkits": 4
+        },
+        {
+            "level": 3,
+            "enemies": 20,
+            "bullet_shoot_interval": {
+                "min": 1.0,
+                "max": 2.0
+            },
+            "player_shoot_timeout": 0.3,
+            "medkits": 5
+        },
+        {
+            "level": 4,
+            "enemies": 25,
+            "bullet_shoot_interval": {
+                "min": 0.8,
+                "max": 1.8
+            },
+            "player_shoot_timeout": 0.25,
+            "medkits": 6
+        },
+        {
+            "level": 5,
+            "enemies": 30,
+            "bullet_shoot_interval": {
+                "min": 0.5,
+                "max": 1.5
+            },
+            "player_shoot_timeout": 0.2,
+            "medkits": 7
+        }
+    ]
+}

@@ -4,6 +4,7 @@
 #include "../Rendering system/Player/PlayerStats.h"
 #include "../Rendering system/Lighting/point.h"
 #include "../Rendering system/Entity/entity.h"
+#include "../Rendering system/Entity/alien.h"
 #include "../Rendering system/Entity/meteor.h"
 #include "../Rendering system/Entity/crystal.h"
 #include "../Rendering system/Entity/bullet.h"
@@ -20,7 +21,7 @@ public:
 	std::pair<float, float> enemiesBulletShootInterval = std::pair<float, float>();
 	float playerShootTimeot = 0.0;
 	int medkitsInstances = 0;
-	int meteorsInstances = 40;
+	int meteorsInstances = 0;
 	int crystalsInstances = 5;
 	float worldRadius = 10;
 	glm::vec3 startPosition = glm::vec3(0, 0.5f, 0);
@@ -62,6 +63,7 @@ private:
 
 	// Update
 	void _updatePlayer(float deltaTime);
+	void _updateAlien(float deltaTime);
 	void _updateMeteors(float deltaTime);
 	void _updateCrystals(float deltaTime);
 	void _updateBullet(float deltaTime);
@@ -71,6 +73,7 @@ private:
 
 	// Collisions
 	void _collidePlayer();
+	void _collideAlien(std::vector<Alien*>::iterator& alien);
 	void _collideMeteor(std::vector<Meteor*>::iterator& meteor);
 	void _collideCrystal(std::vector<Crystal*>::iterator& crystal);
 
@@ -89,6 +92,7 @@ private:
 	GameState* _gameState;
 	Skybox* _skybox;
 	Player* _player;
+	std::vector<Alien*> _aliens;
 	std::vector<Meteor*> _meteors;
 	std::vector<Crystal*> _crystals;
 	Bullet* _bullet;
@@ -102,11 +106,13 @@ private:
 	std::vector<Texture*> _textures;
 
 	// Materials
+	Material* _alienMaterialPrefab;
 	Material* _meteorMaterialPrefab;
 	Material* _crystalMaterialPrefab;
 	Material* _bulletMaterialPrefab;
 
 	// Meshes
+	Mesh* _alienMeshPrefab;
 	Mesh* _meteorMeshPrefab;
 	Mesh* _crystalMeshPrefab;
 	Mesh* _bulletMeshPrefab;

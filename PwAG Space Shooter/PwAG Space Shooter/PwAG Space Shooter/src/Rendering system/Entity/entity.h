@@ -22,13 +22,14 @@ public:
 	std::string getName();
 
 	// Position
-	void setPosition(const glm::vec3 _position);
+	void setPosition(const glm::vec3 position);
 	glm::vec3 getPosition();
 	void setOrigin(const glm::vec3 origin);
 
 	// Rotation
 	void setRotation(const glm::vec3 rotation);
 	glm::vec3 getRotation();
+	glm::vec3 lookAt(glm::vec3 direction);
 
 	// Scale
 	void setScale(const glm::vec3 scale);

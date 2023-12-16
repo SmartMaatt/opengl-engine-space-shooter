@@ -50,9 +50,9 @@ std::string Entity::getName()
 
 
 /* --->>> Position <<<--- */
-void Entity::setPosition(const glm::vec3 _position)
+void Entity::setPosition(const glm::vec3 position)
 {
-	_gameObj->setPosition(_position);
+	_gameObj->setPosition(position);
 }
 
 glm::vec3 Entity::getPosition()
@@ -98,7 +98,7 @@ glm::vec3 Entity::getDirection()
 
 void Entity::moveWithDirection(float deltaTime)
 {
-	glm::vec3 newPosition = getPosition() + (deltaTime * _speed * _direction);
+	glm::vec3 newPosition =  getPosition() + (deltaTime * _speed * _direction);
 	setPosition(newPosition);
 }
 

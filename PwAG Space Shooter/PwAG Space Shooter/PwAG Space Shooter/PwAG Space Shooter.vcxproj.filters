@@ -282,6 +282,9 @@
     <ClCompile Include="src\Rendering system\Space level\gameLevel.cpp">
       <Filter>Pliki źródłowe\Rendering system\Space level</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering system\Entity\alien.cpp">
+      <Filter>Pliki źródłowe\Rendering system\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Event system\eventManager.h">
@@ -457,6 +460,9 @@
     </ClInclude>
     <ClInclude Include="src\Rendering system\Space level\gameLevel.h">
       <Filter>Pliki nagłówkowe\Rendering system\Space level</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering system\Entity\alien.h">
+      <Filter>Pliki nagłówkowe\Rendering system\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

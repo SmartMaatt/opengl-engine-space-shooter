@@ -34,6 +34,16 @@ bool Mathf::areSpheresCollided(glm::vec3 center1, float rad1, glm::vec3 center2,
 	return (radSum > distance);
 }
 
+/* --->>> Matrices <<<--- */
+glm::mat4 Mathf::calculateRotationMatrix(glm::vec3 rotation)
+{
+	glm::mat4 rotationMatrix = glm::mat4(1.0f);
+	rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+	rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+	rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+	return rotationMatrix;
+}
+
 
 /* --->>> Vectors <<<---*/
 glm::vec3 Mathf::zeroVec()

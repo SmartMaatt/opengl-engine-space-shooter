@@ -19,7 +19,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{754bb917-2c84-4fef-8316-70c7d7c959e6}</ProjectGuid>
     <RootNamespace>PwAG Space Shooter</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
     <ProjectName>PwAG Space Shooter</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,6 +139,7 @@
     <ClCompile Include="src\Core\application.cpp" />
     <ClCompile Include="src\Core\main.cpp" />
     <ClCompile Include="src\GUI\sprite.cpp" />
+    <ClCompile Include="src\Rendering system\Entity\alien.cpp" />
     <ClCompile Include="src\Rendering system\Entity\bullet.cpp" />
     <ClCompile Include="src\Rendering system\Entity\crystal.cpp" />
     <ClCompile Include="src\Rendering system\Entity\entity.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="src\Core\application.h" />
     <ClInclude Include="src\Core\config.h" />
     <ClInclude Include="src\GUI\sprite.h" />
+    <ClInclude Include="src\Rendering system\Entity\alien.h" />
     <ClInclude Include="src\Rendering system\Entity\bullet.h" />
     <ClInclude Include="src\Rendering system\Entity\crystal.h" />
     <ClInclude Include="src\Rendering system\Entity\entity.h" />

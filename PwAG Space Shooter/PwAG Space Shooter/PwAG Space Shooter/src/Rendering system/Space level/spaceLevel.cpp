@@ -36,6 +36,7 @@ SpaceLevel::~SpaceLevel()
 	delete _skybox;
 
 	// Materials
+	delete _alienMaterialPrefab;
 	delete _meteorMaterialPrefab;
 	delete _crystalMaterialPrefab;
 	delete _bulletMaterialPrefab;
@@ -47,6 +48,11 @@ SpaceLevel::~SpaceLevel()
 	}
 
 	// Objects
+	for (size_t i = 0; i < _aliens.size(); i++)
+	{
+		_aliens[i]->destroy();
+	}
+
 	for (size_t i = 0; i < _meteors.size(); i++)
 	{
 		_meteors[i]->destroy();
@@ -95,38 +101,56 @@ void SpaceLevel::_initLevel()
 
 void SpaceLevel::_initLevelMaterials()
 {
+	Texture* alienTexture = new Texture(Texture::createTextureFromFile("res/Textures/Alien/AlienFighterGreen_AlbedoTransparency.png", Texture::Type::PNG));
+	Texture* alienSpecular = new Texture(Texture::createTextureFromFile("res/Textures/Alien/AlienFighter_Emission.png", Texture::Type::SPECULAR));
+	Texture* alienNormal = new Texture(Texture::createTextureFromFile("res/Textures/Alien/AlienFighter_Normal.png", Texture::Type::G_BUFFER_NORMAL));
+
 	Texture* meteorTexture = new Texture(Texture::createTextureFromFile("res/Textures/asteroid.png", Texture::Type::PNG));
-	Texture* specularMapMeteor = new Texture(Texture::createTextureFromFile("res/Textures/asteroid_specular.png", Texture::Type::SPECULAR));
+	Texture* meteorSpecular = new Texture(Texture::createTextureFromFile("res/Textures/asteroid_specular.png", Texture::Type::SPECULAR));
 	Texture* crystalTexture = new Texture(Texture::createTextureFromFile("res/Textures/crystal.png", Texture::Type::PNG));
-	Texture* specularMapCrystal = new Texture(Texture::createTextureFromFile("res/Textures/simple_specular.png", Texture::Type::SPECULAR));
+	Texture* crystalSpecular = new Texture(Texture::createTextureFromFile("res/Textures/simple_specular.png", Texture::Type::SPECULAR));
 	Texture* bulletTexture = new Texture(Texture::createTextureFromFile("res/Textures/sphere.png", Texture::Type::PNG));
 
 	// To remove allocation at the end of scene
+	_textures.push_back(alienTexture);
+	_textures.push_back(alienSpecular);
+	_textures.push_back(alienNormal);
 	_textures.push_back(meteorTexture);
-	_textures.push_back(specularMapMeteor);
+	_textures.push_back(meteorSpecular);
 	_textures.push_back(crystalTexture);
-	_textures.push_back(specularMapCrystal);
+	_textures.push_back(crystalSpecular);
 	_textures.push_back(bulletTexture);
 
-	_meteorMaterialPrefab = new Material(meteorTexture, specularMapMeteor, nullptr, 0, 1, glm::vec3(0.1));
-	_crystalMaterialPrefab = new Material(crystalTexture, specularMapCrystal, nullptr, 0, 1, glm::vec3(0.1));
+	_alienMaterialPrefab = new Material(alienTexture, alienSpecular, nullptr, 0, 1, glm::vec3(0.1));
+	_meteorMaterialPrefab = new Material(meteorTexture, meteorSpecular, nullptr, 0, 1, glm::vec3(0.1));
+	_crystalMaterialPrefab = new Material(crystalTexture, crystalSpecular, nullptr, 0, 1, glm::vec3(0.1));
 	_bulletMaterialPrefab = new Material(bulletTexture, nullptr, nullptr, 0, 1, glm::vec3(0.25));
 }
 
 void SpaceLevel::_initObjModels()
 {
 	// Loading data from obj
-	DataOBJ meteorMeshData = readObj("res/Models/suzanne.obj");
+	DataOBJ alienMeshData = readObj("res/Models/alien.obj");
+	DataOBJ meteorMeshData = readObj("res/Models/asteroid.obj");
 	DataOBJ crystalMeshData = readObj("res/Models/crystal.obj");
 	DataOBJ bulletMeshData = readObj("res/Models/sphere.obj");
 
 	// Instantiating meshes prefabs
+	_alienMeshPrefab = new Mesh(alienMeshData, Mathf::zeroVec());
 	_meteorMeshPrefab = new Mesh(meteorMeshData, Mathf::zeroVec());
 	_crystalMeshPrefab = new Mesh(crystalMeshData, Mathf::zeroVec());
 	_bulletMeshPrefab = new Mesh(bulletMeshData, Mathf::zeroVec());
 
 	// Player
 	_player = new Player(startPosition);
+
+	// Aliens
+	for (int i = 0; i < enemiesInstances; i++)
+	{
+		GameObject* model = new GameObject(new Material(*_alienMaterialPrefab), new Mesh(*_alienMeshPrefab));
+		Alien* alien = new Alien(model, "Alien " + std::to_string(i), worldRadius);
+		_aliens.push_back(alien);
+	}
 
 	// Meteors
 	for (int i = 0; i < meteorsInstances; i++)
@@ -195,6 +219,7 @@ void SpaceLevel::_initText()
 void SpaceLevel::update(float deltaTime)
 {
 	_updatePlayer(deltaTime);
+	_updateAlien(deltaTime);
 	_updateMeteors(deltaTime);
 	_updateCrystals(deltaTime);
 	_updateBullet(deltaTime);
@@ -212,6 +237,20 @@ void SpaceLevel::_updatePlayer(float deltaTime)
 
 	// >>> Collisions <<<
 	_collidePlayer();
+}
+
+void SpaceLevel::_updateAlien(float deltaTime)
+{
+	// Aliens
+	for (auto alien = _aliens.begin(); alien != _aliens.end();)
+	{
+		// Update
+		(*alien)->setPlayerPos(_player->getCameraPosition());
+		(*alien)->update(deltaTime);
+
+		// >>> Collisions <<<
+		_collideAlien(alien);
+	}
 }
 
 void SpaceLevel::_updateMeteors(float deltaTime)
@@ -329,6 +368,17 @@ void SpaceLevel::_collidePlayer()
 	}
 }
 
+void SpaceLevel::_collideAlien(std::vector<Alien*>::iterator& alien)
+{
+	// Alien <-> World border
+	if (glm::distance((*alien)->getPosition(), Mathf::zeroVec()) > worldRadius)
+	{
+		(*alien)->changeDirectionOnCollision();
+	}
+
+	++alien;
+}
+
 void SpaceLevel::_collideMeteor(std::vector<Meteor*>::iterator& meteor)
 {
 	// Meteor <-> World border
@@ -420,6 +470,11 @@ void SpaceLevel::draw(float deltaTime, bool wireframe)
 {
 	_shaderProgram->useShader();
 	_player->setCameraUniforms(_shaderProgram);
+
+	for (int i = 0; i < _aliens.size(); i++)
+	{
+		_aliens[i]->draw(_shaderProgram);
+	}
 
 	for (int i = 0; i < _meteors.size(); i++)
 	{

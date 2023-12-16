@@ -45,7 +45,7 @@ bool SpaceLevelFileReader::loadFile()
 	return true;
 }
 
-const std::vector<GameLevel>& SpaceLevelFileReader::getLevelInfo() const
+const GameLevel& SpaceLevelFileReader::getLevelInfo(int levelID) const
 {
-	return _levels;
+	return _levels[levelID];
 }

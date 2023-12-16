@@ -8,7 +8,7 @@ class GameState : public ProgramState
 {
 public:
 	// Constructors / Destructor
-	GameState(GameReference gameReference);
+	GameState(GameReference gameReference, int currentLevel);
 	~GameState();
 
 	// Overrides
@@ -27,6 +27,7 @@ private:
 	GameReference _gameReference;
 
 	// Parameters
+	int _currentLevel = 0;
 	int _lastMousePosX;
 	int _lastMousePosY;
 	bool _cursorDisabled;

@@ -18,13 +18,20 @@ public:
 	void render(float deltaTime, bool wireframe) override;
 
 private:
+	//State
+	bool isChooseLevel = false;
+
 	// References
 	GameReference _gameReference;
 	Player _camera;
 
 	// Buttons
 	Button _newGameButton;
+	Button _chooseLevelButton;
+	Button _returnButton;
 	Button _exitGameButton;
+	std::vector<Button*> _levelButtonsVector = std::vector<Button*>();
+	void createLevelButtonsVector();
 
 	// Sprites
 	Sprite _starsBackground;

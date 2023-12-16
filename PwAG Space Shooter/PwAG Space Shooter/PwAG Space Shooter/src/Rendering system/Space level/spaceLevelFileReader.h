@@ -14,5 +14,5 @@ public:
 
 	// File Info
 	bool loadFile();
-	const std::vector<GameLevel>& getLevelInfo() const;
+	const GameLevel& getLevelInfo(int levelID) const;
 };

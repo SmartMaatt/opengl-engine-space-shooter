@@ -8,7 +8,7 @@ class GameOverState : public ProgramState
 {
 public:
 	// Constructors / Destructor
-	GameOverState(GameReference gameReference, std::string header);
+	GameOverState(GameReference gameReference, std::string header, int currentLevelID);
 	~GameOverState();
 
 	// Overrides
@@ -18,12 +18,16 @@ public:
 	void render(float deltaTime, bool wireframe) override;
 
 private:
+	//State
+	bool isNextLevel = false;
+	
 	// References
 	GameReference _gameReference;
 
 	// Buttons
 	Button _winLabel;
 	Button _menuButton;
+	Button _nextLevel;
 
 	// Sprites
 	Sprite _starsBackground;

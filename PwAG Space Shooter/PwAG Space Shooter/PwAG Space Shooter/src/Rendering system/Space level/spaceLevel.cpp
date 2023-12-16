@@ -8,7 +8,7 @@
 #include "../SourceDep/stb_image.h"
 
 /* --->>> Constructors / Destructor <<<--- */
-SpaceLevel::SpaceLevel(GameState* gameState) :
+SpaceLevel::SpaceLevel(GameState* gameState, int levelNumber) :
 	_tmpDefaultFont(std::move(Font("res/Fonts/Segan.ttf", 32))),
 	_healthLabel(20, 50, "Health:", _tmpDefaultFont), _healthValueText(140, 53, "0", _tmpDefaultFont),
 	_crystalsLabel(20, 90, "Crystals:", _tmpDefaultFont), _crystalsValueText(140, 93, "0", _tmpDefaultFont),
@@ -17,7 +17,13 @@ SpaceLevel::SpaceLevel(GameState* gameState) :
 {
 	levelFileReader = SpaceLevelFileReader();
 	levelFileReader.loadFile();
-	//levelInfo = levelFileReader.getLevelInfo();
+	GameLevel levelInfo = GameLevel(levelFileReader.getLevelInfo(levelNumber));
+	levelID = levelNumber;
+	enemiesInstances = levelInfo.enemiesCount;
+	enemiesBulletShootInterval.first = levelInfo.enemiesBulletShootIntervalMin;
+	enemiesBulletShootInterval.second = levelInfo.enemiesBulletShootIntervalMax;
+	playerShootTimeot = levelInfo.playerShootTimeot;
+	medkitsInstances = levelInfo.medkitsCount;
 	_gameState = gameState;
 	_initLevel();
 }

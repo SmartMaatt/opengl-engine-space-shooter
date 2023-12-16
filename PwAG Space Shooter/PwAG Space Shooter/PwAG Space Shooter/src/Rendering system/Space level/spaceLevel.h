@@ -15,10 +15,14 @@
 class SpaceLevel
 {
 public:
+	int levelID = 0;
+	int enemiesInstances = 0;
+	std::pair<float, float> enemiesBulletShootInterval = std::pair<float, float>();
+	float playerShootTimeot = 0.0;
+	int medkitsInstances = 0;
 	int meteorsInstances = 40;
 	int crystalsInstances = 5;
 	float worldRadius = 10;
-	//std::vector<GameLevel> levelInfo;
 	glm::vec3 startPosition = glm::vec3(0, 0.5f, 0);
 
 	SpaceLevelFileReader levelFileReader;
@@ -35,7 +39,7 @@ public:
 	};
 
 	// Constructors / Destructor
-	SpaceLevel(GameState* gameState);
+	SpaceLevel(GameState* gameState, int levelNumber);
 	~SpaceLevel();
 
 	// Input

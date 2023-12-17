@@ -24,7 +24,7 @@ public:
 	int meteorsInstances = 0;
 	int crystalsInstances = 5;
 	float worldRadius = 10;
-	glm::vec3 startPosition = glm::vec3(0, 0.5f, 0);
+	glm::vec3 startPosition = glm::vec3(0, 0, 0);
 
 	SpaceLevelFileReader levelFileReader;
 

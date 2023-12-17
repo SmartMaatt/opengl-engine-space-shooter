@@ -8,7 +8,14 @@
 Meteor::Meteor(GameObject* gameObj, std::string name, float worldRadius) : Entity(gameObj, name)
 {
 	// Position
-	setPosition(Mathf::randCoordsInSphere(worldRadius));
+	float minDistanceFromSpawn = 5;
+	glm::vec3 spawnPoint = Mathf::zeroVec();
+	do
+	{
+		spawnPoint = Mathf::randCoordsInSphere(worldRadius);
+	} 
+	while (glm::distance(spawnPoint, Mathf::zeroVec()) < minDistanceFromSpawn);
+	setPosition(spawnPoint);
 
 	// Scale
 	float size = Mathf::randVal(0.1f, 0.75f);

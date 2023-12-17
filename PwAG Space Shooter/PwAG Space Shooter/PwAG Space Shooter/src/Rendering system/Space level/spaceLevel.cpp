@@ -439,26 +439,31 @@ void SpaceLevel::_setLightUniforms(ShaderLightProgram& shaderProgram)
 
 	shaderProgram.setNumberOfLights(playerLights + _crystals.size() + bulletLights);
 	char lightIndex[20];
+	int currentLightsLimit = 0;
 
 	// Default lights
 	sprintf_s(lightIndex, 20, "pointLights[%d].", 0);
 	std::string index { lightIndex };
 	shaderProgram.setLightUniforms(*(_player->getLight()), index);
+	currentLightsLimit = 1;
+
 
 	// Crystals lights
-	for (int i = playerLights; i < _crystals.size() + playerLights; i++)
+	for (int i = currentLightsLimit; i < _crystals.size() + currentLightsLimit; i++)
 	{
 		sprintf_s(lightIndex, 20, "pointLights[%d].", i);
 		std::string index { lightIndex };
 
-		int objIndex = i - 1;
+		int objIndex = i - currentLightsLimit;
 		shaderProgram.setLightUniforms(*(_crystals[objIndex]->getLight()), index);
 	}
+	currentLightsLimit += _crystals.size();
+
 
 	// Bullet lights
 	if (_bullet && !_bullet->isDead())
 	{
-		sprintf_s(lightIndex, 20, "pointLights[%d].", playerLights + _crystals.size());
+		sprintf_s(lightIndex, 20, "pointLights[%d].", currentLightsLimit);
 		std::string index{ lightIndex };
 		shaderProgram.setLightUniforms(*(_bullet->getLight()), index);
 	}

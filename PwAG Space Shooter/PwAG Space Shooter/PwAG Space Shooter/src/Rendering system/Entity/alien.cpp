@@ -8,8 +8,14 @@
 Alien::Alien(GameObject* gameObj, std::string name, float worldRadius) : Entity(gameObj, name)
 {
 	// Position
-	//setPosition(Mathf::randCoordsInSphere(worldRadius));
-	setPosition(Mathf::zeroVec());
+	float minDistanceFromSpawn = 5;
+	glm::vec3 spawnPoint = Mathf::zeroVec();
+	do
+	{
+		spawnPoint = Mathf::randCoordsInSphere(worldRadius);
+	} 
+	while (glm::distance(spawnPoint, Mathf::zeroVec()) < minDistanceFromSpawn);
+	setPosition(spawnPoint);
 
 	// Scale
 	float size = 0.2f;
@@ -17,7 +23,7 @@ Alien::Alien(GameObject* gameObj, std::string name, float worldRadius) : Entity(
 	setColliderRadius(size);
 
 	// Movement
-	setSpeed(0.5f);
+	setSpeed(0.25f);
 	setDirection(glm::vec3(Mathf::randVal(-1.0f, 1.0f), Mathf::randVal(-1.0f, 1.0f), Mathf::randVal(-1.0f, 1.0f)));
 	
 	// States
@@ -48,7 +54,7 @@ void Alien::update(float deltaTime)
 	{
 		if (_currentState != AlienState::Chase)
 		{
-			setSpeed(1);
+			setSpeed(0.5f);
 			_currentState = AlienState::Chase;
 		}
 
@@ -64,7 +70,7 @@ void Alien::update(float deltaTime)
 		if (_currentState != AlienState::Wander)
 		{
 			setDirection(glm::vec3(Mathf::randVal(-1.0f, 1.0f), Mathf::randVal(-1.0f, 1.0f), Mathf::randVal(-1.0f, 1.0f)));
-			setSpeed(0.5f);
+			setSpeed(0.25f);
 			_currentState = AlienState::Wander;
 		}
 		moveWithDirection(deltaTime);

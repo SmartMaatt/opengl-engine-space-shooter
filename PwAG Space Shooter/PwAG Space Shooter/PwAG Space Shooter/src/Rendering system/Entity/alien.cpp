@@ -8,7 +8,7 @@
 Alien::Alien(GameObject* gameObj, std::string name, float worldRadius, float maxReloadTime) : Entity(gameObj, name)
 {
 	// Position
-	float minDistanceFromSpawn = 5;
+	float minDistanceFromSpawn = 8;
 	glm::vec3 spawnPoint = Mathf::zeroVec();
 	do
 	{

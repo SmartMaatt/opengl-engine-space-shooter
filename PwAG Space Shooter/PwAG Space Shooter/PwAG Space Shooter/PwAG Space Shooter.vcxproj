@@ -141,9 +141,9 @@
     <ClCompile Include="src\GUI\sprite.cpp" />
     <ClCompile Include="src\Rendering system\Entity\alien.cpp" />
     <ClCompile Include="src\Rendering system\Entity\bullet.cpp" />
-    <ClCompile Include="src\Rendering system\Entity\crystal.cpp" />
     <ClCompile Include="src\Rendering system\Entity\entity.cpp" />
     <ClCompile Include="src\Rendering system\Entity\livingEntity.cpp" />
+    <ClCompile Include="src\Rendering system\Entity\medkit.cpp" />
     <ClCompile Include="src\Rendering system\Entity\meteor.cpp" />
     <ClCompile Include="src\Rendering system\Model\gameObject.cpp" />
     <ClCompile Include="src\Rendering system\Model\indexedDataOBJ.cpp" />
@@ -204,9 +204,9 @@
     <ClInclude Include="src\GUI\sprite.h" />
     <ClInclude Include="src\Rendering system\Entity\alien.h" />
     <ClInclude Include="src\Rendering system\Entity\bullet.h" />
-    <ClInclude Include="src\Rendering system\Entity\crystal.h" />
     <ClInclude Include="src\Rendering system\Entity\entity.h" />
     <ClInclude Include="src\Rendering system\Entity\livingEntity.h" />
+    <ClInclude Include="src\Rendering system\Entity\medkit.h" />
     <ClInclude Include="src\Rendering system\Entity\meteor.h" />
     <ClInclude Include="src\Rendering system\Model\gameObject.h" />
     <ClInclude Include="src\Rendering system\Model\indexedDataOBJ.h" />

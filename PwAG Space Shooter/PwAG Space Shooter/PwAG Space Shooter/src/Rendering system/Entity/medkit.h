@@ -2,12 +2,12 @@
 #include "entity.h"
 #include "../Lighting/point.h"
 
-class Crystal : public Entity
+class Medkit : public Entity
 {
 public:
 	// Constructors / Destructor
-	Crystal(GameObject* gameObj, std::string name, float worldRadius);
-	~Crystal();
+	Medkit(GameObject* gameObj, std::string name, float worldRadius);
+	~Medkit();
 	
 	// Update
 	void update(float deltaTime);

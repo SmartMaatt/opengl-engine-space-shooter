@@ -44,6 +44,11 @@ SpaceLevel::~SpaceLevel()
 	delete _playerBulletMaterialPrefab;
 	delete _alienBulletMaterialPrefab;
 
+	delete _alienMeshPrefab;
+	delete _meteorMeshPrefab;
+	delete _medkitMeshPrefab;
+	delete _bulletMeshPrefab;
+
 	// Textures
 	for (size_t i = 0; i < _textures.size(); i++)
 	{
@@ -108,13 +113,13 @@ void SpaceLevel::_initLevelMaterials()
 	Texture* alienSpecular = new Texture(Texture::createTextureFromFile("res/Textures/Alien/AlienFighter_Emission.png", Texture::Type::SPECULAR));
 	Texture* alienNormal = new Texture(Texture::createTextureFromFile("res/Textures/Alien/AlienFighter_Normal.png", Texture::Type::G_BUFFER_NORMAL));
 
-	Texture* meteorTexture = new Texture(Texture::createTextureFromFile("res/Textures/asteroid.png", Texture::Type::PNG));
-	Texture* meteorSpecular = new Texture(Texture::createTextureFromFile("res/Textures/asteroid_specular.png", Texture::Type::SPECULAR));
-	Texture* crystalTexture = new Texture(Texture::createTextureFromFile("res/Textures/crystal.png", Texture::Type::PNG));
-	Texture* crystalSpecular = new Texture(Texture::createTextureFromFile("res/Textures/simple_specular.png", Texture::Type::SPECULAR));
+	Texture* meteorTexture = new Texture(Texture::createTextureFromFile("res/Textures/Asteroid/asteroid.png", Texture::Type::PNG));
+	Texture* meteorSpecular = new Texture(Texture::createTextureFromFile("res/Textures/Asteroid/asteroid_specular.png", Texture::Type::SPECULAR));
+	Texture* medkitTexture = new Texture(Texture::createTextureFromFile("res/Textures/Beer/Beer_Bottle_TEX.png", Texture::Type::PNG));
+	Texture* medkitSpecular = new Texture(Texture::createTextureFromFile("res/Textures/Beer/Beer_Bottle_roughness.png", Texture::Type::SPECULAR));
 
-	Texture* playerBulletTexture = new Texture(Texture::createTextureFromFile("res/Textures/blue_sphere.png", Texture::Type::PNG));
-	Texture* alienBulletTexture = new Texture(Texture::createTextureFromFile("res/Textures/green_sphere.png", Texture::Type::PNG));
+	Texture* playerBulletTexture = new Texture(Texture::createTextureFromFile("res/Textures/Bullet/blue_sphere.png", Texture::Type::PNG));
+	Texture* alienBulletTexture = new Texture(Texture::createTextureFromFile("res/Textures/Bullet/green_sphere.png", Texture::Type::PNG));
 
 	// To remove allocation at the end of scene
 	_textures.push_back(alienTexture);
@@ -122,14 +127,14 @@ void SpaceLevel::_initLevelMaterials()
 	_textures.push_back(alienNormal);
 	_textures.push_back(meteorTexture);
 	_textures.push_back(meteorSpecular);
-	_textures.push_back(crystalTexture);
-	_textures.push_back(crystalSpecular);
+	_textures.push_back(medkitTexture);
+	_textures.push_back(medkitSpecular);
 	_textures.push_back(playerBulletTexture);
 	_textures.push_back(alienBulletTexture);
 
-	_alienMaterialPrefab = new Material(alienTexture, alienSpecular, nullptr, 0, 1, glm::vec3(0.1));
+	_alienMaterialPrefab = new Material(alienTexture, alienSpecular, alienNormal, 0, 1, glm::vec3(0.1));
 	_meteorMaterialPrefab = new Material(meteorTexture, meteorSpecular, nullptr, 0, 1, glm::vec3(0.1));
-	_medkitMaterialPrefab = new Material(crystalTexture, crystalSpecular, nullptr, 0, 1, glm::vec3(0.1));
+	_medkitMaterialPrefab = new Material(medkitTexture, medkitSpecular, nullptr, 0, 1, glm::vec3(0.1));
 	_playerBulletMaterialPrefab = new Material(playerBulletTexture, nullptr, nullptr, 0, 1, glm::vec3(0.25));
 	_alienBulletMaterialPrefab = new Material(alienBulletTexture, nullptr, nullptr, 0, 1, glm::vec3(0.25));
 }
@@ -139,13 +144,13 @@ void SpaceLevel::_initObjModels()
 	// Loading data from obj
 	DataOBJ alienMeshData = readObj("res/Models/alien.obj");
 	DataOBJ meteorMeshData = readObj("res/Models/asteroid.obj");
-	DataOBJ crystalMeshData = readObj("res/Models/crystal.obj");
+	DataOBJ medkitMeshData = readObj("res/Models/beer.obj");
 	DataOBJ bulletMeshData = readObj("res/Models/sphere.obj");
 
 	// Instantiating meshes prefabs
 	_alienMeshPrefab = new Mesh(alienMeshData, Mathf::zeroVec());
 	_meteorMeshPrefab = new Mesh(meteorMeshData, Mathf::zeroVec());
-	_medkitMeshPrefab = new Mesh(crystalMeshData, Mathf::zeroVec());
+	_medkitMeshPrefab = new Mesh(medkitMeshData, Mathf::zeroVec());
 	_bulletMeshPrefab = new Mesh(bulletMeshData, Mathf::zeroVec());
 
 	// Player
@@ -167,11 +172,11 @@ void SpaceLevel::_initObjModels()
 		_meteors.push_back(entity);
 	}
 
-	// Crystals
+	// Medkits
 	for (int i = 0; i < medkitsInstances; i++)
 	{
 		GameObject* model = new GameObject(new Material(*_medkitMaterialPrefab), new Mesh(*_medkitMeshPrefab));
-		Crystal* crystal = new Crystal(model, "Medkit " + std::to_string(i), worldRadius);
+		Medkit* crystal = new Medkit(model, "Medkit " + std::to_string(i), worldRadius);
 		_medkits.push_back(crystal);
 	}
 }
@@ -497,7 +502,7 @@ void SpaceLevel::_collideMeteor(std::vector<Meteor*>::iterator& meteor)
 	++meteor;
 }
 
-void SpaceLevel::_collideMedkit(std::vector<Crystal*>::iterator& medkit)
+void SpaceLevel::_collideMedkit(std::vector<Medkit*>::iterator& medkit)
 {
 	// Crystal <-> Player
 	PlayerStats* stats = _player->getStats();

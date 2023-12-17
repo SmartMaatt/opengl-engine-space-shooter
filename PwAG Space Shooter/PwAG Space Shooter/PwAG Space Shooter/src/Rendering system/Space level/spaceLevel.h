@@ -6,7 +6,7 @@
 #include "../Rendering system/Entity/entity.h"
 #include "../Rendering system/Entity/alien.h"
 #include "../Rendering system/Entity/meteor.h"
-#include "../Rendering system/Entity/crystal.h"
+#include "../Rendering system/Entity/medkit.h"
 #include "../Rendering system/Entity/bullet.h"
 #include "../Rendering system/Model/indexedDataOBJ.h"
 #include "../State machine/gameState.h"
@@ -21,7 +21,7 @@ public:
 	std::pair<float, float> enemiesBulletShootInterval = std::pair<float, float>();
 	float playerShootTimeout = 0.0;
 	int medkitsInstances = 0;
-	int meteorsInstances = 15;
+	int meteorsInstances = 20;
 	float worldRadius = 12;
 	glm::vec3 startPosition = glm::vec3(0, 0, 0);
 
@@ -74,7 +74,7 @@ private:
 	void _collidePlayer();
 	void _collideAlien(std::vector<Alien*>::iterator& alien);
 	void _collideMeteor(std::vector<Meteor*>::iterator& meteor);
-	void _collideMedkit(std::vector<Crystal*>::iterator& medkit);
+	void _collideMedkit(std::vector<Medkit*>::iterator& medkit);
 
 	// Lights
 	void _setLightUniforms(ShaderLightProgram& shader);
@@ -94,7 +94,7 @@ private:
 	Player* _player;
 	std::vector<Alien*> _aliens;
 	std::vector<Meteor*> _meteors;
-	std::vector<Crystal*> _medkits;
+	std::vector<Medkit*> _medkits;
 	std::vector<Bullet*> _bullets;
 
 	// Shaders

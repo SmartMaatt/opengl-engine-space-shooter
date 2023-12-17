@@ -63,9 +63,9 @@ SpaceLevel::~SpaceLevel()
 		_crystals[i]->destroy();
 	}
 
-	if (_bullet)
+	for (size_t i = 0; i < _bullets.size(); i++)
 	{
-		_bullet->destroy();
+		_bullets[i]->destroy();
 	}
 }
 
@@ -281,19 +281,20 @@ void SpaceLevel::_updateCrystals(float deltaTime)
 
 void SpaceLevel::_updateBullet(float deltaTime)
 {
-	// Bullet
-	if (_bullet)
+	// Bullets
+	for (auto bullet = _bullets.begin(); bullet != _bullets.end();)
 	{
-		if (_bullet->isDead())
+		if ((*bullet)->isDead())
 		{
 			// Kill
-			delete _bullet;
-			_bullet = nullptr;
+			(*bullet)->destroy();
+			bullet = _bullets.erase(bullet);
 		}
 		else
 		{
 			// Update
-			_bullet->update(deltaTime);
+			(*bullet)->update(deltaTime);
+			++bullet;
 		}
 	}
 }
@@ -398,19 +399,31 @@ void SpaceLevel::_collideMeteor(std::vector<Meteor*>::iterator& meteor)
 
 		(*meteor)->destroy();
 		meteor = _meteors.erase(meteor);
+		return;
 	}
 	// Meteor <-> Bullet
-	else if (_bullet && !_bullet->isDead() && Mathf::areSpheresCollided(_bullet->getPosition(), _bullet->getColliderRadius(), (*meteor)->getPosition(), (*meteor)->getColliderRadius()))
+	else
 	{
-		Debug::Log("Collision: Bullet <---> " + (*meteor)->getName());
+		for (auto bullet = _bullets.begin(); bullet != _bullets.end();)
+		{
+			if (Mathf::areSpheresCollided((*bullet)->getPosition(), (*bullet)->getColliderRadius(), (*meteor)->getPosition(), (*meteor)->getColliderRadius()))
+			{
+				Debug::Log("Collision: Bullet <---> " + (*meteor)->getName());
 
-		(*meteor)->destroy();
-		_bullet->destroy();
+				(*meteor)->destroy();
+				(*bullet)->destroy();
 
-		meteor = _meteors.erase(meteor);
-		_bullet = nullptr;
+				meteor = _meteors.erase(meteor);
+				bullet = _bullets.erase(bullet);
+				return;
+			}
+			else
+			{
+				++bullet;
+			}
+		}
 	}
-	else { ++meteor; }
+	++meteor;
 }
 
 void SpaceLevel::_collideCrystal(std::vector<Crystal*>::iterator& crystal)
@@ -434,10 +447,8 @@ void SpaceLevel::_collideCrystal(std::vector<Crystal*>::iterator& crystal)
 void SpaceLevel::_setLightUniforms(ShaderLightProgram& shaderProgram)
 {
 	int playerLights = 1;
-	int bulletLights = 0;
-	if (_bullet) { bulletLights = 1; }
 
-	shaderProgram.setNumberOfLights(playerLights + _crystals.size() + bulletLights);
+	shaderProgram.setNumberOfLights(playerLights + _crystals.size() + _bullets.size());
 	char lightIndex[20];
 	int currentLightsLimit = 0;
 
@@ -445,7 +456,7 @@ void SpaceLevel::_setLightUniforms(ShaderLightProgram& shaderProgram)
 	sprintf_s(lightIndex, 20, "pointLights[%d].", 0);
 	std::string index { lightIndex };
 	shaderProgram.setLightUniforms(*(_player->getLight()), index);
-	currentLightsLimit = 1;
+	currentLightsLimit += playerLights;
 
 
 	// Crystals lights
@@ -460,12 +471,14 @@ void SpaceLevel::_setLightUniforms(ShaderLightProgram& shaderProgram)
 	currentLightsLimit += _crystals.size();
 
 
-	// Bullet lights
-	if (_bullet && !_bullet->isDead())
+	// Bullets lights
+	for (int i = currentLightsLimit; i < _bullets.size() + currentLightsLimit; i++)
 	{
-		sprintf_s(lightIndex, 20, "pointLights[%d].", currentLightsLimit);
+		sprintf_s(lightIndex, 20, "pointLights[%d].", i);
 		std::string index{ lightIndex };
-		shaderProgram.setLightUniforms(*(_bullet->getLight()), index);
+
+		int objIndex = i - currentLightsLimit;
+		shaderProgram.setLightUniforms(*(_bullets[objIndex]->getLight()), index);
 	}
 }
 
@@ -491,9 +504,9 @@ void SpaceLevel::draw(float deltaTime, bool wireframe)
 		_crystals[i]->draw(_shaderProgram);
 	}
 
-	if (_bullet && !_bullet->isDead())
+	for (int i = 0; i < _bullets.size(); i++)
 	{
-		_bullet->draw(_shaderProgram);
+		_bullets[i]->draw(_shaderProgram);
 	}
 
 	_skybox->draw(_player->getCameraPosition(), _player->getDirection(), _player->getUp());
@@ -545,12 +558,8 @@ void SpaceLevel::_shootBullet()
 	if (stats->canIShoot())
 	{
 		// Bullet spawn
-		_bullet = _spawnBullet();
+		_bullets.push_back(_spawnBullet());
 		stats->shoot();
-	}
-	else
-	{
-		Debug::LogWarning("Can't shoot bullet");
 	}
 }
 

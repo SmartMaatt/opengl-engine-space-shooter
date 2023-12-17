@@ -35,7 +35,7 @@ private:
 	float _safeTimeAfterHit = 2.0f;
 	float _timeAfterLastHit;
 
-	float _reloadMaxTime = 8.0f;
+	float _reloadMaxTime = 1.5f;
 	float _reloadTime = 0.0f;
 	bool _canShoot = true;
 

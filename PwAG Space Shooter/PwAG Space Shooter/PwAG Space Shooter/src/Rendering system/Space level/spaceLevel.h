@@ -21,7 +21,7 @@ public:
 	std::pair<float, float> enemiesBulletShootInterval = std::pair<float, float>();
 	float playerShootTimeot = 0.0;
 	int medkitsInstances = 0;
-	int meteorsInstances = 0;
+	int meteorsInstances = 10;
 	int crystalsInstances = 5;
 	float worldRadius = 10;
 	glm::vec3 startPosition = glm::vec3(0, 0, 0);
@@ -95,7 +95,7 @@ private:
 	std::vector<Alien*> _aliens;
 	std::vector<Meteor*> _meteors;
 	std::vector<Crystal*> _crystals;
-	Bullet* _bullet;
+	std::vector<Bullet*> _bullets;
 
 	// Shaders
 	ShaderLightProgram* _shaderProgram;

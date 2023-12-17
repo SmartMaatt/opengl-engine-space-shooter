@@ -12,6 +12,7 @@ public:
 	int getHitPoints();
 	int getMaxHitPoints();
 	void takeDamage(int damage);
+	void heal(int healing);
 	void checkHitPoints();
 	bool checkSafeTime(float deltaTime);
 
@@ -22,10 +23,6 @@ public:
 	float getReloadMaxTime();
 	void setReloadMaxTime(float time);
 	float getReloadTime();
-
-	// Points
-	int getPoints();
-	void addPoint();
 
 	// Collisions
 	float getPlayerRadius();
@@ -39,8 +36,6 @@ private:
 	float _reloadMaxTime = 1.5f;
 	float _reloadTime = 0.0f;
 	bool _canShoot = true;
-
-	int _points = 0;
 
 	bool _alreadyShoot = false;
 	float _playerRadius = 0.3f;

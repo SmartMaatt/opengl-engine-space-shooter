@@ -23,14 +23,14 @@ Alien::Alien(GameObject* gameObj, std::string name, float worldRadius, float max
 	setColliderRadius(size);
 
 	// Movement
-	wanderSpeed = Mathf::randVal(0.2, 0.4);
-	attackSpeed = Mathf::randVal(0.4, 0.7);
+	wanderSpeed = Mathf::randVal(0.4, 0.7);
+	attackSpeed = Mathf::randVal(0.7, 1.0);
 	setSpeed(wanderSpeed);
 	setDirection(glm::vec3(Mathf::randVal(-1.0f, 1.0f), Mathf::randVal(-1.0f, 1.0f), Mathf::randVal(-1.0f, 1.0f)));
 	
 	// States
 	_currentState = AlienState::Wander;
-	_attackDistance = 5.0f;
+	_attackDistance = 8.0f;
 
 	// Shooting
 	_maxReloadTime = maxReloadTime;

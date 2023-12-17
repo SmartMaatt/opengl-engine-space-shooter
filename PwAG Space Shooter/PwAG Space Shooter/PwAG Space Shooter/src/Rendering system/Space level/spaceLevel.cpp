@@ -9,9 +9,9 @@
 
 /* --->>> Constructors / Destructor <<<--- */
 SpaceLevel::SpaceLevel(GameState* gameState, int levelNumber) :
-	_tmpDefaultFont(std::move(Font("res/Fonts/Segan.ttf", 32))),
+	_tmpDefaultFont(std::move(Font("res/Fonts/Segan.ttf", 32))), _levelLabel(270, 50, "Level:", _tmpDefaultFont),
 	_healthLabel(20, 50, "Health:", _tmpDefaultFont), _healthValueText(140, 53, "0", _tmpDefaultFont),
-	_crystalsLabel(20, 90, "Crystals:", _tmpDefaultFont), _crystalsValueText(140, 93, "0", _tmpDefaultFont),
+	_aliensLabel(20, 90, "Aliens:", _tmpDefaultFont), _aliensValueText(140, 93, "0", _tmpDefaultFont),
 	_bulletLabel(20, 130, "Bullet:", _tmpDefaultFont), _bulletValueText(140, 130, "0", _tmpDefaultFont),
 	_HUD("res/Textures/HUD.png", 1600, 900, 800, 450, true)
 {
@@ -40,7 +40,7 @@ SpaceLevel::~SpaceLevel()
 	// Materials
 	delete _alienMaterialPrefab;
 	delete _meteorMaterialPrefab;
-	delete _crystalMaterialPrefab;
+	delete _medkitMaterialPrefab;
 	delete _playerBulletMaterialPrefab;
 	delete _alienBulletMaterialPrefab;
 
@@ -61,9 +61,9 @@ SpaceLevel::~SpaceLevel()
 		_meteors[i]->destroy();
 	}
 
-	for (size_t i = 0; i < _crystals.size(); i++)
+	for (size_t i = 0; i < _medkits.size(); i++)
 	{
-		_crystals[i]->destroy();
+		_medkits[i]->destroy();
 	}
 
 	for (size_t i = 0; i < _bullets.size(); i++)
@@ -129,7 +129,7 @@ void SpaceLevel::_initLevelMaterials()
 
 	_alienMaterialPrefab = new Material(alienTexture, alienSpecular, nullptr, 0, 1, glm::vec3(0.1));
 	_meteorMaterialPrefab = new Material(meteorTexture, meteorSpecular, nullptr, 0, 1, glm::vec3(0.1));
-	_crystalMaterialPrefab = new Material(crystalTexture, crystalSpecular, nullptr, 0, 1, glm::vec3(0.1));
+	_medkitMaterialPrefab = new Material(crystalTexture, crystalSpecular, nullptr, 0, 1, glm::vec3(0.1));
 	_playerBulletMaterialPrefab = new Material(playerBulletTexture, nullptr, nullptr, 0, 1, glm::vec3(0.25));
 	_alienBulletMaterialPrefab = new Material(alienBulletTexture, nullptr, nullptr, 0, 1, glm::vec3(0.25));
 }
@@ -145,7 +145,7 @@ void SpaceLevel::_initObjModels()
 	// Instantiating meshes prefabs
 	_alienMeshPrefab = new Mesh(alienMeshData, Mathf::zeroVec());
 	_meteorMeshPrefab = new Mesh(meteorMeshData, Mathf::zeroVec());
-	_crystalMeshPrefab = new Mesh(crystalMeshData, Mathf::zeroVec());
+	_medkitMeshPrefab = new Mesh(crystalMeshData, Mathf::zeroVec());
 	_bulletMeshPrefab = new Mesh(bulletMeshData, Mathf::zeroVec());
 
 	// Player
@@ -168,11 +168,11 @@ void SpaceLevel::_initObjModels()
 	}
 
 	// Crystals
-	for (int i = 0; i < crystalsInstances; i++)
+	for (int i = 0; i < medkitsInstances; i++)
 	{
-		GameObject* model = new GameObject(new Material(*_crystalMaterialPrefab), new Mesh(*_crystalMeshPrefab));
-		Crystal* crystal = new Crystal(model, "Crystal " + std::to_string(i), worldRadius);
-		_crystals.push_back(crystal);
+		GameObject* model = new GameObject(new Material(*_medkitMaterialPrefab), new Mesh(*_medkitMeshPrefab));
+		Crystal* crystal = new Crystal(model, "Medkit " + std::to_string(i), worldRadius);
+		_medkits.push_back(crystal);
 	}
 }
 
@@ -211,14 +211,20 @@ void SpaceLevel::_initMatrixMVP()
 void SpaceLevel::_initText()
 {
 	// Gui text color
-	_healthLabel.setColor(glm::vec3(1, 1, 1));
-	_healthValueText.setColor(glm::vec3(1, 1, 1));
-
-	_crystalsLabel.setColor(glm::vec3(1, 0, 0));
-	_crystalsValueText.setColor(glm::vec3(1, 0, 0));
+	_levelLabel.setColor(glm::vec3(1, 1, 1));
+	std::stringstream levelStream;
+	levelStream << std::fixed << std::setprecision(4);
+	levelStream << "Level: " << levelID + 1;
+	_levelLabel.setText(levelStream.str());
 
 	_bulletLabel.setColor(glm::vec3(0, 0, 1));
 	_bulletValueText.setColor(glm::vec3(0, 0, 1));
+
+	_aliensLabel.setColor(glm::vec3(0, 1, 0));
+	_aliensValueText.setColor(glm::vec3(0, 1, 0));
+
+	_healthLabel.setColor(glm::vec3(1, 0, 0));
+	_healthValueText.setColor(glm::vec3(1, 0, 0));
 }
 
 
@@ -226,10 +232,10 @@ void SpaceLevel::_initText()
 void SpaceLevel::update(float deltaTime)
 {
 	_updatePlayer(deltaTime);
-	_updateAlien(deltaTime);
+	_updateAliens(deltaTime);
 	_updateMeteors(deltaTime);
-	_updateCrystals(deltaTime);
-	_updateBullet(deltaTime);
+	_updateMedkits(deltaTime);
+	_updateBullets(deltaTime);
 
 	_updateLightShaders();
 	_updateGuiTexts();
@@ -246,7 +252,7 @@ void SpaceLevel::_updatePlayer(float deltaTime)
 	_collidePlayer();
 }
 
-void SpaceLevel::_updateAlien(float deltaTime)
+void SpaceLevel::_updateAliens(float deltaTime)
 {
 	// Aliens
 	for (auto alien = _aliens.begin(); alien != _aliens.end();)
@@ -280,20 +286,20 @@ void SpaceLevel::_updateMeteors(float deltaTime)
 	}
 }
 
-void SpaceLevel::_updateCrystals(float deltaTime)
+void SpaceLevel::_updateMedkits(float deltaTime)
 {
 	// Crystals
-	for (auto crystal = _crystals.begin(); crystal != _crystals.end();)
+	for (auto medkit = _medkits.begin(); medkit != _medkits.end();)
 	{
 		// Update
-		(*crystal)->update(deltaTime);
+		(*medkit)->update(deltaTime);
 
 		// >>> Collisions <<<
-		_collideCrystal(crystal);
+		_collideMedkit(medkit);
 	}
 }
 
-void SpaceLevel::_updateBullet(float deltaTime)
+void SpaceLevel::_updateBullets(float deltaTime)
 {
 	// Bullets
 	for (auto bullet = _bullets.begin(); bullet != _bullets.end();)
@@ -331,10 +337,10 @@ void SpaceLevel::_updateGuiTexts()
 	_healthValueText.setText(streamForHealth.str());
 
 	// Points info
-	std::stringstream streamForCrystals;
-	streamForCrystals << std::fixed << std::setprecision(4);
-	streamForCrystals << stats->getPoints() << "/" << crystalsInstances;
-	_crystalsValueText.setText(streamForCrystals.str());
+	std::stringstream streamForAliens;
+	streamForAliens << std::fixed << std::setprecision(4);
+	streamForAliens << (enemiesInstances - _aliens.size()) << "/" << enemiesInstances;
+	_aliensValueText.setText(streamForAliens.str());
 
 	// Shooting info
 	if (stats->canIShoot())
@@ -356,7 +362,7 @@ void SpaceLevel::_updateGuiTexts()
 void SpaceLevel::_updateOutcomes()
 {
 	// Outcomes
-	if (crystalsInstances == _player->getStats()->getPoints())
+	if (_aliens.size() == 0)
 	{
 		_gameState->winLevel();
 	}
@@ -478,10 +484,7 @@ void SpaceLevel::_collideMeteor(std::vector<Meteor*>::iterator& meteor)
 			{
 				Debug::Log("Collision: Bullet <---> " + (*meteor)->getName());
 
-				(*meteor)->destroy();
 				(*bullet)->destroy();
-
-				meteor = _meteors.erase(meteor);
 				bullet = _bullets.erase(bullet);
 				return;
 			}
@@ -494,20 +497,20 @@ void SpaceLevel::_collideMeteor(std::vector<Meteor*>::iterator& meteor)
 	++meteor;
 }
 
-void SpaceLevel::_collideCrystal(std::vector<Crystal*>::iterator& crystal)
+void SpaceLevel::_collideMedkit(std::vector<Crystal*>::iterator& medkit)
 {
 	// Crystal <-> Player
 	PlayerStats* stats = _player->getStats();
-	if (Mathf::areSpheresCollided(_player->getCameraPosition(), stats->getPlayerRadius(), (*crystal)->getPosition(), (*crystal)->getColliderRadius()))
+	if (Mathf::areSpheresCollided(_player->getCameraPosition(), stats->getPlayerRadius(), (*medkit)->getPosition(), (*medkit)->getColliderRadius()))
 	{
-		stats->addPoint();
+		stats->heal(50);
 
-		Debug::Log("Collision: Player <---> " + (*crystal)->getName());
+		Debug::Log("Collision: Player <---> " + (*medkit)->getName());
 
-		(*crystal)->destroy();
-		crystal = _crystals.erase(crystal);
+		(*medkit)->destroy();
+		medkit = _medkits.erase(medkit);
 	}
-	else { ++crystal; }
+	else { ++medkit; }
 }
 
 
@@ -516,7 +519,7 @@ void SpaceLevel::_setLightUniforms(ShaderLightProgram& shaderProgram)
 {
 	int playerLights = 1;
 
-	shaderProgram.setNumberOfLights(playerLights + _crystals.size() + _bullets.size());
+	shaderProgram.setNumberOfLights(playerLights + _medkits.size() + _bullets.size());
 	char lightIndex[20];
 	int currentLightsLimit = 0;
 
@@ -528,15 +531,15 @@ void SpaceLevel::_setLightUniforms(ShaderLightProgram& shaderProgram)
 
 
 	// Crystals lights
-	for (int i = currentLightsLimit; i < _crystals.size() + currentLightsLimit; i++)
+	for (int i = currentLightsLimit; i < _medkits.size() + currentLightsLimit; i++)
 	{
 		sprintf_s(lightIndex, 20, "pointLights[%d].", i);
 		std::string index { lightIndex };
 
 		int objIndex = i - currentLightsLimit;
-		shaderProgram.setLightUniforms(*(_crystals[objIndex]->getLight()), index);
+		shaderProgram.setLightUniforms(*(_medkits[objIndex]->getLight()), index);
 	}
-	currentLightsLimit += _crystals.size();
+	currentLightsLimit += _medkits.size();
 
 
 	// Bullets lights
@@ -567,9 +570,9 @@ void SpaceLevel::draw(float deltaTime, bool wireframe)
 		_meteors[i]->draw(_shaderProgram);
 	}
 
-	for (int i = 0; i < _crystals.size(); i++)
+	for (int i = 0; i < _medkits.size(); i++)
 	{
-		_crystals[i]->draw(_shaderProgram);
+		_medkits[i]->draw(_shaderProgram);
 	}
 
 	for (int i = 0; i < _bullets.size(); i++)
@@ -595,14 +598,16 @@ void SpaceLevel::_drawGui()
 	auto projection = glm::ortho(0.0f, static_cast<float>(Config::g_defaultWidth), 0.0f, static_cast<float>(Config::g_defaultHeight));
 	_textShader->setMat4("MVP", projection);
 
-	_healthLabel.render(*_textShader);
-	_healthValueText.render(*_textShader);
-
-	_crystalsLabel.render(*_textShader);
-	_crystalsValueText.render(*_textShader);
+	_levelLabel.render(*_textShader);
 
 	_bulletLabel.render(*_textShader);
 	_bulletValueText.render(*_textShader);
+
+	_aliensLabel.render(*_textShader);
+	_aliensValueText.render(*_textShader);
+
+	_healthLabel.render(*_textShader);
+	_healthValueText.render(*_textShader);
 #endif
 
 	if (_hudChangeLatch > 0)

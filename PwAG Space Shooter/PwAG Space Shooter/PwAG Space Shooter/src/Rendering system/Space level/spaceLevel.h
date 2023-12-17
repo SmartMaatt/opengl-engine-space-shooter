@@ -21,9 +21,8 @@ public:
 	std::pair<float, float> enemiesBulletShootInterval = std::pair<float, float>();
 	float playerShootTimeout = 0.0;
 	int medkitsInstances = 0;
-	int meteorsInstances = 10;
-	int crystalsInstances = 5;
-	float worldRadius = 10;
+	int meteorsInstances = 15;
+	float worldRadius = 12;
 	glm::vec3 startPosition = glm::vec3(0, 0, 0);
 
 	SpaceLevelFileReader levelFileReader;
@@ -63,10 +62,10 @@ private:
 
 	// Update
 	void _updatePlayer(float deltaTime);
-	void _updateAlien(float deltaTime);
+	void _updateAliens(float deltaTime);
 	void _updateMeteors(float deltaTime);
-	void _updateCrystals(float deltaTime);
-	void _updateBullet(float deltaTime);
+	void _updateMedkits(float deltaTime);
+	void _updateBullets(float deltaTime);
 	void _updateLightShaders();
 	void _updateGuiTexts();
 	void _updateOutcomes();
@@ -75,7 +74,7 @@ private:
 	void _collidePlayer();
 	void _collideAlien(std::vector<Alien*>::iterator& alien);
 	void _collideMeteor(std::vector<Meteor*>::iterator& meteor);
-	void _collideCrystal(std::vector<Crystal*>::iterator& crystal);
+	void _collideMedkit(std::vector<Crystal*>::iterator& medkit);
 
 	// Lights
 	void _setLightUniforms(ShaderLightProgram& shader);
@@ -95,7 +94,7 @@ private:
 	Player* _player;
 	std::vector<Alien*> _aliens;
 	std::vector<Meteor*> _meteors;
-	std::vector<Crystal*> _crystals;
+	std::vector<Crystal*> _medkits;
 	std::vector<Bullet*> _bullets;
 
 	// Shaders
@@ -109,24 +108,25 @@ private:
 	// Materials
 	Material* _alienMaterialPrefab;
 	Material* _meteorMaterialPrefab;
-	Material* _crystalMaterialPrefab;
+	Material* _medkitMaterialPrefab;
 	Material* _playerBulletMaterialPrefab;
 	Material* _alienBulletMaterialPrefab;
 
 	// Meshes
 	Mesh* _alienMeshPrefab;
 	Mesh* _meteorMeshPrefab;
-	Mesh* _crystalMeshPrefab;
+	Mesh* _medkitMeshPrefab;
 	Mesh* _bulletMeshPrefab;
 
 	// GUI
 	Font _tmpDefaultFont;
 	ShaderProgram* _textShader;
 
+	Text _levelLabel;
 	Text _healthLabel;
 	Text _healthValueText;
-	Text _crystalsLabel;
-	Text _crystalsValueText;
+	Text _aliensLabel;
+	Text _aliensValueText;
 	Text _bulletLabel;
 	Text _bulletValueText;
 

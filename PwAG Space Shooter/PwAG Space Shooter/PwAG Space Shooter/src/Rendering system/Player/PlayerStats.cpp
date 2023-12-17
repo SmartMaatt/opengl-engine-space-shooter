@@ -30,6 +30,12 @@ void PlayerStats::takeDamage(int damage)
 	checkHitPoints();
 }
 
+void PlayerStats::heal(int healing)
+{
+	_hitPoints += healing;
+	checkHitPoints();
+}
+
 bool PlayerStats::checkSafeTime(float deltaTime)
 {
 	if (_safeTimeAfterHit <= _timeAfterLastHit)
@@ -45,15 +51,7 @@ bool PlayerStats::checkSafeTime(float deltaTime)
 
 void PlayerStats::checkHitPoints()
 {
-	if (_hitPoints > _maxHitPoints)
-	{
-		_hitPoints = _maxHitPoints;
-	}
-
-	if (_hitPoints < 0)
-	{
-		_hitPoints = 0;
-	}
+	_hitPoints = glm::clamp(_hitPoints, 0, _maxHitPoints);
 }
 
 
@@ -100,18 +98,6 @@ void PlayerStats::setReloadMaxTime(float time)
 float PlayerStats::getReloadTime()
 {
 	return _reloadTime;
-}
-
-
-/* --->>> Points <<<--- */
-int PlayerStats::getPoints()
-{
-	return _points;
-}
-
-void PlayerStats::addPoint()
-{
-	_points++;
 }
 
 

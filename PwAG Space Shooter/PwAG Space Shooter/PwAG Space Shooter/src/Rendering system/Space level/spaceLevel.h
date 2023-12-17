@@ -19,7 +19,7 @@ public:
 	int levelID = 0;
 	int enemiesInstances = 0;
 	std::pair<float, float> enemiesBulletShootInterval = std::pair<float, float>();
-	float playerShootTimeot = 0.0;
+	float playerShootTimeout = 0.0;
 	int medkitsInstances = 0;
 	int meteorsInstances = 10;
 	int crystalsInstances = 5;
@@ -85,8 +85,9 @@ private:
 	void _toggleHUD();
 
 	// Shooting
-	void _shootBullet();
-	Bullet* _spawnBullet();
+	void _shootPlayerBullet();
+	Bullet* _spawnPlayerBullet();
+	Bullet* _spawnAlienBullet(Alien* alien);
 
 	// Instances
 	GameState* _gameState;
@@ -109,7 +110,8 @@ private:
 	Material* _alienMaterialPrefab;
 	Material* _meteorMaterialPrefab;
 	Material* _crystalMaterialPrefab;
-	Material* _bulletMaterialPrefab;
+	Material* _playerBulletMaterialPrefab;
+	Material* _alienBulletMaterialPrefab;
 
 	// Meshes
 	Mesh* _alienMeshPrefab;

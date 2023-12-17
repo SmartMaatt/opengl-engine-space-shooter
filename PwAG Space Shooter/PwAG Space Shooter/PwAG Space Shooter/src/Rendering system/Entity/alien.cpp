@@ -5,7 +5,7 @@
 #include <string>
 
 /* --->>> Constructors / Destructor <<<--- */
-Alien::Alien(GameObject* gameObj, std::string name, float worldRadius) : Entity(gameObj, name)
+Alien::Alien(GameObject* gameObj, std::string name, float worldRadius, float maxReloadTime) : Entity(gameObj, name)
 {
 	// Position
 	float minDistanceFromSpawn = 5;
@@ -28,8 +28,10 @@ Alien::Alien(GameObject* gameObj, std::string name, float worldRadius) : Entity(
 	
 	// States
 	_currentState = AlienState::Wander;
-	_chaseDistance = 5.0f;
-	_attackDistance = 2.0f;
+	_attackDistance = 5.0f;
+
+	// Shooting
+	_maxReloadTime = maxReloadTime;
 }
 
 Alien::~Alien()
@@ -45,17 +47,24 @@ void Alien::update(float deltaTime)
 	// Attack
 	if (distanceToPlayer < _attackDistance)
 	{
-		_currentState = AlienState::Attack;
-		// Attack TO DO
-	}
-
-	// Chase
-	else if (distanceToPlayer < _chaseDistance)
-	{
-		if (_currentState != AlienState::Chase)
+		if (_currentState != AlienState::Attack)
 		{
 			setSpeed(0.5f);
-			_currentState = AlienState::Chase;
+			_reloadTime = 0.0f;
+			_readyToShoot = false;
+			_currentState = AlienState::Attack;
+		}
+
+		if (!_readyToShoot)
+		{
+			if (_reloadTime < _maxReloadTime)
+			{
+				_reloadTime += deltaTime;
+			}
+			else
+			{
+				_readyToShoot = true;
+			}
 		}
 
 		glm::vec3 direction = glm::normalize(_playerPos - getPosition());
@@ -69,6 +78,7 @@ void Alien::update(float deltaTime)
 		// Find new direction
 		if (_currentState != AlienState::Wander)
 		{
+			_readyToShoot = false;
 			setDirection(glm::vec3(Mathf::randVal(-1.0f, 1.0f), Mathf::randVal(-1.0f, 1.0f), Mathf::randVal(-1.0f, 1.0f)));
 			setSpeed(0.25f);
 			_currentState = AlienState::Wander;
@@ -121,4 +131,16 @@ void Alien::changeDirectionOnCollision()
 
 	glm::vec3 _position = getPosition() + getDirection() * 0.05f;
 	setPosition(_position);
+}
+
+/* --->>> Shooting <<<--- */
+bool Alien::isReadyToShoot()
+{
+	return _readyToShoot;
+}
+
+void Alien::Shoot()
+{
+	_readyToShoot = false;
+	_reloadTime = 0.0f;
 }

@@ -18,13 +18,15 @@ SpaceLevel::SpaceLevel(GameState* gameState, int levelNumber) :
 	levelFileReader = SpaceLevelFileReader();
 	levelFileReader.loadFile();
 	GameLevel levelInfo = GameLevel(levelFileReader.getLevelInfo(levelNumber));
+
 	levelID = levelNumber;
 	enemiesInstances = levelInfo.enemiesCount;
 	enemiesBulletShootInterval.first = levelInfo.enemiesBulletShootIntervalMin;
 	enemiesBulletShootInterval.second = levelInfo.enemiesBulletShootIntervalMax;
-	playerShootTimeot = levelInfo.playerShootTimeot;
+	playerShootTimeout = levelInfo.playerShootTimeot;
 	medkitsInstances = levelInfo.medkitsCount;
 	_gameState = gameState;
+
 	_initLevel();
 }
 
@@ -39,7 +41,8 @@ SpaceLevel::~SpaceLevel()
 	delete _alienMaterialPrefab;
 	delete _meteorMaterialPrefab;
 	delete _crystalMaterialPrefab;
-	delete _bulletMaterialPrefab;
+	delete _playerBulletMaterialPrefab;
+	delete _alienBulletMaterialPrefab;
 
 	// Textures
 	for (size_t i = 0; i < _textures.size(); i++)
@@ -78,7 +81,7 @@ void SpaceLevel::input(float deltaTime, GameReference gameReference, Keyboard& k
 	// Shooting
 	if (keyboard.keyState[static_cast<int>(Keyboard::Key::eKeyF)])
 	{
-		_shootBullet();
+		_shootPlayerBullet();
 	}
 
 	// Activating HUD
@@ -109,7 +112,9 @@ void SpaceLevel::_initLevelMaterials()
 	Texture* meteorSpecular = new Texture(Texture::createTextureFromFile("res/Textures/asteroid_specular.png", Texture::Type::SPECULAR));
 	Texture* crystalTexture = new Texture(Texture::createTextureFromFile("res/Textures/crystal.png", Texture::Type::PNG));
 	Texture* crystalSpecular = new Texture(Texture::createTextureFromFile("res/Textures/simple_specular.png", Texture::Type::SPECULAR));
-	Texture* bulletTexture = new Texture(Texture::createTextureFromFile("res/Textures/sphere.png", Texture::Type::PNG));
+
+	Texture* playerBulletTexture = new Texture(Texture::createTextureFromFile("res/Textures/blue_sphere.png", Texture::Type::PNG));
+	Texture* alienBulletTexture = new Texture(Texture::createTextureFromFile("res/Textures/green_sphere.png", Texture::Type::PNG));
 
 	// To remove allocation at the end of scene
 	_textures.push_back(alienTexture);
@@ -119,12 +124,14 @@ void SpaceLevel::_initLevelMaterials()
 	_textures.push_back(meteorSpecular);
 	_textures.push_back(crystalTexture);
 	_textures.push_back(crystalSpecular);
-	_textures.push_back(bulletTexture);
+	_textures.push_back(playerBulletTexture);
+	_textures.push_back(alienBulletTexture);
 
 	_alienMaterialPrefab = new Material(alienTexture, alienSpecular, nullptr, 0, 1, glm::vec3(0.1));
 	_meteorMaterialPrefab = new Material(meteorTexture, meteorSpecular, nullptr, 0, 1, glm::vec3(0.1));
 	_crystalMaterialPrefab = new Material(crystalTexture, crystalSpecular, nullptr, 0, 1, glm::vec3(0.1));
-	_bulletMaterialPrefab = new Material(bulletTexture, nullptr, nullptr, 0, 1, glm::vec3(0.25));
+	_playerBulletMaterialPrefab = new Material(playerBulletTexture, nullptr, nullptr, 0, 1, glm::vec3(0.25));
+	_alienBulletMaterialPrefab = new Material(alienBulletTexture, nullptr, nullptr, 0, 1, glm::vec3(0.25));
 }
 
 void SpaceLevel::_initObjModels()
@@ -142,13 +149,13 @@ void SpaceLevel::_initObjModels()
 	_bulletMeshPrefab = new Mesh(bulletMeshData, Mathf::zeroVec());
 
 	// Player
-	_player = new Player(startPosition);
+	_player = new Player(startPosition, playerShootTimeout);
 
 	// Aliens
 	for (int i = 0; i < enemiesInstances; i++)
 	{
 		GameObject* model = new GameObject(new Material(*_alienMaterialPrefab), new Mesh(*_alienMeshPrefab));
-		Alien* alien = new Alien(model, "Alien " + std::to_string(i), worldRadius);
+		Alien* alien = new Alien(model, "Alien " + std::to_string(i), worldRadius, Mathf::randVal(enemiesBulletShootInterval.first, enemiesBulletShootInterval.second));
 		_aliens.push_back(alien);
 	}
 
@@ -247,6 +254,13 @@ void SpaceLevel::_updateAlien(float deltaTime)
 		// Update
 		(*alien)->setPlayerPos(_player->getCameraPosition());
 		(*alien)->update(deltaTime);
+
+		// >>> Shooting <<<
+		if ((*alien)->isReadyToShoot())
+		{
+			_bullets.push_back(_spawnAlienBullet(*alien));
+			(*alien)->Shoot();
+		}
 
 		// >>> Collisions <<<
 		_collideAlien(alien);
@@ -552,20 +566,27 @@ void SpaceLevel::_toggleHUD()
 
 
 /* --->>> Shooting <<<--- */
-void SpaceLevel::_shootBullet()
+void SpaceLevel::_shootPlayerBullet()
 {
 	PlayerStats* stats = _player->getStats();
 	if (stats->canIShoot())
 	{
 		// Bullet spawn
-		_bullets.push_back(_spawnBullet());
+		_bullets.push_back(_spawnPlayerBullet());
 		stats->shoot();
 	}
 }
 
-Bullet* SpaceLevel::_spawnBullet()
+Bullet* SpaceLevel::_spawnPlayerBullet()
 {
-	GameObject* model = new GameObject(new Material(*_bulletMaterialPrefab), new Mesh(*_bulletMeshPrefab));
-	Bullet* bullet = new Bullet(model, "Bullet", 7, _player);
+	GameObject* model = new GameObject(new Material(*_playerBulletMaterialPrefab), new Mesh(*_bulletMeshPrefab));
+	Bullet* bullet = new Bullet(model, "Bullet", 7, _player->getCameraPosition(), _player->getDirection(), {0, 0, 1});
+	return bullet;
+}
+
+Bullet* SpaceLevel::_spawnAlienBullet(Alien* alien)
+{
+	GameObject* model = new GameObject(new Material(*_alienBulletMaterialPrefab), new Mesh(*_bulletMeshPrefab));
+	Bullet* bullet = new Bullet(model, "Bullet", 7, alien->getPosition(), alien->getDirection(), { 0, 1, 0 });
 	return bullet;
 }

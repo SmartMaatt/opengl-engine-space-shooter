@@ -5,9 +5,10 @@
 /* --->>> Constructors / Destructor <<<--- */
 Player::Player() {}
 
-Player::Player(glm::vec3 startPosition)
+Player::Player(glm::vec3 startPosition, float reloadTime)
 {
 	_stats = new PlayerStats();
+	_stats->setReloadMaxTime(reloadTime);
 	_light = new Light::Point({ 1,0,1 }, { 1,1,1 });
 
 	_position = startPosition;

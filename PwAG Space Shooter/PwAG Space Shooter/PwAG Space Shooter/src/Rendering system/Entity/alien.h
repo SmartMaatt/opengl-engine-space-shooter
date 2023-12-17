@@ -6,7 +6,7 @@ class Alien : public Entity
 {
 public:
 	// Constructors / Destructor
-	Alien(GameObject* gameObj, std::string name, float worldRadius);
+	Alien(GameObject* gameObj, std::string name, float worldRadius, float maxReloadTime);
 	~Alien();
 
 	// Update
@@ -23,15 +23,23 @@ public:
 	// Collision
 	void changeDirectionOnCollision();
 
+	// Shooting
+	bool isReadyToShoot();
+	void Shoot();
+
 private:
 	enum class AlienState {
 		Wander,
-		Chase,
 		Attack
 	};
 
+	// Parameters
 	AlienState _currentState;
 	glm::vec3 _playerPos = glm::vec3(0.0f);
-	float _chaseDistance = 3.0f;
-	float _attackDistance = 1.0f;
+	float _attackDistance = 5.0f;
+
+	// Shooting
+	float _maxReloadTime = 0.5f;
+	float _reloadTime = 0.0f;
+	bool _readyToShoot = false;
 };

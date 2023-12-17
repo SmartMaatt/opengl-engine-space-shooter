@@ -9,7 +9,7 @@ class Player
 public:
 	// Constructors / Destructor 
 	Player();
-	Player(glm::vec3 startPosition = glm::vec3(0.0f));
+	Player(glm::vec3 startPosition = glm::vec3(0.0f), float reloadTime = 0.5f);
 	~Player();
 
 	// Input

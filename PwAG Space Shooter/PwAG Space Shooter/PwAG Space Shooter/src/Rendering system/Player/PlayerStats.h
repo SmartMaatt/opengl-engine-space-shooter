@@ -20,6 +20,7 @@ public:
 	void reloadBullet(float deltaTime);
 	bool canIShoot();
 	float getReloadMaxTime();
+	void setReloadMaxTime(float time);
 	float getReloadTime();
 
 	// Points

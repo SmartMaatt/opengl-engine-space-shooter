@@ -6,7 +6,7 @@ class Bullet : public LivingEntity
 {
 public:
 	// Constructors / Destructor
-	Bullet(GameObject* gameObj, std::string name, float lifeSpan, Player* player);
+	Bullet(GameObject* gameObj, std::string name, float lifeSpan, glm::vec3 position, glm::vec3 direction, glm::vec3 lightColor);
 	~Bullet();
 
 	// Update

@@ -92,6 +92,11 @@ float PlayerStats::getReloadMaxTime()
 	return _reloadMaxTime;
 }
 
+void PlayerStats::setReloadMaxTime(float time)
+{
+	_reloadMaxTime = time;
+}
+
 float PlayerStats::getReloadTime()
 {
 	return _reloadTime;

@@ -23,7 +23,9 @@ Alien::Alien(GameObject* gameObj, std::string name, float worldRadius, float max
 	setColliderRadius(size);
 
 	// Movement
-	setSpeed(0.25f);
+	wanderSpeed = Mathf::randVal(0.2, 0.4);
+	attackSpeed = Mathf::randVal(0.4, 0.7);
+	setSpeed(wanderSpeed);
 	setDirection(glm::vec3(Mathf::randVal(-1.0f, 1.0f), Mathf::randVal(-1.0f, 1.0f), Mathf::randVal(-1.0f, 1.0f)));
 	
 	// States
@@ -49,8 +51,8 @@ void Alien::update(float deltaTime)
 	{
 		if (_currentState != AlienState::Attack)
 		{
-			setSpeed(0.5f);
-			_reloadTime = 0.0f;
+			setSpeed(attackSpeed);
+			_reloadTime = _maxReloadTime / 2;
 			_readyToShoot = false;
 			_currentState = AlienState::Attack;
 		}
@@ -79,8 +81,8 @@ void Alien::update(float deltaTime)
 		if (_currentState != AlienState::Wander)
 		{
 			_readyToShoot = false;
+			setSpeed(wanderSpeed);
 			setDirection(glm::vec3(Mathf::randVal(-1.0f, 1.0f), Mathf::randVal(-1.0f, 1.0f), Mathf::randVal(-1.0f, 1.0f)));
-			setSpeed(0.25f);
 			_currentState = AlienState::Wander;
 		}
 		moveWithDirection(deltaTime);

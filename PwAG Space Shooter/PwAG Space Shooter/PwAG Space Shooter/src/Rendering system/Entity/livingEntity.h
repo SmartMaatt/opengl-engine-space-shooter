@@ -20,6 +20,7 @@ public:
 
 	// Life span
 	bool isDead();
+	float getAge();
 
 protected:
 	// Age parameters

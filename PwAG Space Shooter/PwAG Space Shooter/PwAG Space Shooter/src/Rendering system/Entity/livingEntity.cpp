@@ -46,6 +46,11 @@ bool LivingEntity::isDead()
 	return _dead;
 }
 
+float LivingEntity::getAge()
+{
+	return _age;
+}
+
 void LivingEntity::_calcAge(float deltaTime)
 {
 	_age += deltaTime;

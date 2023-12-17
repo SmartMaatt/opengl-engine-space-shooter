@@ -381,6 +381,25 @@ void SpaceLevel::_collidePlayer()
 		glm::vec3 newPosition = sphereCenter + ((playerPos - sphereCenter) / distanceFromCenter) * worldRadius;
 		_player->setCameraPosition(newPosition);
 	}
+
+	// Player <-> Bullet
+	for (auto bullet = _bullets.begin(); bullet != _bullets.end();)
+	{
+		if ((*bullet)->getAge() > 0.5f && Mathf::areSpheresCollided((*bullet)->getPosition(), (*bullet)->getColliderRadius(), _player->getCameraPosition(), _player->getStats()->getPlayerRadius()))
+		{
+			Debug::Log("Collision: Bullet <---> Player");
+
+			_player->getStats()->takeDamage(15);
+
+			(*bullet)->destroy();
+			bullet = _bullets.erase(bullet);
+			return;
+		}
+		else
+		{
+			++bullet;
+		}
+	}
 }
 
 void SpaceLevel::_collideAlien(std::vector<Alien*>::iterator& alien)
@@ -391,6 +410,41 @@ void SpaceLevel::_collideAlien(std::vector<Alien*>::iterator& alien)
 		(*alien)->changeDirectionOnCollision();
 	}
 
+	// Alien <-> Player
+	PlayerStats* stats = _player->getStats();
+	if (Mathf::areSpheresCollided(_player->getCameraPosition(), stats->getPlayerRadius(), (*alien)->getPosition(), (*alien)->getColliderRadius()))
+	{
+		stats->takeDamage(50);
+
+		Debug::Log("Collision: Player <---> " + (*alien)->getName());
+		Debug::Log("Player health: " + std::to_string(stats->getHitPoints()));
+
+		(*alien)->destroy();
+		alien = _aliens.erase(alien);
+		return;
+	}
+	// Alien <-> Bullet
+	else
+	{
+		for (auto bullet = _bullets.begin(); bullet != _bullets.end();)
+		{
+			if ((*bullet)->getAge() > 0.5f && Mathf::areSpheresCollided((*bullet)->getPosition(), (*bullet)->getColliderRadius(), (*alien)->getPosition(), (*alien)->getColliderRadius()))
+			{
+				Debug::Log("Collision: Bullet <---> " + (*alien)->getName());
+
+				(*alien)->destroy();
+				(*bullet)->destroy();
+
+				alien = _aliens.erase(alien);
+				bullet = _bullets.erase(bullet);
+				return;
+			}
+			else
+			{
+				++bullet;
+			}
+		}
+	}
 	++alien;
 }
 

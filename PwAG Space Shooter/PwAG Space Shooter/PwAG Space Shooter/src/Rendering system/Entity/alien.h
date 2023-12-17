@@ -38,6 +38,10 @@ private:
 	glm::vec3 _playerPos = glm::vec3(0.0f);
 	float _attackDistance = 5.0f;
 
+	// Speed
+	float wanderSpeed = 0.25f;
+	float attackSpeed = 0.5f;
+
 	// Shooting
 	float _maxReloadTime = 0.5f;
 	float _reloadTime = 0.0f;

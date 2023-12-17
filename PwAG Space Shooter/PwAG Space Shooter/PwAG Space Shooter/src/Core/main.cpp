@@ -3,7 +3,7 @@
 
 int main()
 {
-	Debug::LogSuccess("Launching PwAG Space Shooter Game...");
+	Debug::LogSuccess("Launching Hunters of empire...");
 
 	if (glfwInit() == GLFW_TRUE)
 	{
